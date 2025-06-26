@@ -8,6 +8,16 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 const projects = [
   {
     id: 1,
+    title: "Will Work Construction",
+    description: "Professional construction company website with modern design and service showcases",
+    image: "/api/placeholder/600/400",
+    tags: ["React", "TypeScript", "Responsive Design", "Business Website"],
+    demoUrl: "https://willworkconstruction.com/home",
+    githubUrl: "#",
+    category: "Web Development"
+  },
+  {
+    id: 2,
     title: "E-Commerce Platform",
     description: "Modern e-commerce solution with React, Node.js, and Stripe integration",
     image: "/api/placeholder/600/400",

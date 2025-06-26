@@ -148,6 +148,7 @@ Changelog:
   - Updated home page to Hero → Gallery → Contact → Footer for cleaner user flow
   - Added "View All Projects" button in gallery section linking to dedicated projects page
   - Fixed dropdown text visibility and styling consistency throughout the site
+  - Added Will Work Construction (willworkconstruction.com) as featured project in both gallery and projects page
 ```
 
 ## User Preferences
