@@ -62,7 +62,7 @@ const Hero = () => {
               <span className="block">Modern Web</span>
               <span className="block text-gradient">Experiences</span>
               <motion.span 
-                className="block text-gray-600 font-light"
+                className="block text-[var(--text-secondary)] font-light"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 1, delay: 0.8 }}
@@ -74,7 +74,7 @@ const Hero = () => {
 
           {/* Subtitle */}
           <motion.p
-            className="body-lg text-gray-600 max-w-3xl mx-auto mb-12 text-balance"
+            className="body-lg text-[var(--text-secondary)] max-w-3xl mx-auto mb-12 text-balance"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
@@ -140,8 +140,8 @@ const Hero = () => {
                 transition={{ delay: 1.4 + index * 0.1, duration: 0.8 }}
                 whileHover={{ y: -5 }}
               >
-                <div className="text-3xl font-medium text-black mb-2">{stat.number}</div>
-                <div className="text-gray-600 text-sm font-medium">{stat.label}</div>
+                <div className="text-3xl font-medium text-[var(--text-primary)] mb-2">{stat.number}</div>
+                <div className="text-[var(--text-secondary)] text-sm font-medium">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -156,7 +156,7 @@ const Hero = () => {
         >
           <motion.button
             onClick={() => scrollToSection("portfolio")}
-            className="flex flex-col items-center gap-3 text-gray-400 hover:text-gray-600 transition-colors duration-300 group"
+            className="flex flex-col items-center gap-3 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors duration-300 group"
             whileHover={{ y: -2 }}
           >
             <span className="text-sm font-medium tracking-wide">Scroll to explore</span>
