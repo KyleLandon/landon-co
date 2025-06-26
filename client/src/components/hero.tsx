@@ -176,27 +176,86 @@ const Hero = () => {
             ctx.lineJoin = 'round';
             ctx.globalAlpha = stroke.opacity;
             
-            // Draw clean paint brush stroke
-            ctx.beginPath();
-            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-            
-            // Create smooth paint stroke path
-            for (let i = 1; i < pointsToDraw; i++) {
-              const point = stroke.points[i];
-              const prevPoint = stroke.points[i - 1];
+            // Draw rough-edged brush stroke with multiple passes for texture
+            for (let pass = 0; pass < 3; pass++) {
+              ctx.save();
               
-              if (!point || !prevPoint) continue;
+              // Each pass creates rougher edges
+              const roughness = pass * 0.5 + 0.3;
+              const alphaMultiplier = 1 - (pass * 0.2);
+              ctx.globalAlpha = stroke.opacity * alphaMultiplier;
               
-              // Calculate consistent width with minimal pressure variation
-              const pressure = point.pressure;
-              const width = stroke.baseWidth * pressure;
-              ctx.lineWidth = width;
+              ctx.beginPath();
+              ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
               
-              // Draw smooth line segment
-              ctx.lineTo(point.x, point.y);
+              for (let i = 1; i < pointsToDraw; i++) {
+                const point = stroke.points[i];
+                const prevPoint = stroke.points[i - 1];
+                
+                if (!point || !prevPoint) continue;
+                
+                // Calculate width with slight variation for texture
+                const pressure = point.pressure;
+                const baseWidth = stroke.baseWidth * pressure;
+                const widthVariation = pass === 0 ? 0 : (Math.random() - 0.5) * roughness;
+                ctx.lineWidth = Math.max(1, baseWidth + widthVariation);
+                
+                // Add roughness to the stroke path
+                let targetX = point.x;
+                let targetY = point.y;
+                
+                if (pass > 0) {
+                  // Add edge roughness - simulate brush bristle separation
+                  const roughnessAmount = roughness * baseWidth * 0.1;
+                  targetX += (Math.random() - 0.5) * roughnessAmount;
+                  targetY += (Math.random() - 0.5) * roughnessAmount;
+                }
+                
+                // Use quadratic curves for more natural brush texture
+                if (i < pointsToDraw - 1) {
+                  const nextPoint = stroke.points[i + 1];
+                  if (nextPoint) {
+                    const midX = (targetX + nextPoint.x) / 2;
+                    const midY = (targetY + nextPoint.y) / 2;
+                    ctx.quadraticCurveTo(targetX, targetY, midX, midY);
+                  }
+                } else {
+                  ctx.lineTo(targetX, targetY);
+                }
+              }
+              
+              ctx.stroke();
+              ctx.restore();
             }
             
-            ctx.stroke();
+            // Add bristle texture spots for additional roughness
+            if (Math.random() < 0.4) {
+              ctx.save();
+              ctx.fillStyle = stroke.color;
+              ctx.globalAlpha = stroke.opacity * 0.3;
+              
+              // Random bristle marks along the stroke
+              for (let i = 5; i < pointsToDraw; i += 8) {
+                const point = stroke.points[i];
+                if (!point) continue;
+                
+                const bristleSize = (stroke.baseWidth * point.pressure) * 0.15;
+                const bristleCount = 2 + Math.floor(Math.random() * 3);
+                
+                for (let b = 0; b < bristleCount; b++) {
+                  const offsetDistance = stroke.baseWidth * 0.3;
+                  const angle = Math.random() * Math.PI * 2;
+                  const bristleX = point.x + Math.cos(angle) * offsetDistance * Math.random();
+                  const bristleY = point.y + Math.sin(angle) * offsetDistance * Math.random();
+                  
+                  ctx.beginPath();
+                  ctx.arc(bristleX, bristleY, bristleSize, 0, Math.PI * 2);
+                  ctx.fill();
+                }
+              }
+              
+              ctx.restore();
+            }
           }
         });
         
