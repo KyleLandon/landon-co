@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContactSchema } from "@shared/schema";
+import { sendContactEmail } from "./email";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -9,7 +10,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contact", async (req, res) => {
     try {
       const validatedData = insertContactSchema.parse(req.body);
+      
+      // Store contact in database
       const contact = await storage.createContact(validatedData);
+      
+      // Send email notification
+      const emailSent = await sendContactEmail({
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || '',
+        preferredContact: validatedData.preferredContact || '',
+        project: validatedData.project,
+        budget: validatedData.budget || '',
+        message: validatedData.message
+      });
+      
+      if (!emailSent) {
+        console.error('Failed to send email notification for contact:', contact.id);
+      }
       
       res.json({ 
         success: true, 
@@ -28,6 +46,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           errors: error.errors 
         });
       } else {
+        console.error('Contact form error:', error);
         res.status(500).json({ 
           success: false, 
           message: "Failed to send message. Please try again." 
