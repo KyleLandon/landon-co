@@ -97,32 +97,34 @@ const Contact = () => {
           <p className="text-gray-400 font-mono tracking-wide uppercase text-sm">
             Ready to create something raw and authentic? Let's build your digital presence with an edge.
           </p>
-          <div className="mt-8 p-6 bg-black/50 border border-white/20 rounded-none">
-            <p className="text-white font-mono text-lg mb-4 text-center uppercase tracking-wider">
-              CONTACT INFO
-            </p>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Email:</span>
+          <div className="mt-12 space-y-6">
+            <div className="text-center">
+              <h3 className="text-white font-mono text-2xl mb-8 uppercase tracking-wider">
+                CONTACT INFO
+              </h3>
+            </div>
+            <div className="space-y-8">
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Email:</div>
                 <a 
                   href="mailto:info@landonco.co" 
-                  className="text-white font-mono hover:text-gray-300 transition-colors duration-300"
+                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
                 >
                   info@landonco.co
                 </a>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Phone:</span>
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Phone:</div>
                 <a 
                   href="tel:+19403892685" 
-                  className="text-white font-mono hover:text-gray-300 transition-colors duration-300"
+                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
                 >
                   (940) 389-2685
                 </a>
               </div>
-              <div className="flex justify-between items-center">
-                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Discord:</span>
-                <span className="text-white font-mono">kylelandon</span>
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Discord:</div>
+                <span className="text-white font-mono text-xl block">kylelandon</span>
               </div>
             </div>
           </div>
