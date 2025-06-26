@@ -57,7 +57,15 @@ const Contact = () => {
   });
 
   const onSubmit = (data: ContactForm) => {
-    contactMutation.mutate(data);
+    const submissionData = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      preferredContact: data.preferredContact,
+      project: data.budget || "",
+      message: data.message,
+    };
+    contactMutation.mutate(submissionData);
   };
 
   return (
@@ -89,6 +97,20 @@ const Contact = () => {
           <p className="text-gray-400 font-mono tracking-wide uppercase text-sm">
             Ready to create something raw and authentic? Let's build your digital presence with an edge.
           </p>
+          <div className="mt-8 p-6 bg-black/50 border border-white/20 rounded-none">
+            <p className="text-white font-mono text-lg mb-2 text-center">
+              CALL DIRECT
+            </p>
+            <a 
+              href="tel:+19403892685" 
+              className="block text-center text-2xl font-mono font-bold text-white hover:text-gray-300 transition-colors duration-300"
+            >
+              (940) 389-2685
+            </a>
+            <p className="text-gray-400 font-mono text-xs text-center mt-2 uppercase tracking-wider">
+              Ready to talk? Let's connect.
+            </p>
+          </div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -128,6 +150,45 @@ const Contact = () => {
                         {...field}
                         className="bg-black border-2 border-white/30 rounded-none font-mono"
                       />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-mono uppercase tracking-wider text-sm">Phone Number</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="(555) 123-4567"
+                        {...field}
+                        className="bg-black border-2 border-white/30 rounded-none font-mono"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="preferredContact"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="font-mono uppercase tracking-wider text-sm">Preferred Contact Method</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} value={field.value}>
+                        <SelectTrigger className="bg-black border-2 border-white/30 rounded-none font-mono">
+                          <SelectValue placeholder="How should we reach you?" />
+                        </SelectTrigger>
+                        <SelectContent className="bg-black border-white/30 rounded-none">
+                          <SelectItem value="email" className="font-mono">Email</SelectItem>
+                          <SelectItem value="text" className="font-mono">Text Message</SelectItem>
+                          <SelectItem value="call" className="font-mono">Phone Call</SelectItem>
+                        </SelectContent>
+                      </Select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

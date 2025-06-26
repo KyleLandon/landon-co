@@ -134,6 +134,12 @@ Changelog:
   - Streamlined home page layout: Hero → Gallery → Portfolio → Contact → Footer
   - Fixed all TypeScript errors and API integration issues
   - Maintained grunge signature logo integration within clean V0 design framework
+- June 26, 2025. Phone contact functionality implementation
+  - Added client phone number (940) 389-2685 prominently displayed in contact section
+  - Enhanced contact form with phone number field and preferred contact method dropdown
+  - Updated database schema to store phone and preferredContact fields
+  - Implemented click-to-call functionality for direct client communication
+  - Contact form now captures: name, email, phone, preferred method (email/text/call), budget, message
 ```
 
 ## User Preferences
