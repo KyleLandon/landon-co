@@ -184,9 +184,9 @@ const Contact = () => {
                           <SelectValue placeholder="How should we reach you?" />
                         </SelectTrigger>
                         <SelectContent className="bg-black border-white/30 rounded-none">
-                          <SelectItem value="email" className="font-mono">Email</SelectItem>
-                          <SelectItem value="text" className="font-mono">Text Message</SelectItem>
-                          <SelectItem value="call" className="font-mono">Phone Call</SelectItem>
+                          <SelectItem value="email" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Email</SelectItem>
+                          <SelectItem value="text" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Text Message</SelectItem>
+                          <SelectItem value="call" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Phone Call</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
