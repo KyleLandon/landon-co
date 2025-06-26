@@ -1,220 +1,111 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
-import { useRef } from "react";
+import { motion } from "framer-motion";
+import { useRef, useEffect } from "react";
 import whiteLogo from "@assets/white_transparent_1750909506258.png";
 
 const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  });
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  useEffect(() => {
+    if (!canvasRef.current) return;
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    resizeCanvas();
+
+    const particles: Array<{
+      x: number;
+      y: number;
+      size: number;
+      speedX: number;
+      speedY: number;
+      opacity: number;
+    }> = [];
+    const particleCount = 150;
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 3 + 0.5,
+        speedX: Math.random() * 3 - 1.5,
+        speedY: Math.random() * 3 - 1.5,
+        opacity: Math.random() * 0.5 + 0.2,
+      });
     }
-  };
+
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((particle) => {
+        particle.x += particle.speedX;
+        particle.y += particle.speedY;
+
+        if (particle.x > canvas.width) particle.x = 0;
+        if (particle.x < 0) particle.x = canvas.width;
+        if (particle.y > canvas.height) particle.y = 0;
+        if (particle.y < 0) particle.y = canvas.height;
+
+        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+
+    window.addEventListener("resize", resizeCanvas);
+    return () => window.removeEventListener("resize", resizeCanvas);
+  }, []);
 
   return (
-    <section 
-      ref={containerRef}
-      id="home" 
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--bg-primary)]"
-    >
-      {/* Background Elements */}
-      <div className="absolute inset-0">
+    <div className="relative h-screen w-full overflow-hidden" id="home">
+      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black" />
+      <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
         <motion.div
-          style={{ y }}
-          className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/3 rounded-full blur-3xl"
-          animate={{ scale: [1, 1.2, 1], rotate: [0, 180, 360] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        />
-        <motion.div
-          style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "30%"]) }}
-          className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-2xl"
-          animate={{ scale: [1.2, 1, 1.2], rotate: [360, 180, 0] }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
-      <motion.div 
-        style={{ opacity }}
-        className="container-custom relative z-10"
-      >
-        <div className="text-center max-w-6xl mx-auto">
-          {/* Grunge Logo */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
-            className="mb-12"
-          >
-            <img
-              src={whiteLogo}
-              alt="Landon & Co."
-              className="w-64 md:w-80 lg:w-96 h-auto mx-auto object-contain"
-              style={{
-                filter: "drop-shadow(4px 4px 20px rgba(0, 0, 0, 0.8)) contrast(1.1)",
-              }}
-            />
-          </motion.div>
-
-          {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
-            className="mb-8"
-          >
-            <motion.h1 
-              className="heading-lg text-balance mb-6"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
-            >
-              <span className="block">Raw. Authentic.</span>
-              <span className="block text-[var(--text-secondary)]">Web Experiences</span>
-              <motion.span 
-                className="block text-[var(--text-muted)] text-2xl md:text-3xl lg:text-4xl mt-4"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 1.0 }}
-              >
-                for Bold Local Businesses
-              </motion.span>
-            </motion.h1>
-          </motion.div>
-
-          {/* Subtitle */}
-          <motion.p
-            className="body-lg text-[var(--text-secondary)] max-w-3xl mx-auto mb-12 text-balance"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.8, ease: [0.23, 1, 0.32, 1] }}
-          >
-            We don't follow trends. We set them. Gritty, uncompromising web design that cuts through the noise and delivers results your competitors can't match.
-          </motion.p>
-
-          {/* Action Buttons */}
-          <motion.div
-            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1, ease: [0.23, 1, 0.32, 1] }}
-          >
-            <motion.button
-              onClick={() => scrollToSection("portfolio")}
-              className="btn-primary group inline-flex items-center gap-3"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              View My Work
-              <motion.div
-                className="flex items-center justify-center"
-                whileHover={{ x: 3 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              >
-                <ArrowUpRight size={18} />
-              </motion.div>
-            </motion.button>
-            
-            <motion.button
-              onClick={() => scrollToSection("contact")}
-              className="btn-secondary group inline-flex items-center gap-3"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Start a Project
-              <motion.div
-                className="w-2 h-2 bg-current rounded-full"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-            </motion.button>
-          </motion.div>
-
-          {/* Stats Grid */}
-          <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto mb-16"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 1.2, ease: [0.23, 1, 0.32, 1] }}
-          >
-            {[
-              { number: "50+", label: "Projects Delivered" },
-              { number: "95%", label: "Client Satisfaction" },
-              { number: "3x", label: "Average ROI Increase" }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                className="text-center"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.4 + index * 0.1, duration: 0.8 }}
-                whileHover={{ y: -5 }}
-              >
-                <div className="text-3xl font-medium text-[var(--text-primary)] mb-2">{stat.number}</div>
-                <div className="text-[var(--text-secondary)] text-sm font-medium">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          className="mb-8"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <img
+            src={whiteLogo}
+            alt="Landon & Co."
+            className="w-80 h-auto sm:w-96 lg:w-[500px] drop-shadow-2xl"
+            priority
+          />
+        </motion.div>
+        <motion.p
+          className="max-w-[600px] text-lg text-gray-300 sm:text-xl font-mono tracking-wider"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 1.8 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          style={{
+            textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+            filter: "contrast(1.2)",
+          }}
         >
-          <motion.button
-            onClick={() => scrollToSection("portfolio")}
-            className="flex flex-col items-center gap-3 text-[var(--text-muted)] hover:text-[var(--text-secondary)] transition-colors duration-300 group"
-            whileHover={{ y: -2 }}
-          >
-            <span className="text-sm font-medium tracking-wide">Scroll to explore</span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="p-2 rounded-full border border-gray-300 group-hover:border-gray-400 transition-colors duration-300"
-            >
-              <ArrowDown size={16} />
-            </motion.div>
-          </motion.button>
+          WEB DESIGN • BRANDING • DIGITAL EXPERIENCES
+        </motion.p>
+        <motion.div
+          className="mt-8 text-sm text-gray-500 font-mono uppercase tracking-[0.2em]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1 }}
+        >
+          EST. 2020
         </motion.div>
-      </motion.div>
-
-      {/* Floating Elements */}
-      <motion.div
-        className="absolute top-1/4 right-8 w-4 h-4 bg-black rounded-full opacity-20"
-        animate={{ 
-          y: [0, -20, 0],
-          scale: [1, 1.2, 1]
-        }}
-        transition={{ 
-          duration: 4, 
-          repeat: Infinity, 
-          ease: "easeInOut" 
-        }}
-      />
-      <motion.div
-        className="absolute bottom-1/3 left-8 w-6 h-6 border-2 border-black/20 rounded-full"
-        animate={{ 
-          rotate: [0, 360],
-          scale: [1, 0.8, 1]
-        }}
-        transition={{ 
-          duration: 6, 
-          repeat: Infinity, 
-          ease: "linear" 
-        }}
-      />
-    </section>
+      </div>
+    </div>
   );
 };
 
