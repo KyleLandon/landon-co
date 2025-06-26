@@ -44,7 +44,7 @@ const Gallery = () => {
   ];
 
   return (
-    <section className="relative py-20 bg-zinc-900">
+    <section id="gallery" className="relative py-20 bg-zinc-900">
       <div ref={ref} className="container mx-auto px-4">
         <motion.h2
           className="mb-12 text-center text-4xl font-bold tracking-wider sm:text-5xl font-mono uppercase"
