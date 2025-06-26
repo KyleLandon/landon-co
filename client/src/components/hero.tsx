@@ -105,25 +105,22 @@ const Hero = () => {
           currentDirection = angleToCenter + Math.PI + (Math.random() - 0.5) * 0.3;
         }
         
-        // Japanese brush pressure curve - starts thick, tapers to fine point
+        // Paint brush pressure - more consistent width like actual paint strokes
         const progress = i / strokeLength;
         let pressure = 1.0;
         
-        // Japanese brush characteristics: bold start, gradual taper to fine tip
-        if (progress < 0.05) {
-          // Initial brush contact - builds up quickly
-          pressure = Math.pow(progress / 0.05, 0.3) * 1.2;
-        } else if (progress < 0.3) {
-          // Main stroke body - full pressure with slight variation
-          pressure = 1.0 + Math.sin(progress * Math.PI * 3) * 0.15;
+        // Paint brush characteristics: consistent width with subtle fade at ends
+        if (progress < 0.1) {
+          // Gradual start
+          pressure = 0.6 + (progress / 0.1) * 0.4;
+        } else if (progress > 0.9) {
+          // Gradual end
+          const fadeProgress = (progress - 0.9) / 0.1;
+          pressure = 1.0 - (fadeProgress * 0.3);
         } else {
-          // Gradual taper to fine point (characteristic of Japanese brushes)
-          const taperProgress = (progress - 0.3) / 0.7;
-          pressure = 1.0 * Math.pow(1 - taperProgress, 1.8); // Sharp taper to fine point
+          // Main body - consistent pressure with minimal variation
+          pressure = 0.95 + Math.sin(progress * Math.PI * 2) * 0.05;
         }
-        
-        // Add subtle pressure variations for organic feel
-        pressure *= (0.9 + Math.random() * 0.2);
         
         points.push({
           x: Math.max(0, Math.min(canvas.width, currentX)),
@@ -137,7 +134,7 @@ const Hero = () => {
         currentPointIndex: 0,
         direction: direction,
         speed: 2.5,
-        baseWidth: 12 + Math.random() * 16, // Wider for Japanese brush effect
+        baseWidth: 8 + Math.random() * 6, // Consistent paint brush width
         opacity: 0.6 + Math.random() * 0.3,
         isActive: true,
         color: `rgba(255, 255, 255, ${0.8 + Math.random() * 0.2})`,
@@ -179,55 +176,27 @@ const Hero = () => {
             ctx.lineJoin = 'round';
             ctx.globalAlpha = stroke.opacity;
             
-            // Draw Japanese brush stroke with pressure-sensitive width
-            for (let i = 0; i < pointsToDraw - 1; i++) {
-              const point1 = stroke.points[i];
-              const point2 = stroke.points[i + 1];
+            // Draw clean paint brush stroke
+            ctx.beginPath();
+            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+            
+            // Create smooth paint stroke path
+            for (let i = 1; i < pointsToDraw; i++) {
+              const point = stroke.points[i];
+              const prevPoint = stroke.points[i - 1];
               
-              if (!point1 || !point2) continue;
+              if (!point || !prevPoint) continue;
               
-              // Calculate width with Japanese brush taper characteristics
-              const avgPressure = (point1.pressure + point2.pressure) / 2;
-              const width = stroke.baseWidth * avgPressure;
-              
-              // Main brush stroke
+              // Calculate consistent width with minimal pressure variation
+              const pressure = point.pressure;
+              const width = stroke.baseWidth * pressure;
               ctx.lineWidth = width;
-              ctx.beginPath();
-              ctx.moveTo(point1.x, point1.y);
-              ctx.lineTo(point2.x, point2.y);
-              ctx.stroke();
               
-              // Add ink bleeding effect for Japanese brush authenticity
-              if (avgPressure > 0.6 && Math.random() < 0.3) {
-                ctx.save();
-                const bleedIntensity = stroke.inkDensity * avgPressure;
-                ctx.globalAlpha = stroke.opacity * 0.2 * bleedIntensity;
-                ctx.lineWidth = width * 1.5;
-                ctx.beginPath();
-                ctx.moveTo(point1.x, point1.y);
-                ctx.lineTo(point2.x, point2.y);
-                ctx.stroke();
-                ctx.restore();
-              }
-              
-              // Add subtle fiber texture spots (brush bristle effects)
-              if (avgPressure > 0.8 && Math.random() < 0.15) {
-                ctx.save();
-                ctx.fillStyle = stroke.color;
-                ctx.globalAlpha = stroke.opacity * 0.4;
-                const bristleSize = width * 0.2;
-                
-                // Multiple small dots to simulate brush fibers
-                for (let j = 0; j < 3; j++) {
-                  const offsetX = (Math.random() - 0.5) * width * 0.8;
-                  const offsetY = (Math.random() - 0.5) * width * 0.8;
-                  ctx.beginPath();
-                  ctx.arc(point1.x + offsetX, point1.y + offsetY, bristleSize, 0, Math.PI * 2);
-                  ctx.fill();
-                }
-                ctx.restore();
-              }
+              // Draw smooth line segment
+              ctx.lineTo(point.x, point.y);
             }
+            
+            ctx.stroke();
           }
         });
         
