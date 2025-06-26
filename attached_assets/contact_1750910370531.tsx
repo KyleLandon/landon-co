@@ -1,70 +1,48 @@
-import { motion } from "framer-motion";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { insertContactSchema } from "@shared/schema";
-import type { z } from "zod";
-import whiteLogo from "@assets/white_transparent_1750909506258.png";
+"use client"
 
-const formSchema = insertContactSchema.extend({
-  budget: insertContactSchema.shape.project.optional(),
-});
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { motion } from "framer-motion"
+import Image from "next/image"
 
-type ContactForm = z.infer<typeof formSchema>;
+import { Button } from "@/components/ui/button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
-const Contact = () => {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  email: z.string().email({
+    message: "Please enter a valid email address.",
+  }),
+  project: z.string().min(5, {
+    message: "Please describe your project briefly.",
+  }),
+  budget: z.string().min(1, {
+    message: "Please select a budget range.",
+  }),
+})
 
-  const form = useForm<ContactForm>({
+export default function Contact() {
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      message: "",
+      project: "",
       budget: "",
     },
-  });
+  })
 
-  const contactMutation = useMutation({
-    mutationFn: async (data: ContactForm) => {
-      const response = await apiRequest("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) throw new Error("Failed to send message");
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Message sent!",
-        description: "Thanks for reaching out. We'll get back to you soon.",
-      });
-      form.reset();
-      queryClient.invalidateQueries({ queryKey: ["/api/contacts"] });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const onSubmit = (data: ContactForm) => {
-    contactMutation.mutate(data);
-  };
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
+  }
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-zinc-900 py-20">
+    <section className="relative overflow-hidden bg-zinc-900 py-20">
       <div className="container relative z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -74,9 +52,11 @@ const Contact = () => {
           className="mx-auto max-w-2xl text-center mb-12"
         >
           <div className="mb-8">
-            <img
-              src={whiteLogo}
+            <Image
+              src="/logo-black.png"
               alt="Landon & Co. Logo"
+              width={300}
+              height={200}
               className="w-60 h-auto mx-auto opacity-80"
             />
           </div>
@@ -160,7 +140,7 @@ const Contact = () => {
               />
               <FormField
                 control={form.control}
-                name="message"
+                name="project"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-mono uppercase tracking-wider text-sm">Project Details</FormLabel>
@@ -177,10 +157,9 @@ const Contact = () => {
               />
               <Button
                 type="submit"
-                disabled={contactMutation.isPending}
                 className="w-full bg-white text-black hover:bg-gray-200 font-mono uppercase tracking-wider border-2 border-white rounded-none transition-all duration-300"
               >
-                {contactMutation.isPending ? "Sending..." : "Send Message"}
+                Send Message
               </Button>
             </form>
           </Form>
@@ -194,7 +173,5 @@ const Contact = () => {
         </svg>
       </div>
     </section>
-  );
-};
-
-export default Contact;
+  )
+}

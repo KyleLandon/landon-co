@@ -1,70 +1,70 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+"use client"
 
-const Portfolio = () => {
-  const [selectedCategory, setSelectedCategory] = useState("all");
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 
-  const categories = ["all", "websites", "branding", "mobile", "ecommerce"];
+export default function Portfolio() {
+  const [selectedCategory, setSelectedCategory] = useState("all")
+
+  const categories = ["all", "websites", "branding", "mobile", "ecommerce"]
 
   const works = [
     {
       id: 1,
-      title: "ARTISAN COFFEE CO.",
+      title: "DARK MODE DASHBOARD",
       category: "websites",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2024",
-      tech: "React, Shopify",
+      tech: "React, Next.js",
     },
     {
       id: 2,
-      title: "STERLING LEGAL GROUP",
+      title: "GRUNGE COFFEE BRAND",
       category: "branding",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2024",
       tech: "Brand Identity",
     },
     {
       id: 3,
-      title: "FITNESS STUDIO APP",
+      title: "STREETWEAR APP",
       category: "mobile",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2023",
       tech: "React Native",
     },
     {
       id: 4,
-      title: "BELLA VISTA RESTAURANT",
+      title: "VINYL RECORDS STORE",
       category: "ecommerce",
-      image: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2024",
-      tech: "Vue.js, Node.js",
+      tech: "Shopify, Custom CSS",
     },
     {
       id: 5,
-      title: "PREMIER PROPERTIES",
+      title: "BAND PORTFOLIO SITE",
       category: "websites",
-      image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2023",
-      tech: "Angular, Firebase",
+      tech: "WordPress, Custom Theme",
     },
     {
       id: 6,
-      title: "HEALTHFIRST CLINIC",
+      title: "DISTRESSED LOGO PACK",
       category: "branding",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop",
+      image: "/placeholder.svg?height=400&width=600",
       year: "2024",
-      tech: "WordPress, Custom PHP",
+      tech: "Illustrator, Photoshop",
     },
-  ];
+  ]
 
-  const filteredWorks = works.filter((work) => 
-    selectedCategory === "all" ? true : work.category === selectedCategory
-  );
+  const filteredWorks = works.filter((work) => (selectedCategory === "all" ? true : work.category === selectedCategory))
 
   return (
-    <section id="portfolio" className="bg-black py-20">
+    <section className="bg-black py-20">
       <div className="container mx-auto px-4">
         <motion.h2
           className="mb-12 text-center text-4xl font-bold tracking-wider sm:text-5xl font-mono uppercase"
@@ -84,7 +84,7 @@ const Portfolio = () => {
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
-              className="text-sm uppercase tracking-wider font-mono border-2 border-white/30 bg-transparent hover:bg-white hover:text-black transition-all duration-300 rounded-none"
+              className="text-sm uppercase tracking-wider font-mono border-2 border-white/30 bg-transparent hover:bg-white hover:text-black transition-all duration-300"
               style={{
                 filter: selectedCategory === category ? "contrast(1.2)" : "none",
               }}
@@ -108,9 +108,9 @@ const Portfolio = () => {
                   <CardContent className="p-0">
                     <div className="group relative">
                       <img
-                        src={work.image}
+                        src={work.image || "/placeholder.svg"}
                         alt={work.title}
-                        className="w-full h-64 object-cover transition-all duration-500 group-hover:scale-105 group-hover:contrast-125"
+                        className="w-full transition-all duration-500 group-hover:scale-105 group-hover:contrast-125"
                       />
                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <h3
@@ -133,7 +133,5 @@ const Portfolio = () => {
         </motion.div>
       </div>
     </section>
-  );
-};
-
-export default Portfolio;
+  )
+}

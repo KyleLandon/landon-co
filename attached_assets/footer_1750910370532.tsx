@@ -1,13 +1,15 @@
-import whiteLogo from "@assets/white_transparent_1750909506258.png";
+import Image from "next/image"
 
-const Footer = () => {
+export default function Footer() {
   return (
     <footer className="border-t-2 border-white/20 bg-black py-12">
       <div className="container mx-auto px-4">
         <div className="flex flex-col items-center justify-center gap-8">
-          <img
-            src={whiteLogo}
+          <Image
+            src="/logo-white.png"
             alt="Landon & Co. Logo"
+            width={200}
+            height={150}
             className="w-40 h-auto opacity-60"
           />
           <div className="flex flex-col items-center gap-4">
@@ -38,7 +40,5 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
-
-export default Footer;
+  )
+}

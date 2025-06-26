@@ -1,9 +1,8 @@
 import { useEffect } from "react";
 import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
+import Gallery from "@/components/gallery";
 import Portfolio from "@/components/portfolio";
-import Services from "@/components/services";
-import About from "@/components/about";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 
@@ -17,12 +16,12 @@ export default function Home() {
     document.head.appendChild(metaDescription);
 
     const ogTitle = document.createElement("meta");
-    ogTitle.property = "og:title";
+    ogTitle.setAttribute("property", "og:title");
     ogTitle.content = "Landon & Co. - Web Design & Development";
     document.head.appendChild(ogTitle);
 
     const ogDescription = document.createElement("meta");
-    ogDescription.property = "og:description";
+    ogDescription.setAttribute("property", "og:description");
     ogDescription.content = "Professional web design and development services for local businesses. Creating modern, responsive websites that drive results.";
     document.head.appendChild(ogDescription);
 
@@ -34,13 +33,12 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+    <div className="min-h-screen bg-black text-white">
       <Navigation />
       <main>
         <Hero />
+        <Gallery />
         <Portfolio />
-        <Services />
-        <About />
         <Contact />
       </main>
       <Footer />
