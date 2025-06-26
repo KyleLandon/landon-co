@@ -153,11 +153,12 @@ const Hero = () => {
       function animate() {
         if (!ctx) return;
         
-        // Clear canvas for each frame to see progressive drawing
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        strokes.forEach((stroke, strokeIndex) => {
-          if (!stroke.isActive) return;
+        try {
+          // Clear canvas for each frame to see progressive drawing
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          
+          strokes.forEach((stroke, strokeIndex) => {
+            if (!stroke.isActive) return;
           
           // Progress the stroke drawing
           if (stroke.currentPointIndex < stroke.points.length - 1) {
@@ -271,6 +272,10 @@ const Hero = () => {
               }
             }, 1500);
           }
+        }
+        
+        } catch (error) {
+          console.error('Animation error:', error);
         }
         
         requestAnimationFrame(animate);
