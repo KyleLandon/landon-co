@@ -19,43 +19,83 @@ const Hero = () => {
 
     resizeCanvas();
 
-    const particles: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedX: number;
-      speedY: number;
+    const brushStrokes: Array<{
+      points: Array<{ x: number; y: number }>;
+      progress: number;
       opacity: number;
+      width: number;
+      speed: number;
+      maxLength: number;
     }> = [];
-    const particleCount = 150;
+    const strokeCount = 8;
 
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 0.5,
-        speedX: Math.random() * 3 - 1.5,
-        speedY: Math.random() * 3 - 1.5,
-        opacity: Math.random() * 0.5 + 0.2,
+    for (let i = 0; i < strokeCount; i++) {
+      const startX = Math.random() * canvas.width;
+      const startY = Math.random() * canvas.height;
+      const maxLength = Math.random() * 150 + 100;
+      
+      brushStrokes.push({
+        points: [{ x: startX, y: startY }],
+        progress: 0,
+        opacity: Math.random() * 0.15 + 0.05,
+        width: Math.random() * 20 + 5,
+        speed: Math.random() * 0.3 + 0.1,
+        maxLength: maxLength,
       });
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      particles.forEach((particle) => {
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.y > canvas.height) particle.y = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-
-        ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
+      brushStrokes.forEach((stroke) => {
+        // Update stroke progress
+        stroke.progress += stroke.speed;
+        
+        // Add new point to the stroke path
+        if (stroke.points.length < stroke.maxLength && stroke.progress > stroke.points.length) {
+          const lastPoint = stroke.points[stroke.points.length - 1];
+          const angle = Math.random() * Math.PI * 2;
+          const distance = Math.random() * 30 + 10;
+          
+          const newPoint = {
+            x: lastPoint.x + Math.cos(angle) * distance,
+            y: lastPoint.y + Math.sin(angle) * distance
+          };
+          
+          // Keep stroke within canvas bounds
+          newPoint.x = Math.max(0, Math.min(canvas.width, newPoint.x));
+          newPoint.y = Math.max(0, Math.min(canvas.height, newPoint.y));
+          
+          stroke.points.push(newPoint);
+        }
+        
+        // Reset stroke when it reaches max length
+        if (stroke.points.length >= stroke.maxLength) {
+          stroke.points = [{ 
+            x: Math.random() * canvas.width, 
+            y: Math.random() * canvas.height 
+          }];
+          stroke.progress = 0;
+        }
+        
+        // Draw the brush stroke
+        if (stroke.points.length > 1) {
+          ctx.globalAlpha = stroke.opacity;
+          ctx.strokeStyle = 'white';
+          ctx.lineWidth = stroke.width;
+          ctx.lineCap = 'round';
+          ctx.lineJoin = 'round';
+          
+          ctx.beginPath();
+          ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+          
+          for (let i = 1; i < stroke.points.length; i++) {
+            ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+          }
+          
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+        }
       });
 
       requestAnimationFrame(animate);
