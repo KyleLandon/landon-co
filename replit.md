@@ -118,6 +118,13 @@ This is a modern portfolio website for "Landon & Co." - a web design and develop
 ```
 Changelog:
 - June 26, 2025. Initial setup
+- June 26, 2025. Major redesign: Transformed website to match grunge signature logo aesthetic
+  - Integrated grunge signature logo (white version) throughout navigation and footer
+  - Updated color scheme to deeper blacks and enhanced contrast
+  - Added grunge typography with bold fonts and text shadows
+  - Implemented grunge button styles with enhanced shadows and textures
+  - Updated hero section with prominent logo display and raw, authentic messaging
+  - Modified footer tagline to match grunge brand voice
 ```
 
 ## User Preferences

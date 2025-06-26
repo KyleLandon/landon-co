@@ -1,6 +1,7 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { useRef } from "react";
+import whiteLogo from "@assets/white_transparent_1750909506258.png";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -45,29 +46,46 @@ const Hero = () => {
         style={{ opacity }}
         className="container-custom relative z-10"
       >
-        <div className="text-center max-w-5xl mx-auto">
+        <div className="text-center max-w-6xl mx-auto">
+          {/* Grunge Logo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.2, ease: [0.23, 1, 0.32, 1] }}
+            className="mb-12"
+          >
+            <img
+              src={whiteLogo}
+              alt="Landon & Co."
+              className="w-64 md:w-80 lg:w-96 h-auto mx-auto object-contain"
+              style={{
+                filter: "drop-shadow(4px 4px 20px rgba(0, 0, 0, 0.8)) contrast(1.1)",
+              }}
+            />
+          </motion.div>
+
           {/* Main Heading */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.23, 1, 0.32, 1] }}
             className="mb-8"
           >
             <motion.h1 
-              className="heading-xl text-balance mb-6"
+              className="heading-lg text-balance mb-6"
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.2, ease: [0.23, 1, 0.32, 1] }}
+              transition={{ duration: 1.2, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
             >
-              <span className="block">Modern Web</span>
-              <span className="block text-gradient">Experiences</span>
+              <span className="block">Raw. Authentic.</span>
+              <span className="block text-[var(--text-secondary)]">Web Experiences</span>
               <motion.span 
-                className="block text-[var(--text-secondary)] font-light"
+                className="block text-[var(--text-muted)] text-2xl md:text-3xl lg:text-4xl mt-4"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
+                transition={{ duration: 1, delay: 1.0 }}
               >
-                for Local Businesses
+                for Bold Local Businesses
               </motion.span>
             </motion.h1>
           </motion.div>
@@ -77,9 +95,9 @@ const Hero = () => {
             className="body-lg text-[var(--text-secondary)] max-w-3xl mx-auto mb-12 text-balance"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.6, ease: [0.23, 1, 0.32, 1] }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.23, 1, 0.32, 1] }}
           >
-            Crafting digital experiences that convert visitors into customers and help your business thrive in the modern web landscape.
+            We don't follow trends. We set them. Gritty, uncompromising web design that cuts through the noise and delivers results your competitors can't match.
           </motion.p>
 
           {/* Action Buttons */}

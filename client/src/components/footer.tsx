@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeInUp } from "@/lib/animations";
+import whiteLogo from "@assets/white_transparent_1750909506258.png";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -25,21 +26,25 @@ const Footer = () => {
         >
           <motion.div
             variants={fadeInUp}
-            className="flex items-center justify-center space-x-2 mb-4 cursor-pointer"
+            className="mb-6 cursor-pointer"
             onClick={scrollToTop}
             whileHover={{ scale: 1.05 }}
           >
-            <div className="w-8 h-8 bg-[var(--text-primary)] rounded-full flex items-center justify-center">
-              <span className="text-[var(--dark-primary)] font-bold text-sm">L</span>
-            </div>
-            <span className="text-xl font-semibold">Landon & Co.</span>
+            <img
+              src={whiteLogo}
+              alt="Landon & Co."
+              className="h-16 w-auto mx-auto object-contain"
+              style={{
+                filter: "drop-shadow(2px 2px 8px rgba(0, 0, 0, 0.6))",
+              }}
+            />
           </motion.div>
           
           <motion.p
             variants={fadeInUp}
-            className="text-[var(--text-secondary)] mb-6"
+            className="text-[var(--text-secondary)] mb-6 font-semibold"
           >
-            Creating exceptional web experiences for local businesses.
+            Raw. Uncompromising. Digital experiences that demand attention.
           </motion.p>
           
           <motion.div
