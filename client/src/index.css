@@ -26,15 +26,16 @@
   --ring: hsl(0, 0%, 3.9%);
   --radius: 0.5rem;
 
-  /* Dark Monochrome portfolio colors */
-  --bg-primary: hsl(0, 0%, 4%);
-  --bg-secondary: hsl(0, 0%, 6%);
+  /* Grunge Dark portfolio colors */
+  --bg-primary: hsl(0, 0%, 2%);
+  --bg-secondary: hsl(0, 0%, 5%);
   --bg-tertiary: hsl(0, 0%, 8%);
-  --text-primary: hsl(0, 0%, 98%);
-  --text-secondary: hsl(0, 0%, 65%);
-  --text-muted: hsl(0, 0%, 45%);
-  --border-color: hsl(0, 0%, 15%);
+  --text-primary: hsl(0, 0%, 95%);
+  --text-secondary: hsl(0, 0%, 60%);
+  --text-muted: hsl(0, 0%, 40%);
+  --border-color: hsl(0, 0%, 12%);
   --accent-color: hsl(0, 0%, 98%);
+  --grunge-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
 }
 
 .dark {
@@ -211,21 +212,26 @@
   background: var(--text-muted);
 }
 
-/* Modern typography */
+/* Grunge typography */
 .heading-xl {
-  @apply text-6xl md:text-7xl lg:text-8xl font-light tracking-tight leading-none;
+  @apply text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-none;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+  filter: contrast(1.1);
 }
 
 .heading-lg {
-  @apply text-4xl md:text-5xl lg:text-6xl font-light tracking-tight;
+  @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
 }
 
 .heading-md {
-  @apply text-2xl md:text-3xl lg:text-4xl font-medium tracking-tight;
+  @apply text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .body-lg {
   @apply text-lg md:text-xl leading-relaxed;
+  text-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.5);
 }
 
 .body-md {
@@ -245,13 +251,30 @@
   animation: scaleIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-/* Modern dark button styles */
+/* Grunge button styles */
 .btn-primary {
-  @apply inline-flex items-center justify-center px-8 py-4 bg-white text-black font-medium rounded-xl transition-all duration-300 hover:bg-gray-200 hover:shadow-lg hover:shadow-white/10 active:scale-95;
+  @apply inline-flex items-center justify-center px-8 py-4 bg-white text-black font-bold rounded-sm transition-all duration-300 hover:bg-gray-100 active:scale-95;
+  box-shadow: var(--grunge-shadow);
+  text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3);
+  filter: contrast(1.05);
 }
 
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-8 py-4 bg-transparent border border-white/20 text-white font-medium rounded-xl transition-all duration-300 hover:bg-white/5 hover:border-white/40 active:scale-95;
+  @apply inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white/30 text-white font-bold rounded-sm transition-all duration-300 hover:bg-white/10 hover:border-white/50 active:scale-95;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+/* Grunge texture overlay */
+.grunge-texture::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 /* Responsive grid */

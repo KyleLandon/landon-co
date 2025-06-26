@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useScroll } from "@/hooks/use-scroll";
+import whiteLogo from "@assets/white_transparent_1750909506258.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -48,12 +49,11 @@ const Navigation = () => {
             className="cursor-pointer group"
             onClick={() => scrollToSection("home")}
           >
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <span className="text-black font-semibold text-sm">L</span>
-              </div>
-              <span className="text-xl font-medium tracking-tight text-[var(--text-primary)]">Landon & Co.</span>
-            </div>
+            <img
+              src={whiteLogo}
+              alt="Landon & Co."
+              className="h-10 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
+            />
           </motion.div>
 
           {/* Desktop Navigation */}
