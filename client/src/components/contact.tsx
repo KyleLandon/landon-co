@@ -97,37 +97,6 @@ const Contact = () => {
           <p className="text-gray-400 font-mono tracking-wide uppercase text-sm">
             Ready to create something raw and authentic? Let's build your digital presence with an edge.
           </p>
-          <div className="mt-12 space-y-6">
-            <div className="text-center">
-              <h3 className="text-white font-mono text-2xl mb-8 uppercase tracking-wider">
-                CONTACT INFO
-              </h3>
-            </div>
-            <div className="space-y-8">
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Email:</div>
-                <a 
-                  href="mailto:info@landonco.co" 
-                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
-                >
-                  info@landonco.co
-                </a>
-              </div>
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Phone:</div>
-                <a 
-                  href="tel:+19403892685" 
-                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
-                >
-                  (940) 389-2685
-                </a>
-              </div>
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Discord:</div>
-                <span className="text-white font-mono text-xl block">kylelandon</span>
-              </div>
-            </div>
-          </div>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -260,6 +229,47 @@ const Contact = () => {
               </Button>
             </form>
           </Form>
+        </motion.div>
+        
+        {/* Contact Info Section - Shows after form */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: true }}
+          className="mt-16 mx-auto max-w-md"
+        >
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-white font-mono text-2xl mb-8 uppercase tracking-wider">
+                CONTACT INFO
+              </h3>
+            </div>
+            <div className="space-y-8">
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Email:</div>
+                <a 
+                  href="mailto:info@landonco.co" 
+                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
+                >
+                  info@landonco.co
+                </a>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Phone:</div>
+                <a 
+                  href="tel:+19403892685" 
+                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
+                >
+                  (940) 389-2685
+                </a>
+              </div>
+              <div className="text-center">
+                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Discord:</div>
+                <span className="text-white font-mono text-xl block">kylelandon</span>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
       <div className="absolute inset-0 z-0 opacity-10">

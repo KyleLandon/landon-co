@@ -149,6 +149,13 @@ Changelog:
   - Added "View All Projects" button in gallery section linking to dedicated projects page
   - Fixed dropdown text visibility and styling consistency throughout the site
   - Added Will Work Construction (willworkconstruction.com) as featured project in both gallery and projects page
+- June 26, 2025. Navigation and contact form optimization
+  - Removed "Services" from navigation and changed "Work" to "Projects" 
+  - Updated navigation to scroll to gallery section for better user flow
+  - Redesigned contact section with modern, clean approach removing box styling
+  - Moved contact info below form to prioritize form completion
+  - Fixed contact form functionality - now properly stores submissions
+  - Updated error handling to provide better user feedback
 ```
 
 ## User Preferences

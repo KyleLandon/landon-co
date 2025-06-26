@@ -31,7 +31,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json({ 
         success: true, 
-        message: "Thank you for your message! I'll get back to you within 24 hours.",
+        message: emailSent 
+          ? "Thank you for your message! I'll get back to you within 24 hours."
+          : "Message received! I'll get back to you within 24 hours.",
         contact: {
           id: contact.id,
           name: contact.name,

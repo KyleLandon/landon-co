@@ -40,10 +40,11 @@ Submitted via landonco.co contact form
 
     const msg = {
       to: 'info@landonco.co',
-      from: 'noreply@landonco.co', // You may need to verify this domain in SendGrid
+      from: 'kylelandon@gmail.com', // Using verified sender email
       subject: `New Contact Form - ${formData.name}`,
       text: emailContent,
       html: emailContent.replace(/\n/g, '<br>').replace(/•/g, '&bull;'),
+      replyTo: formData.email, // Allow direct reply to the form submitter
     };
 
     await sgMail.send(msg);
