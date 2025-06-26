@@ -20,27 +20,31 @@ const Hero = () => {
     resizeCanvas();
 
     const brushStrokes: Array<{
-      points: Array<{ x: number; y: number }>;
+      points: Array<{ x: number; y: number; pressure: number }>;
       progress: number;
       opacity: number;
-      width: number;
+      baseWidth: number;
       speed: number;
       maxLength: number;
+      direction: number;
+      directionChange: number;
     }> = [];
-    const strokeCount = 8;
+    const strokeCount = 6;
 
     for (let i = 0; i < strokeCount; i++) {
       const startX = Math.random() * canvas.width;
       const startY = Math.random() * canvas.height;
-      const maxLength = Math.random() * 150 + 100;
+      const maxLength = Math.random() * 80 + 40;
       
       brushStrokes.push({
-        points: [{ x: startX, y: startY }],
+        points: [{ x: startX, y: startY, pressure: Math.random() * 0.5 + 0.5 }],
         progress: 0,
-        opacity: Math.random() * 0.15 + 0.05,
-        width: Math.random() * 20 + 5,
-        speed: Math.random() * 0.3 + 0.1,
+        opacity: Math.random() * 0.2 + 0.08,
+        baseWidth: Math.random() * 15 + 8,
+        speed: Math.random() * 0.4 + 0.2,
         maxLength: maxLength,
+        direction: Math.random() * Math.PI * 2,
+        directionChange: 0,
       });
     }
 
@@ -48,23 +52,27 @@ const Hero = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       brushStrokes.forEach((stroke) => {
-        // Update stroke progress
         stroke.progress += stroke.speed;
         
         // Add new point to the stroke path
-        if (stroke.points.length < stroke.maxLength && stroke.progress > stroke.points.length) {
+        if (stroke.points.length < stroke.maxLength && stroke.progress > stroke.points.length * 2) {
           const lastPoint = stroke.points[stroke.points.length - 1];
-          const angle = Math.random() * Math.PI * 2;
-          const distance = Math.random() * 30 + 10;
           
+          // Update direction with slight random changes for organic movement
+          stroke.directionChange += (Math.random() - 0.5) * 0.3;
+          stroke.direction += stroke.directionChange;
+          stroke.directionChange *= 0.8; // Damping
+          
+          const distance = Math.random() * 25 + 15;
           const newPoint = {
-            x: lastPoint.x + Math.cos(angle) * distance,
-            y: lastPoint.y + Math.sin(angle) * distance
+            x: lastPoint.x + Math.cos(stroke.direction) * distance,
+            y: lastPoint.y + Math.sin(stroke.direction) * distance,
+            pressure: Math.random() * 0.6 + 0.3 // Varying pressure for brush effect
           };
           
           // Keep stroke within canvas bounds
-          newPoint.x = Math.max(0, Math.min(canvas.width, newPoint.x));
-          newPoint.y = Math.max(0, Math.min(canvas.height, newPoint.y));
+          newPoint.x = Math.max(stroke.baseWidth, Math.min(canvas.width - stroke.baseWidth, newPoint.x));
+          newPoint.y = Math.max(stroke.baseWidth, Math.min(canvas.height - stroke.baseWidth, newPoint.y));
           
           stroke.points.push(newPoint);
         }
@@ -73,27 +81,53 @@ const Hero = () => {
         if (stroke.points.length >= stroke.maxLength) {
           stroke.points = [{ 
             x: Math.random() * canvas.width, 
-            y: Math.random() * canvas.height 
+            y: Math.random() * canvas.height,
+            pressure: Math.random() * 0.5 + 0.5
           }];
           stroke.progress = 0;
+          stroke.direction = Math.random() * Math.PI * 2;
+          stroke.directionChange = 0;
         }
         
-        // Draw the brush stroke
+        // Draw the brush stroke with varying width
         if (stroke.points.length > 1) {
           ctx.globalAlpha = stroke.opacity;
           ctx.strokeStyle = 'white';
-          ctx.lineWidth = stroke.width;
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
           
-          ctx.beginPath();
-          ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-          
-          for (let i = 1; i < stroke.points.length; i++) {
-            ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+          // Draw stroke segments with varying thickness
+          for (let i = 0; i < stroke.points.length - 1; i++) {
+            const point1 = stroke.points[i];
+            const point2 = stroke.points[i + 1];
+            
+            // Calculate brush width based on pressure and position
+            const pressureEffect = (point1.pressure + point2.pressure) / 2;
+            const positionEffect = 1 - (i / stroke.points.length) * 0.3; // Taper towards end
+            const currentWidth = stroke.baseWidth * pressureEffect * positionEffect;
+            
+            ctx.lineWidth = currentWidth;
+            
+            ctx.beginPath();
+            ctx.moveTo(point1.x, point1.y);
+            ctx.lineTo(point2.x, point2.y);
+            ctx.stroke();
+            
+            // Add some texture with smaller random marks
+            if (Math.random() < 0.3) {
+              const offsetX = (Math.random() - 0.5) * currentWidth * 0.5;
+              const offsetY = (Math.random() - 0.5) * currentWidth * 0.5;
+              
+              ctx.lineWidth = currentWidth * 0.3;
+              ctx.globalAlpha = stroke.opacity * 0.4;
+              ctx.beginPath();
+              ctx.moveTo(point1.x + offsetX, point1.y + offsetY);
+              ctx.lineTo(point2.x + offsetX, point2.y + offsetY);
+              ctx.stroke();
+              ctx.globalAlpha = stroke.opacity;
+            }
           }
           
-          ctx.stroke();
           ctx.globalAlpha = 1;
         }
       });
