@@ -81,7 +81,6 @@ const Hero = () => {
             src={whiteLogo}
             alt="Landon & Co."
             className="w-80 h-auto sm:w-96 lg:w-[500px] drop-shadow-2xl"
-            priority
           />
         </motion.div>
         <motion.p
