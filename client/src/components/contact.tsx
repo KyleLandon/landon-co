@@ -34,13 +34,7 @@ const Contact = () => {
 
   const contactMutation = useMutation({
     mutationFn: async (data: ContactForm) => {
-      const response = await apiRequest("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) throw new Error("Failed to send message");
-      return response.json();
+      return await apiRequest("/api/contact", "POST", data);
     },
     onSuccess: () => {
       toast({
@@ -145,6 +139,7 @@ const Contact = () => {
                     <FormControl>
                       <select
                         {...field}
+                        value={field.value || ""}
                         className="w-full bg-black border-2 border-white/30 rounded-none font-mono p-2 text-white"
                       >
                         <option value="">Select budget range</option>
