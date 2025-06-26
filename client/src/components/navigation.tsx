@@ -34,7 +34,7 @@ const Navigation = () => {
       transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-xl border-b border-gray-100"
+          ? "bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--border-color)]"
           : "bg-transparent"
       }`}
     >
@@ -49,10 +49,10 @@ const Navigation = () => {
             onClick={() => scrollToSection("home")}
           >
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-black rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                <span className="text-white font-semibold text-sm">L</span>
+              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <span className="text-black font-semibold text-sm">L</span>
               </div>
-              <span className="text-xl font-medium tracking-tight">Landon & Co.</span>
+              <span className="text-xl font-medium tracking-tight text-[var(--text-primary)]">Landon & Co.</span>
             </div>
           </motion.div>
 
@@ -65,10 +65,10 @@ const Navigation = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + index * 0.1, duration: 0.6 }}
                 onClick={() => scrollToSection(item.id)}
-                className="relative text-gray-700 hover:text-black transition-colors duration-300 font-medium group"
+                className="relative text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors duration-300 font-medium group"
               >
                 {item.label}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-black transition-all duration-300 group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
               </motion.button>
             ))}
             
