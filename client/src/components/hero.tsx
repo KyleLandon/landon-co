@@ -93,7 +93,7 @@ const Hero = () => {
             filter: "contrast(1.2)",
           }}
         >
-          WEB DESIGN • BRANDING • DIGITAL EXPERIENCES
+          WEB DESIGN • BRANDING • DIGITAL EXPERIENCES • BUSINESS OPTIMIZATION • AUTOMATION
         </motion.p>
         <motion.div
           className="mt-8 text-sm text-gray-500 font-mono uppercase tracking-[0.2em]"
