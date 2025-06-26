@@ -12,6 +12,8 @@ export const contacts = pgTable("contacts", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull(),
+  phone: text("phone").notNull(),
+  preferredContact: text("preferred_contact").notNull(),
   project: text("project"),
   message: text("message").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -25,6 +27,8 @@ export const insertUserSchema = createInsertSchema(users).pick({
 export const insertContactSchema = createInsertSchema(contacts).pick({
   name: true,
   email: true,
+  phone: true,
+  preferredContact: true,
   project: true,
   message: true,
 });
