@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
 import Gallery from "@/components/gallery";
-import Portfolio from "@/components/portfolio";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 
@@ -38,7 +37,6 @@ export default function Home() {
       <main>
         <Hero />
         <Gallery />
-        <Portfolio />
         <Contact />
       </main>
       <Footer />

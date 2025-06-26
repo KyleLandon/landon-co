@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { useInView } from "framer-motion";
+import { fadeInUp, staggerContainer } from "@/lib/animations";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
 
 const Gallery = () => {
   const ref = useRef(null);
@@ -79,6 +82,21 @@ const Gallery = () => {
             </motion.div>
           ))}
         </div>
+        
+        {/* View All Projects Button */}
+        <motion.div 
+          variants={fadeInUp}
+          className="text-center mt-12"
+        >
+          <Link href="/projects">
+            <Button 
+              variant="outline" 
+              className="bg-transparent border-2 border-white/30 text-white hover:bg-white/10 font-mono px-8 py-3 text-sm tracking-wider uppercase transition-all duration-300"
+            >
+              VIEW ALL PROJECTS
+            </Button>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
