@@ -30,6 +30,7 @@ const Hero = () => {
       opacity: number;
       isActive: boolean;
       color: string;
+      inkDensity: number;
     }> = [];
 
     function createStroke() {
@@ -75,48 +76,59 @@ const Hero = () => {
       }
       
       const direction = Math.random() * Math.PI * 2;
-      const strokeLength = 60 + Math.random() * 80;
+      const strokeLength = 40 + Math.random() * 60; // Shorter, more controlled strokes
       
-      // Generate smoother path points
+      // Generate Japanese brush-style path points
       const points: Array<{ x: number; y: number; pressure: number }> = [];
       let currentX = startX;
       let currentY = startY;
       let currentDirection = direction;
+      let velocity = 0.5 + Math.random() * 1.5; // Variable brush speed
       
       for (let i = 0; i < strokeLength; i++) {
-        // Much less direction variation for smoother strokes
-        currentDirection += (Math.random() - 0.5) * 0.05;
+        // Slight directional variation like natural brush movement
+        currentDirection += (Math.random() - 0.5) * 0.08;
         
-        // Consistent step size for smoother movement
-        const stepSize = 2;
+        // Variable step size simulating brush pressure and speed
+        const stepSize = velocity * (1.5 + Math.random() * 0.5);
         currentX += Math.cos(currentDirection) * stepSize;
         currentY += Math.sin(currentDirection) * stepSize;
+        
+        // Slow down brush towards the end (like lifting brush)
+        velocity *= 0.995;
         
         // Check if we're getting too close to center - if so, curve away
         const distToCenter = Math.sqrt((currentX - centerX) ** 2 + (currentY - centerY) ** 2);
         if (distToCenter < exclusionRadius * 1.2) {
           // Curve away from center
           const angleToCenter = Math.atan2(centerY - currentY, centerX - currentX);
-          currentDirection = angleToCenter + Math.PI + (Math.random() - 0.5) * 0.5;
+          currentDirection = angleToCenter + Math.PI + (Math.random() - 0.5) * 0.3;
         }
         
-        // Smooth pressure variation
+        // Japanese brush pressure curve - starts thick, tapers to fine point
         const progress = i / strokeLength;
         let pressure = 1.0;
         
-        // Smoother pressure curve
-        if (progress < 0.15) {
-          pressure = progress / 0.15;
-        } else if (progress > 0.85) {
-          pressure = (1 - progress) / 0.15;
+        // Japanese brush characteristics: bold start, gradual taper to fine tip
+        if (progress < 0.05) {
+          // Initial brush contact - builds up quickly
+          pressure = Math.pow(progress / 0.05, 0.3) * 1.2;
+        } else if (progress < 0.3) {
+          // Main stroke body - full pressure with slight variation
+          pressure = 1.0 + Math.sin(progress * Math.PI * 3) * 0.15;
         } else {
-          pressure = 0.9 + Math.sin(progress * Math.PI) * 0.1;
+          // Gradual taper to fine point (characteristic of Japanese brushes)
+          const taperProgress = (progress - 0.3) / 0.7;
+          pressure = 1.0 * Math.pow(1 - taperProgress, 1.8); // Sharp taper to fine point
         }
+        
+        // Add subtle pressure variations for organic feel
+        pressure *= (0.9 + Math.random() * 0.2);
         
         points.push({
           x: Math.max(0, Math.min(canvas.width, currentX)),
           y: Math.max(0, Math.min(canvas.height, currentY)),
-          pressure: pressure
+          pressure: Math.max(0.05, Math.min(1.2, pressure)) // Clamp pressure
         });
       }
       
@@ -124,11 +136,12 @@ const Hero = () => {
         points: points,
         currentPointIndex: 0,
         direction: direction,
-        speed: 3,
-        baseWidth: 6 + Math.random() * 8,
-        opacity: 0.4 + Math.random() * 0.3,
+        speed: 2.5,
+        baseWidth: 12 + Math.random() * 16, // Wider for Japanese brush effect
+        opacity: 0.6 + Math.random() * 0.3,
         isActive: true,
-        color: `rgba(255, 255, 255, ${0.7 + Math.random() * 0.3})`
+        color: `rgba(255, 255, 255, ${0.8 + Math.random() * 0.2})`,
+        inkDensity: 0.7 + Math.random() * 0.3 // For ink bleeding effects
       };
     }
 
@@ -166,36 +179,55 @@ const Hero = () => {
             ctx.lineJoin = 'round';
             ctx.globalAlpha = stroke.opacity;
             
-            // Draw stroke as one smooth path
-            ctx.beginPath();
-            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
-            
-            // Use quadratic curves for smooth strokes
-            for (let i = 1; i < pointsToDraw; i++) {
-              const point = stroke.points[i];
-              const prevPoint = stroke.points[i - 1];
+            // Draw Japanese brush stroke with pressure-sensitive width
+            for (let i = 0; i < pointsToDraw - 1; i++) {
+              const point1 = stroke.points[i];
+              const point2 = stroke.points[i + 1];
               
-              if (!point || !prevPoint) continue;
+              if (!point1 || !point2) continue;
               
-              // Calculate smooth width based on pressure without random variations
-              const pressure = point.pressure;
-              const width = stroke.baseWidth * pressure;
+              // Calculate width with Japanese brush taper characteristics
+              const avgPressure = (point1.pressure + point2.pressure) / 2;
+              const width = stroke.baseWidth * avgPressure;
+              
+              // Main brush stroke
               ctx.lineWidth = width;
+              ctx.beginPath();
+              ctx.moveTo(point1.x, point1.y);
+              ctx.lineTo(point2.x, point2.y);
+              ctx.stroke();
               
-              // Use quadratic curve for smoother lines
-              if (i < pointsToDraw - 1) {
-                const nextPoint = stroke.points[i + 1];
-                if (nextPoint) {
-                  const midX = (point.x + nextPoint.x) / 2;
-                  const midY = (point.y + nextPoint.y) / 2;
-                  ctx.quadraticCurveTo(point.x, point.y, midX, midY);
+              // Add ink bleeding effect for Japanese brush authenticity
+              if (avgPressure > 0.6 && Math.random() < 0.3) {
+                ctx.save();
+                const bleedIntensity = stroke.inkDensity * avgPressure;
+                ctx.globalAlpha = stroke.opacity * 0.2 * bleedIntensity;
+                ctx.lineWidth = width * 1.5;
+                ctx.beginPath();
+                ctx.moveTo(point1.x, point1.y);
+                ctx.lineTo(point2.x, point2.y);
+                ctx.stroke();
+                ctx.restore();
+              }
+              
+              // Add subtle fiber texture spots (brush bristle effects)
+              if (avgPressure > 0.8 && Math.random() < 0.15) {
+                ctx.save();
+                ctx.fillStyle = stroke.color;
+                ctx.globalAlpha = stroke.opacity * 0.4;
+                const bristleSize = width * 0.2;
+                
+                // Multiple small dots to simulate brush fibers
+                for (let j = 0; j < 3; j++) {
+                  const offsetX = (Math.random() - 0.5) * width * 0.8;
+                  const offsetY = (Math.random() - 0.5) * width * 0.8;
+                  ctx.beginPath();
+                  ctx.arc(point1.x + offsetX, point1.y + offsetY, bristleSize, 0, Math.PI * 2);
+                  ctx.fill();
                 }
-              } else {
-                ctx.lineTo(point.x, point.y);
+                ctx.restore();
               }
             }
-            
-            ctx.stroke();
           }
         });
         
