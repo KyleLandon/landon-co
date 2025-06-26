@@ -303,57 +303,105 @@ const Hero = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.div
-            className="relative overflow-hidden"
-            style={{
-              maskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
-              WebkitMaskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)"
-            }}
-            animate={{
-              maskImage: [
-                "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
-                "linear-gradient(90deg, white 0%, white 15%, transparent 15%)",
-                "linear-gradient(90deg, white 0%, white 30%, transparent 30%)",
-                "linear-gradient(90deg, white 0%, white 45%, transparent 45%)",
-                "linear-gradient(90deg, white 0%, white 60%, transparent 60%)",
-                "linear-gradient(90deg, white 0%, white 75%, transparent 75%)",
-                "linear-gradient(90deg, white 0%, white 90%, transparent 90%)",
-                "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
-              ],
-              WebkitMaskImage: [
-                "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
-                "linear-gradient(90deg, white 0%, white 15%, transparent 15%)",
-                "linear-gradient(90deg, white 0%, white 30%, transparent 30%)",
-                "linear-gradient(90deg, white 0%, white 45%, transparent 45%)",
-                "linear-gradient(90deg, white 0%, white 60%, transparent 60%)",
-                "linear-gradient(90deg, white 0%, white 75%, transparent 75%)",
-                "linear-gradient(90deg, white 0%, white 90%, transparent 90%)",
-                "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
-              ]
-            }}
-            transition={{
-              duration: 3,
-              ease: "easeInOut",
-              delay: 0.5,
-              times: [0, 0.15, 0.3, 0.45, 0.6, 0.75, 0.9, 1]
-            }}
-          >
-            <img
-              src={whiteLogo}
-              alt="Landon & Co."
-              className="w-80 h-auto sm:w-96 lg:w-[500px] drop-shadow-2xl"
-            />
-          </motion.div>
+          {/* Two-part painting animation */}
+          <div className="relative">
+            {/* LANDON - Top part */}
+            <motion.div
+              className="relative overflow-hidden"
+              style={{
+                maskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                WebkitMaskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 65%, 0% 65%)" // Show only top 65% (LANDON)
+              }}
+              animate={{
+                maskImage: [
+                  "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                  "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
+                ],
+                WebkitMaskImage: [
+                  "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                  "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
+                ]
+              }}
+              transition={{
+                duration: 2,
+                ease: "easeInOut",
+                delay: 0.5
+              }}
+            >
+              <img
+                src={whiteLogo}
+                alt="Landon & Co."
+                className="w-80 h-auto sm:w-96 lg:w-[500px] drop-shadow-2xl"
+              />
+            </motion.div>
+
+            {/* C&O. - Bottom part */}
+            <motion.div
+              className="absolute inset-0 overflow-hidden"
+              style={{
+                maskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                WebkitMaskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                clipPath: "polygon(0% 65%, 100% 65%, 100% 100%, 0% 100%)" // Show only bottom 35% (C&O.)
+              }}
+              animate={{
+                maskImage: [
+                  "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                  "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
+                ],
+                WebkitMaskImage: [
+                  "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
+                  "linear-gradient(90deg, white 0%, white 100%, transparent 100%)"
+                ]
+              }}
+              transition={{
+                duration: 1.5,
+                ease: "easeInOut",
+                delay: 2.8 // Start after LANDON finishes
+              }}
+            >
+              <img
+                src={whiteLogo}
+                alt="Landon & Co."
+                className="w-80 h-auto sm:w-96 lg:w-[500px] drop-shadow-2xl"
+              />
+            </motion.div>
+          </div>
           
-          {/* Paint brush effect overlay */}
+          {/* Paint brush effect for LANDON */}
           <motion.div
             className="absolute inset-0 pointer-events-none"
+            style={{
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 65%, 0% 65%)"
+            }}
             initial={{ x: "-100%" }}
             animate={{ x: "100%" }}
             transition={{
-              duration: 3,
+              duration: 2,
               ease: "easeInOut",
               delay: 0.5
+            }}
+          >
+            <div
+              className="h-full w-32 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12"
+              style={{
+                filter: "blur(8px)"
+              }}
+            />
+          </motion.div>
+
+          {/* Paint brush effect for C&O. */}
+          <motion.div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              clipPath: "polygon(0% 65%, 100% 65%, 100% 100%, 0% 100%)"
+            }}
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            transition={{
+              duration: 1.5,
+              ease: "easeInOut",
+              delay: 2.8
             }}
           >
             <div
