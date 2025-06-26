@@ -4,6 +4,7 @@ import { useInView } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import willWorkImage from "@assets/image_1750913419157.png";
 
 const Gallery = () => {
   const ref = useRef(null);
@@ -11,7 +12,7 @@ const Gallery = () => {
 
   const projects = [
     {
-      src: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&h=600&fit=crop",
+      src: willWorkImage,
       alt: "Will Work Construction website",
       title: "WILL WORK CONSTRUCTION",
       category: "CONSTRUCTION",

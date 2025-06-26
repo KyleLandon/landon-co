@@ -4,13 +4,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import willWorkImage from "@assets/image_1750913419157.png";
 
 const projects = [
   {
     id: 1,
     title: "Will Work Construction",
     description: "Professional construction company website with modern design and service showcases",
-    image: "/api/placeholder/600/400",
+    image: willWorkImage,
     tags: ["React", "TypeScript", "Responsive Design", "Business Website"],
     demoUrl: "https://willworkconstruction.com/home",
     githubUrl: "#",
