@@ -311,7 +311,7 @@ const Hero = () => {
               style={{
                 maskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
                 WebkitMaskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
-                clipPath: "polygon(0% 0%, 100% 0%, 100% 75%, 85% 70%, 70% 65%, 50% 62%, 30% 65%, 15% 70%, 0% 75%)" // Curved arc under LANDON
+                clipPath: "polygon(0% 0%, 100% 0%, 100% 60%, 85% 65%, 70% 70%, 50% 73%, 30% 70%, 15% 65%, 0% 60%)" // Curved arc under LANDON
               }}
               animate={{
                 maskImage: [
@@ -342,7 +342,7 @@ const Hero = () => {
               style={{
                 maskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
                 WebkitMaskImage: "linear-gradient(90deg, white 0%, white 0%, transparent 0%)",
-                clipPath: "polygon(0% 75%, 15% 70%, 30% 65%, 50% 62%, 70% 65%, 85% 70%, 100% 75%, 100% 100%, 0% 100%)" // Show bottom part following curve
+                clipPath: "polygon(0% 60%, 15% 65%, 30% 70%, 50% 73%, 70% 70%, 85% 65%, 100% 60%, 100% 100%, 0% 100%)" // Show bottom part following curve
               }}
               animate={{
                 maskImage: [
@@ -372,7 +372,7 @@ const Hero = () => {
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              clipPath: "polygon(0% 0%, 100% 0%, 100% 75%, 85% 70%, 70% 65%, 50% 62%, 30% 65%, 15% 70%, 0% 75%)"
+              clipPath: "polygon(0% 0%, 100% 0%, 100% 60%, 85% 65%, 70% 70%, 50% 73%, 30% 70%, 15% 65%, 0% 60%)"
             }}
             initial={{ x: "-100%" }}
             animate={{ x: "100%" }}
@@ -394,7 +394,7 @@ const Hero = () => {
           <motion.div
             className="absolute inset-0 pointer-events-none"
             style={{
-              clipPath: "polygon(0% 75%, 15% 70%, 30% 65%, 50% 62%, 70% 65%, 85% 70%, 100% 75%, 100% 100%, 0% 100%)"
+              clipPath: "polygon(0% 60%, 15% 65%, 30% 70%, 50% 73%, 70% 70%, 85% 65%, 100% 60%, 100% 100%, 0% 100%)"
             }}
             initial={{ x: "-100%" }}
             animate={{ x: "100%" }}
