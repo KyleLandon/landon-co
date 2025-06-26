@@ -33,37 +33,84 @@ const Hero = () => {
     }> = [];
 
     function createStroke() {
-      const startX = Math.random() * canvas.width;
-      const startY = Math.random() * canvas.height;
-      const direction = Math.random() * Math.PI * 2;
-      const strokeLength = 80 + Math.random() * 120;
+      // Define center exclusion zone (where logo and text are)
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const exclusionRadius = Math.min(canvas.width, canvas.height) * 0.35;
       
-      // Generate organic path points similar to your grunge logo style
+      let startX, startY;
+      let attempts = 0;
+      
+      // Find a starting point outside the center exclusion zone
+      do {
+        startX = Math.random() * canvas.width;
+        startY = Math.random() * canvas.height;
+        attempts++;
+      } while (
+        Math.sqrt((startX - centerX) ** 2 + (startY - centerY) ** 2) < exclusionRadius &&
+        attempts < 50
+      );
+      
+      // If we can't find a good spot, place it at the edges
+      if (attempts >= 50) {
+        const edge = Math.floor(Math.random() * 4);
+        switch (edge) {
+          case 0: // top
+            startX = Math.random() * canvas.width;
+            startY = Math.random() * (canvas.height * 0.15);
+            break;
+          case 1: // bottom
+            startX = Math.random() * canvas.width;
+            startY = canvas.height - Math.random() * (canvas.height * 0.15);
+            break;
+          case 2: // left
+            startX = Math.random() * (canvas.width * 0.15);
+            startY = Math.random() * canvas.height;
+            break;
+          case 3: // right
+            startX = canvas.width - Math.random() * (canvas.width * 0.15);
+            startY = Math.random() * canvas.height;
+            break;
+        }
+      }
+      
+      const direction = Math.random() * Math.PI * 2;
+      const strokeLength = 60 + Math.random() * 80;
+      
+      // Generate smoother path points
       const points: Array<{ x: number; y: number; pressure: number }> = [];
       let currentX = startX;
       let currentY = startY;
       let currentDirection = direction;
       
       for (let i = 0; i < strokeLength; i++) {
-        // Add organic variation to direction (like hand-drawn strokes)
-        currentDirection += (Math.random() - 0.5) * 0.2;
+        // Much less direction variation for smoother strokes
+        currentDirection += (Math.random() - 0.5) * 0.05;
         
-        // Variable step size for natural movement
-        const stepSize = 1.5 + Math.random() * 2;
+        // Consistent step size for smoother movement
+        const stepSize = 2;
         currentX += Math.cos(currentDirection) * stepSize;
         currentY += Math.sin(currentDirection) * stepSize;
         
-        // Varying pressure throughout the stroke (thick to thin like your logo)
+        // Check if we're getting too close to center - if so, curve away
+        const distToCenter = Math.sqrt((currentX - centerX) ** 2 + (currentY - centerY) ** 2);
+        if (distToCenter < exclusionRadius * 1.2) {
+          // Curve away from center
+          const angleToCenter = Math.atan2(centerY - currentY, centerX - currentX);
+          currentDirection = angleToCenter + Math.PI + (Math.random() - 0.5) * 0.5;
+        }
+        
+        // Smooth pressure variation
         const progress = i / strokeLength;
         let pressure = 1.0;
         
-        // Start thin, get thick in middle, end thin (like natural brush strokes)
-        if (progress < 0.1) {
-          pressure = progress * 10;
-        } else if (progress > 0.8) {
-          pressure = (1 - progress) * 5;
+        // Smoother pressure curve
+        if (progress < 0.15) {
+          pressure = progress / 0.15;
+        } else if (progress > 0.85) {
+          pressure = (1 - progress) / 0.15;
         } else {
-          pressure = 0.8 + Math.random() * 0.4;
+          pressure = 0.9 + Math.sin(progress * Math.PI) * 0.1;
         }
         
         points.push({
@@ -77,11 +124,11 @@ const Hero = () => {
         points: points,
         currentPointIndex: 0,
         direction: direction,
-        speed: 1 + Math.random() * 2,
-        baseWidth: 8 + Math.random() * 12,
-        opacity: 0.3 + Math.random() * 0.4,
+        speed: 1.5,
+        baseWidth: 6 + Math.random() * 8,
+        opacity: 0.4 + Math.random() * 0.3,
         isActive: true,
-        color: `rgba(255, 255, 255, ${0.6 + Math.random() * 0.4})`
+        color: `rgba(255, 255, 255, ${0.7 + Math.random() * 0.3})`
       };
     }
 
@@ -119,39 +166,36 @@ const Hero = () => {
             ctx.lineJoin = 'round';
             ctx.globalAlpha = stroke.opacity;
             
-            // Draw each segment with varying width based on pressure
-            for (let i = 0; i < pointsToDraw - 1; i++) {
-              const point1 = stroke.points[i];
-              const point2 = stroke.points[i + 1];
+            // Draw stroke as one smooth path
+            ctx.beginPath();
+            ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+            
+            // Use quadratic curves for smooth strokes
+            for (let i = 1; i < pointsToDraw; i++) {
+              const point = stroke.points[i];
+              const prevPoint = stroke.points[i - 1];
               
-              if (!point1 || !point2) continue;
+              if (!point || !prevPoint) continue;
               
-              // Calculate width based on pressure and add roughness like your logo
-              const avgPressure = (point1.pressure + point2.pressure) / 2;
-              const width = stroke.baseWidth * avgPressure;
+              // Calculate smooth width based on pressure without random variations
+              const pressure = point.pressure;
+              const width = stroke.baseWidth * pressure;
+              ctx.lineWidth = width;
               
-              // Add some roughness/texture variation
-              const roughness = 1 + (Math.random() - 0.5) * 0.3;
-              ctx.lineWidth = width * roughness;
-              
-              ctx.beginPath();
-              ctx.moveTo(point1.x, point1.y);
-              ctx.lineTo(point2.x, point2.y);
-              ctx.stroke();
-              
-              // Add some organic texture spots occasionally (like ink bleeding)
-              if (Math.random() < 0.1 && avgPressure > 0.7) {
-                ctx.fillStyle = stroke.color;
-                ctx.globalAlpha = stroke.opacity * 0.3;
-                const spotSize = width * 0.3;
-                ctx.beginPath();
-                ctx.arc(point1.x + (Math.random() - 0.5) * 2, 
-                       point1.y + (Math.random() - 0.5) * 2, 
-                       spotSize, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = stroke.opacity;
+              // Use quadratic curve for smoother lines
+              if (i < pointsToDraw - 1) {
+                const nextPoint = stroke.points[i + 1];
+                if (nextPoint) {
+                  const midX = (point.x + nextPoint.x) / 2;
+                  const midY = (point.y + nextPoint.y) / 2;
+                  ctx.quadraticCurveTo(point.x, point.y, midX, midY);
+                }
+              } else {
+                ctx.lineTo(point.x, point.y);
               }
             }
+            
+            ctx.stroke();
           }
         });
         
