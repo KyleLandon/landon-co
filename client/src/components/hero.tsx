@@ -124,7 +124,7 @@ const Hero = () => {
         points: points,
         currentPointIndex: 0,
         direction: direction,
-        speed: 1.5,
+        speed: 3,
         baseWidth: 6 + Math.random() * 8,
         opacity: 0.4 + Math.random() * 0.3,
         isActive: true,
@@ -133,12 +133,12 @@ const Hero = () => {
     }
 
     function startAnimation() {
-      // Create new strokes periodically
+      // Create new strokes more frequently
       const strokeInterval = setInterval(() => {
-        if (strokes.length < 8) {
+        if (strokes.length < 12) {
           strokes.push(createStroke());
         }
-      }, 2000);
+      }, 800);
 
       function animate() {
         if (!ctx) return;
@@ -199,17 +199,17 @@ const Hero = () => {
           }
         });
         
-        // Remove completed strokes after some time to prevent clutter
+        // Remove completed strokes quickly to keep animation fresh
         for (let i = strokes.length - 1; i >= 0; i--) {
           const stroke = strokes[i];
           if (stroke.currentPointIndex >= stroke.points.length - 1) {
-            // Mark stroke as completed and remove after delay
+            // Mark stroke as completed and remove after short delay
             setTimeout(() => {
               const index = strokes.findIndex(s => s === stroke);
               if (index !== -1) {
                 strokes.splice(index, 1);
               }
-            }, 8000);
+            }, 1500);
           }
         }
         
