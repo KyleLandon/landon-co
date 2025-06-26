@@ -1,4 +1,4 @@
-import whiteLogo from "@assets/white_transparent_1750909506258.png";
+import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
 
 const Footer = () => {
   return (
