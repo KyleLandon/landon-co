@@ -98,18 +98,33 @@ const Contact = () => {
             Ready to create something raw and authentic? Let's build your digital presence with an edge.
           </p>
           <div className="mt-8 p-6 bg-black/50 border border-white/20 rounded-none">
-            <p className="text-white font-mono text-lg mb-2 text-center">
-              CALL DIRECT
+            <p className="text-white font-mono text-lg mb-4 text-center uppercase tracking-wider">
+              CONTACT INFO
             </p>
-            <a 
-              href="tel:+19403892685" 
-              className="block text-center text-2xl font-mono font-bold text-white hover:text-gray-300 transition-colors duration-300"
-            >
-              (940) 389-2685
-            </a>
-            <p className="text-gray-400 font-mono text-xs text-center mt-2 uppercase tracking-wider">
-              Ready to talk? Let's connect.
-            </p>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Email:</span>
+                <a 
+                  href="mailto:info@landonco.co" 
+                  className="text-white font-mono hover:text-gray-300 transition-colors duration-300"
+                >
+                  info@landonco.co
+                </a>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Phone:</span>
+                <a 
+                  href="tel:+19403892685" 
+                  className="text-white font-mono hover:text-gray-300 transition-colors duration-300"
+                >
+                  (940) 389-2685
+                </a>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-400 font-mono text-sm uppercase tracking-wider">Discord:</span>
+                <span className="text-white font-mono">kylelandon</span>
+              </div>
+            </div>
           </div>
         </motion.div>
         <motion.div
