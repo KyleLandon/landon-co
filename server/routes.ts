@@ -20,8 +20,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: validatedData.email,
         phone: validatedData.phone || '',
         preferredContact: validatedData.preferredContact || '',
-        project: validatedData.project,
-        budget: validatedData.budget || '',
+        project: validatedData.project || '',
+        budget: '', // Budget field not in current schema
         message: validatedData.message
       });
       

@@ -140,6 +140,14 @@ Changelog:
   - Updated database schema to store phone and preferredContact fields
   - Implemented click-to-call functionality for direct client communication
   - Contact form now captures: name, email, phone, preferred method (email/text/call), budget, message
+- June 26, 2025. Email integration and project restructuring
+  - Integrated SendGrid email service to send contact form submissions to info@landonco.co
+  - Created professional contact information section with email, phone, and Discord details
+  - Restructured portfolio sections: combined featured work and all projects into single dedicated page
+  - Added /projects route with comprehensive project showcase and category filtering
+  - Updated home page to Hero → Gallery → Contact → Footer for cleaner user flow
+  - Added "View All Projects" button in gallery section linking to dedicated projects page
+  - Fixed dropdown text visibility and styling consistency throughout the site
 ```
 
 ## User Preferences
