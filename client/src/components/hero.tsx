@@ -2,6 +2,68 @@ import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
 
+// SVG brush stroke data as base64 - realistic brush textures
+const brushStrokes = [
+  // Brush stroke 1 - thick textured stroke
+  "data:image/svg+xml;base64," + btoa(`
+    <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10,25 Q50,10 100,20 Q150,30 190,15" 
+            stroke="white" 
+            stroke-width="8" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+            fill="none" 
+            opacity="0.8"/>
+      <path d="M15,28 Q55,15 105,25 Q155,35 185,20" 
+            stroke="white" 
+            stroke-width="4" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.4"/>
+    </svg>
+  `),
+  // Brush stroke 2 - thin wispy stroke
+  "data:image/svg+xml;base64," + btoa(`
+    <svg width="150" height="60" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5,30 Q40,10 80,35 Q120,50 145,25" 
+            stroke="white" 
+            stroke-width="6" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.7"/>
+      <path d="M8,33 Q43,13 83,38 Q123,53 142,28" 
+            stroke="white" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.3"/>
+    </svg>
+  `),
+  // Brush stroke 3 - bold artistic stroke
+  "data:image/svg+xml;base64," + btoa(`
+    <svg width="180" height="70" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10,35 Q60,15 120,40 Q160,60 170,30" 
+            stroke="white" 
+            stroke-width="12" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.9"/>
+      <path d="M12,38 Q62,18 122,43 Q162,63 168,33" 
+            stroke="white" 
+            stroke-width="6" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.3"/>
+      <path d="M14,40 Q64,20 124,45 Q164,65 166,35" 
+            stroke="white" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            fill="none" 
+            opacity="0.2"/>
+    </svg>
+  `)
+];
+
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -19,123 +81,83 @@ const Hero = () => {
 
     resizeCanvas();
 
-    const brushStrokes: Array<{
-      points: Array<{ x: number; y: number; pressure: number }>;
-      progress: number;
-      opacity: number;
-      baseWidth: number;
+    const strokes: Array<{
+      img: HTMLImageElement;
+      x: number;
+      y: number;
+      size: number;
       speed: number;
-      maxLength: number;
-      direction: number;
-      directionChange: number;
+      rotation: number;
+      opacity: number;
     }> = [];
-    const strokeCount = 6;
 
-    for (let i = 0; i < strokeCount; i++) {
-      const startX = Math.random() * canvas.width;
-      const startY = Math.random() * canvas.height;
-      const maxLength = Math.random() * 80 + 40;
-      
-      brushStrokes.push({
-        points: [{ x: startX, y: startY, pressure: Math.random() * 0.5 + 0.5 }],
-        progress: 0,
-        opacity: Math.random() * 0.2 + 0.08,
-        baseWidth: Math.random() * 15 + 8,
-        speed: Math.random() * 0.4 + 0.2,
-        maxLength: maxLength,
-        direction: Math.random() * Math.PI * 2,
-        directionChange: 0,
-      });
+    const brushImages: HTMLImageElement[] = [];
+    let loadedImages = 0;
+
+    // Load brush stroke images
+    brushStrokes.forEach((strokeData, index) => {
+      const img = new Image();
+      img.src = strokeData;
+      img.onload = () => {
+        loadedImages++;
+        if (loadedImages === brushStrokes.length) {
+          startAnimation();
+        }
+      };
+      brushImages.push(img);
+    });
+
+    function createStroke() {
+      return {
+        img: brushImages[Math.floor(Math.random() * brushImages.length)],
+        x: Math.random() * canvas.width,
+        y: canvas.height + 100,
+        size: 80 + Math.random() * 120,
+        speed: 0.3 + Math.random() * 0.7,
+        rotation: Math.random() * 2 * Math.PI,
+        opacity: 0.15 + Math.random() * 0.25
+      };
     }
 
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    function startAnimation() {
+      // Create new strokes periodically
+      const strokeInterval = setInterval(() => {
+        strokes.push(createStroke());
+      }, 800);
 
-      brushStrokes.forEach((stroke) => {
-        stroke.progress += stroke.speed;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        // Add new point to the stroke path
-        if (stroke.points.length < stroke.maxLength && stroke.progress > stroke.points.length * 2) {
-          const lastPoint = stroke.points[stroke.points.length - 1];
-          
-          // Update direction with slight random changes for organic movement
-          stroke.directionChange += (Math.random() - 0.5) * 0.3;
-          stroke.direction += stroke.directionChange;
-          stroke.directionChange *= 0.8; // Damping
-          
-          const distance = Math.random() * 25 + 15;
-          const newPoint = {
-            x: lastPoint.x + Math.cos(stroke.direction) * distance,
-            y: lastPoint.y + Math.sin(stroke.direction) * distance,
-            pressure: Math.random() * 0.6 + 0.3 // Varying pressure for brush effect
-          };
-          
-          // Keep stroke within canvas bounds
-          newPoint.x = Math.max(stroke.baseWidth, Math.min(canvas.width - stroke.baseWidth, newPoint.x));
-          newPoint.y = Math.max(stroke.baseWidth, Math.min(canvas.height - stroke.baseWidth, newPoint.y));
-          
-          stroke.points.push(newPoint);
-        }
-        
-        // Reset stroke when it reaches max length
-        if (stroke.points.length >= stroke.maxLength) {
-          stroke.points = [{ 
-            x: Math.random() * canvas.width, 
-            y: Math.random() * canvas.height,
-            pressure: Math.random() * 0.5 + 0.5
-          }];
-          stroke.progress = 0;
-          stroke.direction = Math.random() * Math.PI * 2;
-          stroke.directionChange = 0;
-        }
-        
-        // Draw the brush stroke with varying width
-        if (stroke.points.length > 1) {
+        strokes.forEach((stroke, index) => {
+          ctx.save();
           ctx.globalAlpha = stroke.opacity;
-          ctx.strokeStyle = 'white';
-          ctx.lineCap = 'round';
-          ctx.lineJoin = 'round';
+          ctx.translate(stroke.x, stroke.y);
+          ctx.rotate(stroke.rotation);
+          ctx.drawImage(
+            stroke.img, 
+            -stroke.size / 2, 
+            -stroke.size / 2, 
+            stroke.size, 
+            stroke.size
+          );
+          ctx.restore();
           
-          // Draw stroke segments with varying thickness
-          for (let i = 0; i < stroke.points.length - 1; i++) {
-            const point1 = stroke.points[i];
-            const point2 = stroke.points[i + 1];
-            
-            // Calculate brush width based on pressure and position
-            const pressureEffect = (point1.pressure + point2.pressure) / 2;
-            const positionEffect = 1 - (i / stroke.points.length) * 0.3; // Taper towards end
-            const currentWidth = stroke.baseWidth * pressureEffect * positionEffect;
-            
-            ctx.lineWidth = currentWidth;
-            
-            ctx.beginPath();
-            ctx.moveTo(point1.x, point1.y);
-            ctx.lineTo(point2.x, point2.y);
-            ctx.stroke();
-            
-            // Add some texture with smaller random marks
-            if (Math.random() < 0.3) {
-              const offsetX = (Math.random() - 0.5) * currentWidth * 0.5;
-              const offsetY = (Math.random() - 0.5) * currentWidth * 0.5;
-              
-              ctx.lineWidth = currentWidth * 0.3;
-              ctx.globalAlpha = stroke.opacity * 0.4;
-              ctx.beginPath();
-              ctx.moveTo(point1.x + offsetX, point1.y + offsetY);
-              ctx.lineTo(point2.x + offsetX, point2.y + offsetY);
-              ctx.stroke();
-              ctx.globalAlpha = stroke.opacity;
-            }
+          stroke.y -= stroke.speed;
+          
+          // Remove strokes that have moved off screen
+          if (stroke.y < -stroke.size) {
+            strokes.splice(index, 1);
           }
-          
-          ctx.globalAlpha = 1;
-        }
-      });
+        });
+        
+        requestAnimationFrame(animate);
+      }
 
-      requestAnimationFrame(animate);
-    };
+      animate();
 
-    animate();
+      // Cleanup interval on component unmount
+      return () => clearInterval(strokeInterval);
+    }
 
     window.addEventListener("resize", resizeCanvas);
     return () => window.removeEventListener("resize", resizeCanvas);
