@@ -672,7 +672,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/projects/:id/files", isAuthenticated, upload.single('file'), async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user?.claims?.sub;
+      const userId = (req.user as any)?.claims?.sub;
       
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
@@ -709,8 +709,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/projects/:id/files", isAuthenticated, async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user?.claims?.sub;
-      const userRole = req.user?.claims?.role;
+      const userId = (req.user as any)?.claims?.sub;
+      const userRole = (req.user as any)?.claims?.role;
       
       let files = await storage.getProjectFiles(projectId);
       
@@ -730,8 +730,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/files/:id/download", isAuthenticated, async (req, res) => {
     try {
       const fileId = parseInt(req.params.id);
-      const userId = req.user?.claims?.sub;
-      const userRole = req.user?.claims?.role;
+      const userId = (req.user as any)?.claims?.sub;
+      const userRole = (req.user as any)?.claims?.role;
       
       const file = await storage.getProjectFile(fileId);
       
@@ -755,8 +755,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/files/:id", isAuthenticated, async (req, res) => {
     try {
       const fileId = parseInt(req.params.id);
-      const userId = req.user?.claims?.sub;
-      const userRole = req.user?.claims?.role;
+      const userId = (req.user as any)?.claims?.sub;
+      const userRole = (req.user as any)?.claims?.role;
       
       const file = await storage.getProjectFile(fileId);
       
