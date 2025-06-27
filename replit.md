@@ -233,6 +233,17 @@ Changelog:
   - Admin messaging interface has dedicated sound for client messages (600Hz-800Hz pattern)
   - Client messaging interface has notification sound for admin/other user messages
   - All messaging interfaces now provide immediate audio feedback for new message arrivals
+- December 27, 2025. Comprehensive file storage and sharing system implementation
+  - Added projectFiles database table with full file metadata tracking (name, size, type, category, visibility)
+  - Implemented secure file upload system with multer middleware for handling multipart form data
+  - Created file permission system: admin sees all files, clients see only public files or their own uploads
+  - Built comprehensive FileManager component with drag-and-drop upload, category organization, and file operations
+  - Added file management pages for both admin (/admin/projects/:id/files) and client (/projects/:id/files) interfaces
+  - File operations include: upload with descriptions, download, delete, visibility toggle (admin-only)
+  - File categorization system: General, Assets, Deliverables, Reference for better organization
+  - Integrated file icons based on MIME types and formatted file size display
+  - Files stored in uploads directory with secure access control and download endpoints
+  - Added API endpoints: POST /api/projects/:id/files, GET /api/projects/:id/files, DELETE /api/files/:id
 ```
 
 ## User Preferences

@@ -18,6 +18,7 @@ import AdminSettings from "@/pages/admin/settings";
 import AdminProjectDetail from "@/pages/admin/project/project-detail";
 import AdminProjectMessages from "@/pages/admin/project/project-messages";
 import AdminProjectTimeline from "@/pages/admin/project/project-timeline";
+import AdminProjectFiles from "@/pages/admin/project/project-files";
 import ProjectDetail from "@/pages/client/project/project-detail";
 import ProjectOverviewSimple from "@/pages/client/project/project-overview-simple";
 import ProjectMessages from "@/pages/client/project/project-messages";
@@ -66,6 +67,7 @@ function Router() {
           <Route path="/admin/projects/:id" component={AdminProjectDetail} />
           <Route path="/admin/projects/:id/messages" component={AdminProjectMessages} />
           <Route path="/admin/projects/:id/timeline" component={AdminProjectTimeline} />
+          <Route path="/admin/projects/:id/files" component={AdminProjectFiles} />
         </>
       )}
       

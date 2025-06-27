@@ -56,7 +56,7 @@ export default function ProjectFiles() {
               </Badge>
               <div className="flex items-center text-gray-400 font-mono text-sm">
                 <Clock className="w-4 h-4 mr-2" />
-                Created {new Date(project.createdAt).toLocaleDateString()}
+                Created {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'Unknown'}
               </div>
             </div>
           </CardHeader>
