@@ -16,7 +16,7 @@ import AdminClients from "@/pages/admin/clients";
 import AdminMessages from "@/pages/admin/messages";
 import AdminSettings from "@/pages/admin/settings";
 import AdminProjectDetail from "@/pages/admin/project/project-detail";
-import AdminProjectMessages from "@/pages/admin/project/project-messages";
+import AdminProjectMessages from "@/pages/admin/project/project-messages-apple";
 import AdminProjectTimeline from "@/pages/admin/project/project-timeline";
 import AdminProjectFiles from "@/pages/admin/project/project-files";
 import AdminProjectContracts from "@/pages/admin/project/project-contracts";

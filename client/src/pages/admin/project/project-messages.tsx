@@ -1,15 +1,11 @@
-import { useState, useEffect, useRef } from "react";
 import { useParams } from "wouter";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
-import { Send, MessageCircle, User, Clock, CheckCircle2 } from "lucide-react";
-import { apiRequest } from "@/lib/queryClient";
+import { MessageCircle, User, Clock } from "lucide-react";
 import AdminLayout from "../admin-layout";
+import AppleMessaging from "@/components/apple-messaging";
 import type { Project, Message, User as UserType } from "@shared/schema";
 
 export default function AdminProjectMessages() {
