@@ -35,10 +35,14 @@ const About = () => {
               <div className="relative bg-zinc-800/30 p-6 rounded-lg border border-zinc-700/50">
                 <motion.img
                   src={aboutImage}
-                  alt="Landon - Web Developer"
+                  alt="Kyle Landon, founder of Landon & Co. web development services"
                   className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500 rounded"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
+                  width={400}
+                  height={400}
+                  loading="lazy"
+                  decoding="async"
                 />
                 <div className="absolute inset-6 bg-black/10 rounded pointer-events-none"></div>
               </div>

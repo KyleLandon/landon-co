@@ -10,6 +10,22 @@ export default function Home() {
   useEffect(() => {
     document.title = "Landon & Co. - Web Design & Development for Local Businesses";
     
+    // Add preload for critical resources
+    const preloadFont = document.createElement("link");
+    preloadFont.rel = "preload";
+    preloadFont.href = "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap";
+    preloadFont.as = "style";
+    document.head.appendChild(preloadFont);
+    
+    // Ensure viewport is properly set
+    let viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+      viewport = document.createElement("meta");
+      viewport.name = "viewport";
+      viewport.content = "width=device-width, initial-scale=1.0";
+      document.head.appendChild(viewport);
+    }
+    
     const metaDescription = document.createElement("meta");
     metaDescription.name = "description";
     metaDescription.content = "Professional web design and development services for local businesses. Creating modern, responsive websites that drive results and grow your business.";

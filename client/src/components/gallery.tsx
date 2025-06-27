@@ -18,14 +18,14 @@ const Gallery = () => {
       category: "CONSTRUCTION",
     },
     {
-      src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
-      alt: "E-commerce website design",
+      src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format&q=75",
+      alt: "E-commerce website design showcasing modern online shopping experience",
       title: "ARTISAN COFFEE",
       category: "E-COMMERCE",
     },
     {
-      src: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=800&h=600&fit=crop",
-      alt: "Restaurant website design",
+      src: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=600&h=400&fit=crop&auto=format&q=75",
+      alt: "Restaurant website design featuring elegant dining establishment",
       title: "BELLA VISTA",
       category: "RESTAURANT",
     },
@@ -72,6 +72,10 @@ const Gallery = () => {
                   src={project.src}
                   alt={project.alt}
                   className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110 group-hover:contrast-125 group-hover:saturate-0"
+                  width={600}
+                  height={400}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
