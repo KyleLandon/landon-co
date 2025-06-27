@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import type { Project, Message, ProjectUpdate } from "@/types";
 
 export default function ProjectDetail() {
   const { id } = useParams();
@@ -21,17 +22,17 @@ export default function ProjectDetail() {
   const queryClient = useQueryClient();
   const [messageText, setMessageText] = useState("");
 
-  const { data: project, isLoading: projectLoading } = useQuery({
+  const { data: project, isLoading: projectLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${id}`],
     enabled: !!id,
   });
 
-  const { data: messages = [], isLoading: messagesLoading } = useQuery({
+  const { data: messages = [], isLoading: messagesLoading } = useQuery<Message[]>({
     queryKey: [`/api/projects/${id}/messages`],
     enabled: !!id,
   });
 
-  const { data: updates = [], isLoading: updatesLoading } = useQuery({
+  const { data: updates = [], isLoading: updatesLoading } = useQuery<ProjectUpdate[]>({
     queryKey: [`/api/projects/${id}/updates`],
     enabled: !!id,
   });

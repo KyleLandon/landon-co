@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import type { Project, Contact } from "@/types";
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -23,11 +24,11 @@ export default function AdminDashboard() {
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   
   // Fetch all data
-  const { data: projects = [], isLoading: projectsLoading } = useQuery({
+  const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
     queryKey: ["/api/admin/projects"],
   });
 
-  const { data: contacts = [], isLoading: contactsLoading } = useQuery({
+  const { data: contacts = [], isLoading: contactsLoading } = useQuery<Contact[]>({
     queryKey: ["/api/admin/contacts"],
   });
 

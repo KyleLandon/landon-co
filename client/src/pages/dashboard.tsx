@@ -7,11 +7,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import type { Project } from "@/types";
 
 export default function Dashboard() {
   const { user } = useAuth();
   
-  const { data: projects = [], isLoading } = useQuery({
+  const { data: projects = [], isLoading } = useQuery<Project[]>({
     queryKey: ["/api/my-projects"],
   });
 
@@ -93,7 +94,7 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
           >
-            {!projects || projects.length === 0 ? (
+            {projects.length === 0 ? (
               <Card className="bg-zinc-900 border-zinc-800 text-center py-12">
                 <CardContent className="pt-6">
                   <MessageCircle className="w-16 h-16 text-gray-500 mx-auto mb-4" />
