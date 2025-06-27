@@ -349,21 +349,164 @@ export default function Dashboard() {
                 </CardContent>
               </Card>
               
-              <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
-                <CardContent className="p-6 text-center">
-                  <User className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2 text-white">Profile</h3>
-                  <p className="text-white font-mono text-sm">Update your information</p>
-                </CardContent>
-              </Card>
+              <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
+                <DialogTrigger asChild>
+                  <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                    <CardContent className="p-6 text-center">
+                      <User className="w-8 h-8 text-purple-500 mx-auto mb-3" />
+                      <h3 className="font-mono font-bold mb-2 text-white">Profile</h3>
+                      <p className="text-white font-mono text-sm">Update your information</p>
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <DialogContent className="bg-black border-white/20 text-white max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="font-mono text-xl">Edit Profile</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    updateProfileMutation.mutate({
+                      firstName: formData.get("firstName"),
+                      lastName: formData.get("lastName"),
+                      email: formData.get("email"),
+                    });
+                  }} className="space-y-4">
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">First Name</Label>
+                      <Input
+                        type="text"
+                        name="firstName"
+                        defaultValue={user?.firstName || ''}
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">Last Name</Label>
+                      <Input
+                        type="text"
+                        name="lastName"
+                        defaultValue={user?.lastName || ''}
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">Email</Label>
+                      <Input
+                        type="email"
+                        name="email"
+                        defaultValue={user?.email || ''}
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-3 pt-4">
+                      <Button
+                        type="submit"
+                        disabled={updateProfileMutation.isPending}
+                        className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                      >
+                        {updateProfileMutation.isPending ? "Updating..." : "Update Profile"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setProfileOpen(false)}
+                        className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                </DialogContent>
+              </Dialog>
               
-              <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
-                <CardContent className="p-6 text-center">
-                  <MessageCircle className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2 text-white">Support</h3>
-                  <p className="text-white font-mono text-sm">Get help or ask questions</p>
-                </CardContent>
-              </Card>
+              <Dialog open={supportOpen} onOpenChange={setSupportOpen}>
+                <DialogTrigger asChild>
+                  <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                    <CardContent className="p-6 text-center">
+                      <HelpCircle className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
+                      <h3 className="font-mono font-bold mb-2 text-white">Support</h3>
+                      <p className="text-white font-mono text-sm">Get help or ask questions</p>
+                    </CardContent>
+                  </Card>
+                </DialogTrigger>
+                <DialogContent className="bg-black border-white/20 text-white max-w-md">
+                  <DialogHeader>
+                    <DialogTitle className="font-mono text-xl">Contact Support</DialogTitle>
+                  </DialogHeader>
+                  <form onSubmit={(e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.currentTarget);
+                    supportMutation.mutate({
+                      subject: formData.get("subject"),
+                      message: formData.get("message"),
+                      priority: formData.get("priority"),
+                    });
+                  }} className="space-y-4">
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">Subject</Label>
+                      <Input
+                        type="text"
+                        name="subject"
+                        placeholder="Brief description of your issue"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">Priority</Label>
+                      <select
+                        name="priority"
+                        className="w-full p-3 bg-black border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                      >
+                        <option value="low">Low - General question</option>
+                        <option value="medium">Medium - Project related</option>
+                        <option value="high">High - Urgent issue</option>
+                      </select>
+                    </div>
+                    <div>
+                      <Label className="text-sm font-mono text-gray-300 block mb-2">Message</Label>
+                      <Textarea
+                        name="message"
+                        placeholder="Describe your issue or question in detail..."
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none min-h-[120px]"
+                        required
+                      />
+                    </div>
+                    <div className="flex gap-3 pt-4">
+                      <Button
+                        type="submit"
+                        disabled={supportMutation.isPending}
+                        className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                      >
+                        {supportMutation.isPending ? "Sending..." : "Send Support Request"}
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setSupportOpen(false)}
+                        className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </form>
+                  <div className="mt-4 pt-4 border-t border-white/10">
+                    <p className="text-sm font-mono text-gray-400 mb-2">Or contact us directly:</p>
+                    <div className="space-y-1">
+                      <p className="text-sm font-mono text-gray-300">
+                        <Mail className="w-4 h-4 inline mr-2" />
+                        info@landonco.co
+                      </p>
+                      <p className="text-sm font-mono text-gray-300">
+                        <Phone className="w-4 h-4 inline mr-2" />
+                        (940) 389-2685
+                      </p>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             </div>
           </motion.div>
         </div>

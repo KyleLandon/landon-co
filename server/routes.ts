@@ -455,6 +455,56 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User profile update
+  app.put("/api/users/profile", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const updates = req.body;
+      const user = await storage.updateUser(userId, updates);
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update profile" });
+    }
+  });
+
+  // Support request
+  app.post("/api/support", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const { subject, message, priority } = req.body;
+      
+      // Get user info for the support request
+      const user = await storage.getUser(userId);
+      
+      // Create a contact entry for the support request
+      const supportData = {
+        name: user?.firstName && user?.lastName 
+          ? `${user.firstName} ${user.lastName}`
+          : user?.email?.split('@')[0] || 'User',
+        email: user?.email || '',
+        phone: '',
+        preferredContact: 'email',
+        project: `Support Request - ${priority?.toUpperCase() || 'MEDIUM'}`,
+        budget: '',
+        message: `Subject: ${subject}\n\nMessage: ${message}`
+      };
+      
+      const contact = await storage.createContact(supportData);
+      
+      // Send email notification
+      try {
+        await sendContactEmail(supportData);
+      } catch (emailError) {
+        console.error("Failed to send support email:", emailError);
+      }
+      
+      res.json({ success: true, message: "Support request submitted successfully" });
+    } catch (error) {
+      console.error("Error creating support request:", error);
+      res.status(500).json({ message: "Failed to submit support request" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
