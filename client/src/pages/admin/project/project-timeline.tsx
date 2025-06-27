@@ -339,10 +339,14 @@ export default function AdminProjectTimeline() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => toggleUpdateStatus.mutate({ 
-                                    updateId: item.updateId, 
-                                    isCompleted: !(item.isCompleted || false) 
-                                  })}
+                                  onClick={() => {
+                                    if (item.updateId) {
+                                      toggleUpdateStatus.mutate({ 
+                                        updateId: item.updateId, 
+                                        isCompleted: !(item.isCompleted || false) 
+                                      });
+                                    }
+                                  }}
                                   className="border-gray-600 text-gray-300 hover:bg-gray-700 font-mono p-1"
                                 >
                                   {item.isCompleted ? <Clock className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />}
@@ -350,7 +354,11 @@ export default function AdminProjectTimeline() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => deleteUpdate.mutate(item.updateId)}
+                                  onClick={() => {
+                                    if (item.updateId) {
+                                      deleteUpdate.mutate(item.updateId);
+                                    }
+                                  }}
                                   className="border-red-600 text-red-400 hover:bg-red-900 font-mono p-1"
                                 >
                                   <Trash2 className="w-3 h-3" />
