@@ -79,13 +79,13 @@ Please create a project for me and let me know the next steps!`
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
-      <DialogContent className="bg-gray-900 border-gray-700 text-white max-w-md">
+      <DialogContent className="bg-black border-gray-800 text-white max-w-md">
         <DialogHeader>
-          <DialogTitle className="font-mono text-xl flex items-center">
-            <MessageCircle className="w-5 h-5 mr-2 text-blue-500" />
+          <DialogTitle className="font-mono text-xl flex items-center text-white">
+            <MessageCircle className="w-5 h-5 mr-2 text-white" />
             Start New Project
           </DialogTitle>
-          <DialogDescription className="text-gray-300">
+          <DialogDescription className="text-gray-400 font-mono">
             {step === 'intro' 
               ? "Kyle will help you get started with your project" 
               : "Tell us about your project"}
@@ -99,15 +99,15 @@ Please create a project for me and let me know the next steps!`
               animate={{ opacity: 1, y: 0 }}
               className="space-y-4"
             >
-              <Card className="bg-gray-800 border-gray-600">
+              <Card className="bg-zinc-900 border-gray-700">
                 <CardContent className="p-4">
                   <div className="flex items-start space-x-3">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-mono text-sm font-bold">K</span>
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center flex-shrink-0">
+                      <span className="text-black font-mono text-sm font-bold">K</span>
                     </div>
                     <div className="flex-1">
-                      <p className="font-mono text-sm text-gray-300 mb-2">Kyle from Landon & Co.</p>
-                      <p className="text-white text-sm leading-relaxed">
+                      <p className="font-mono text-sm text-gray-400 mb-2">Kyle from Landon & Co.</p>
+                      <p className="text-white text-sm leading-relaxed font-mono">
                         Hey! I'm excited to work with you. To get started, I'll need some details about your project. 
                         This helps me understand your needs and create the perfect solution for you.
                       </p>
@@ -119,7 +119,7 @@ Please create a project for me and let me know the next steps!`
               <div className="flex justify-end">
                 <Button 
                   onClick={() => setStep('details')}
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-mono"
+                  className="bg-white hover:bg-gray-200 text-black font-mono"
                 >
                   Let's Get Started
                 </Button>
@@ -135,16 +135,16 @@ Please create a project for me and let me know the next steps!`
               <div>
                 <Label htmlFor="projectType" className="font-mono text-white">Project Type</Label>
                 <Select value={formData.projectType} onValueChange={(value) => handleInputChange('projectType', value)}>
-                  <SelectTrigger className="bg-black border-gray-600 text-white">
+                  <SelectTrigger className="bg-zinc-900 border-gray-700 text-white font-mono">
                     <SelectValue placeholder="Select project type" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-600">
-                    <SelectItem value="website">Website Development</SelectItem>
-                    <SelectItem value="ecommerce">E-commerce Store</SelectItem>
-                    <SelectItem value="webapp">Web Application</SelectItem>
-                    <SelectItem value="branding">Branding & Design</SelectItem>
-                    <SelectItem value="optimization">Business Optimization</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                  <SelectContent className="bg-zinc-900 border-gray-700 text-white">
+                    <SelectItem value="website" className="font-mono">Website Development</SelectItem>
+                    <SelectItem value="ecommerce" className="font-mono">E-commerce Store</SelectItem>
+                    <SelectItem value="webapp" className="font-mono">Web Application</SelectItem>
+                    <SelectItem value="branding" className="font-mono">Branding & Design</SelectItem>
+                    <SelectItem value="optimization" className="font-mono">Business Optimization</SelectItem>
+                    <SelectItem value="other" className="font-mono">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -152,16 +152,16 @@ Please create a project for me and let me know the next steps!`
               <div>
                 <Label htmlFor="budget" className="font-mono text-white">Budget Range</Label>
                 <Select value={formData.budget} onValueChange={(value) => handleInputChange('budget', value)}>
-                  <SelectTrigger className="bg-black border-gray-600 text-white">
+                  <SelectTrigger className="bg-zinc-900 border-gray-700 text-white font-mono">
                     <SelectValue placeholder="Select budget range" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-600">
-                    <SelectItem value="under-5k">Under $5,000</SelectItem>
-                    <SelectItem value="5k-10k">$5,000 - $10,000</SelectItem>
-                    <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-                    <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-                    <SelectItem value="50k+">$50,000+</SelectItem>
-                    <SelectItem value="discuss">Let's Discuss</SelectItem>
+                  <SelectContent className="bg-zinc-900 border-gray-700 text-white">
+                    <SelectItem value="under-5k" className="font-mono">Under $5,000</SelectItem>
+                    <SelectItem value="5k-10k" className="font-mono">$5,000 - $10,000</SelectItem>
+                    <SelectItem value="10k-25k" className="font-mono">$10,000 - $25,000</SelectItem>
+                    <SelectItem value="25k-50k" className="font-mono">$25,000 - $50,000</SelectItem>
+                    <SelectItem value="50k+" className="font-mono">$50,000+</SelectItem>
+                    <SelectItem value="discuss" className="font-mono">Let's Discuss</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -169,14 +169,14 @@ Please create a project for me and let me know the next steps!`
               <div>
                 <Label htmlFor="timeline" className="font-mono text-white">Timeline</Label>
                 <Select value={formData.timeline} onValueChange={(value) => handleInputChange('timeline', value)}>
-                  <SelectTrigger className="bg-black border-gray-600 text-white">
+                  <SelectTrigger className="bg-zinc-900 border-gray-700 text-white font-mono">
                     <SelectValue placeholder="Select timeline" />
                   </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-600">
-                    <SelectItem value="asap">ASAP</SelectItem>
-                    <SelectItem value="1-month">Within 1 month</SelectItem>
-                    <SelectItem value="2-3-months">2-3 months</SelectItem>
-                    <SelectItem value="flexible">Flexible</SelectItem>
+                  <SelectContent className="bg-zinc-900 border-gray-700 text-white">
+                    <SelectItem value="asap" className="font-mono">ASAP</SelectItem>
+                    <SelectItem value="1-month" className="font-mono">Within 1 month</SelectItem>
+                    <SelectItem value="2-3-months" className="font-mono">2-3 months</SelectItem>
+                    <SelectItem value="flexible" className="font-mono">Flexible</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -188,7 +188,7 @@ Please create a project for me and let me know the next steps!`
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
                   placeholder="Tell us about your project, goals, and any specific requirements..."
-                  className="bg-black border-gray-600 text-white min-h-[100px]"
+                  className="bg-zinc-900 border-gray-700 text-white min-h-[100px] font-mono placeholder:text-gray-500"
                   required
                 />
               </div>
@@ -198,7 +198,7 @@ Please create a project for me and let me know the next steps!`
                   type="button"
                   onClick={() => setStep('intro')}
                   variant="outline"
-                  className="border-gray-600 text-white hover:bg-gray-800 font-mono"
+                  className="border-gray-700 text-white hover:bg-zinc-800 font-mono"
                 >
                   Back
                 </Button>
