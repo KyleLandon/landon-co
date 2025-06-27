@@ -197,7 +197,7 @@ export default function ClientProjectInvoices() {
                 </div>
 
                 {/* Invoice Items Preview */}
-                {invoice.items && Array.isArray(invoice.items) && (
+                {invoice.items && Array.isArray(invoice.items) && invoice.items.length > 0 ? (
                   <div className="bg-gray-800 p-4 rounded-lg mb-4">
                     <h4 className="text-white font-mono text-sm font-bold mb-3">Invoice Items:</h4>
                     <div className="space-y-2">
@@ -221,12 +221,12 @@ export default function ClientProjectInvoices() {
                     <div className="border-t border-gray-600 pt-3 mt-3">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-400 font-mono">Subtotal:</span>
-                        <span className="text-white font-mono">{formatCurrency(invoice.subtotal)}</span>
+                        <span className="text-white font-mono">{formatCurrency(invoice.subtotal || "0")}</span>
                       </div>
-                      {parseFloat(invoice.taxAmount) > 0 && (
+                      {parseFloat(invoice.taxAmount || "0") > 0 && (
                         <div className="flex justify-between text-sm">
                           <span className="text-gray-400 font-mono">Tax:</span>
-                          <span className="text-white font-mono">{formatCurrency(invoice.taxAmount)}</span>
+                          <span className="text-white font-mono">{formatCurrency(invoice.taxAmount || "0")}</span>
                         </div>
                       )}
                       <div className="flex justify-between text-lg font-bold border-t border-gray-600 pt-2 mt-2">
@@ -235,7 +235,7 @@ export default function ClientProjectInvoices() {
                       </div>
                     </div>
                   </div>
-                )}
+                ) : null}
 
                 <div className="flex gap-3">
                   <Button

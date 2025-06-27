@@ -272,6 +272,18 @@ Changelog:
   - Maintained consistent dark theme (gray-950/900/800) and monospace fonts throughout
   - Fixed all TypeScript errors and improved null safety handling for dates
   - Fixed admin dashboard routing: "View" button now correctly links to /admin/projects/:id instead of /project/:id
+- December 27, 2025. Comprehensive contracts and invoices system implementation
+  - Added contracts and invoices database tables with full relational schema
+  - Created complete admin contract management system with WYSIWYG editor and digital signature tracking
+  - Built admin invoice management with itemized billing, tax calculations, and payment tracking
+  - Implemented client-side contract signing interface with HTML5 canvas digital signatures
+  - Added client invoice payment system with Stripe integration placeholders
+  - Created comprehensive API endpoints for all contract and invoice operations
+  - Enhanced admin project detail page with contract and invoice navigation buttons
+  - Added client dashboard navigation to contracts and invoices sections
+  - Database schema includes: contracts (title, content, terms, signatures), invoices (items, totals, payment status)
+  - Contract workflow: draft → sent → signed → completed with full audit trail
+  - Invoice workflow: draft → sent → paid with overdue detection and payment processing
 ```
 
 ## User Preferences
