@@ -46,7 +46,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         initial={{ x: -280 }}
         animate={{ x: sidebarOpen ? 0 : -280 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed left-0 top-0 h-full w-70 bg-zinc-900 border-r border-white/10 z-50 lg:relative lg:translate-x-0 lg:z-auto"
+        className="fixed left-0 top-0 h-full w-80 bg-zinc-900 border-r border-white/10 z-50 lg:relative lg:translate-x-0 lg:z-auto"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -104,7 +104,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       </motion.div>
 
       {/* Main content */}
-      <div className="lg:ml-70">
+      <div className="lg:ml-80">
         {/* Top bar */}
         <div className="bg-zinc-900 border-b border-white/10 px-6 py-4 lg:hidden">
           <div className="flex items-center justify-between">

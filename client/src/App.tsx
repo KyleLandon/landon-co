@@ -11,6 +11,10 @@ import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import Dashboard from "@/pages/dashboard";
 import AdminDashboard from "@/pages/admin-dashboard";
+import AdminProjects from "@/pages/admin/projects";
+import AdminClients from "@/pages/admin/clients";
+import AdminMessages from "@/pages/admin/messages";
+import AdminSettings from "@/pages/admin/settings";
 import ProjectDetail from "@/pages/project-detail";
 import NotFound from "@/pages/not-found";
 
@@ -36,7 +40,13 @@ function Router() {
       
       {/* Admin-only routes */}
       {isAuthenticated && isAdmin && (
-        <Route path="/admin" component={AdminDashboard} />
+        <>
+          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin/projects" component={AdminProjects} />
+          <Route path="/admin/clients" component={AdminClients} />
+          <Route path="/admin/messages" component={AdminMessages} />
+          <Route path="/admin/settings" component={AdminSettings} />
+        </>
       )}
       
       <Route component={NotFound} />

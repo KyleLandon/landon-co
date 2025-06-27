@@ -245,16 +245,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/admin/projects", isAuthenticated, isAdmin, async (req, res) => {
     try {
       console.log("Creating project with data:", req.body);
-      const validatedData = insertProjectSchema.parse(req.body);
+      
+      // Prepare data with defaults for optional fields
+      const projectData = {
+        clientId: req.body.clientId,
+        title: req.body.title,
+        description: req.body.description,
+        status: req.body.status || "inquiry",
+        budget: req.body.budget ? req.body.budget.toString() : null,
+        startDate: req.body.startDate || null,
+        endDate: req.body.endDate || null,
+      };
+      
+      console.log("Prepared project data:", projectData);
+      const validatedData = insertProjectSchema.parse(projectData);
       console.log("Validated data:", validatedData);
       const project = await storage.createProject(validatedData);
       res.json(project);
     } catch (error) {
       console.error("Project creation error:", error);
       if (error instanceof z.ZodError) {
+        console.error("Validation errors:", error.errors);
         res.status(400).json({ message: "Invalid project data", errors: error.errors });
       } else {
-        res.status(500).json({ message: "Failed to create project", error: error.message });
+        const errorMessage = error instanceof Error ? error.message : "Unknown error";
+        res.status(500).json({ message: "Failed to create project", error: errorMessage });
       }
     }
   });
