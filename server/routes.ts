@@ -73,23 +73,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Project submission from "Let's Work" form (unauthenticated)
+  // Project submission from "Let's Work" form
   app.post("/api/project-submissions", async (req, res) => {
     try {
       const projectSubmissionData = req.body;
       
-      // Store the project submission
-      const submission = await storage.createProjectSubmission(projectSubmissionData);
+      // Check if user is authenticated
+      if (req.isAuthenticated && req.isAuthenticated() && req.user) {
+        // User is authenticated - create a proper project
+        const userId = (req.user as any).claims.sub;
+        
+        const projectData = {
+          clientId: userId,
+          title: projectSubmissionData.projectTitle,
+          description: projectSubmissionData.description,
+          status: "pending",
+          budget: projectSubmissionData.budget,
+          timeline: projectSubmissionData.timeline,
+          projectType: projectSubmissionData.projectType,
+          websiteUrl: projectSubmissionData.website || null,
+        };
+        
+        const project = await storage.createProject(projectData);
+        
+        res.json({
+          success: true,
+          message: "Project created successfully! You can now track its progress in your dashboard.",
+          project: {
+            id: project.id,
+            title: project.title,
+            status: project.status,
+            createdAt: project.createdAt
+          }
+        });
+      } else {
+        // User not authenticated - store as submission for review
+        const submission = await storage.createProjectSubmission(projectSubmissionData);
 
-      res.json({
-        success: true,
-        message: "Project submitted successfully! We'll review your submission and get back to you within 24 hours.",
-        submission: {
-          id: submission.id,
-          projectTitle: submission.projectTitle,
-          createdAt: submission.createdAt
-        }
-      });
+        res.json({
+          success: true,
+          message: "Project submitted successfully! We'll review your submission and get back to you within 24 hours.",
+          submission: {
+            id: submission.id,
+            projectTitle: submission.projectTitle,
+            createdAt: submission.createdAt
+          }
+        });
+      }
     } catch (error) {
       console.error('Project submission error:', error);
       res.status(500).json({ 

@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { insertContactSchema, insertProjectSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
 import { Mail, Phone, MessageCircle, ExternalLink, Briefcase, Users, DollarSign, Clock } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 // Use the existing project submission schema
 const projectSubmissionFormSchema = insertProjectSubmissionSchema;
@@ -28,6 +30,7 @@ type ProjectSubmissionForm = z.infer<typeof projectSubmissionFormSchema>;
 const Contact = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
 
   const form = useForm<ContactForm>({
     resolver: zodResolver(formSchema),
@@ -91,16 +94,34 @@ const Contact = () => {
 
   const projectMutation = useMutation({
     mutationFn: async (data: ProjectSubmissionForm) => {
-      await apiRequest("/api/project-submissions", "POST", data);
+      return await apiRequest("/api/project-submissions", "POST", data);
     },
-    onSuccess: () => {
-      toast({
-        title: "Project Submitted Successfully!",
-        description: "We'll create your account and be in touch within 24 hours.",
-        variant: "default",
-      });
-      projectForm.reset();
-      queryClient.invalidateQueries({ queryKey: ["/api/project-submissions"] });
+    onSuccess: (response: any) => {
+      if (isAuthenticated && response.project) {
+        // User was authenticated - project was created
+        toast({
+          title: "Project Created Successfully!",
+          description: "Your project is now being tracked. Redirecting to your dashboard...",
+          variant: "default",
+        });
+        
+        projectForm.reset();
+        queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
+        
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => {
+          window.location.href = "/dashboard";
+        }, 2000);
+      } else {
+        // User was not authenticated - submission stored for review
+        toast({
+          title: "Project Submitted Successfully!",
+          description: "We'll review your submission and be in touch within 24 hours.",
+          variant: "default",
+        });
+        projectForm.reset();
+        queryClient.invalidateQueries({ queryKey: ["/api/project-submissions"] });
+      }
     },
     onError: (error: Error) => {
       toast({
@@ -112,8 +133,58 @@ const Contact = () => {
   });
 
   const onProjectSubmit = (data: ProjectSubmissionForm) => {
+    // Check if user is authenticated before submitting
+    if (!isAuthenticated) {
+      // Store form data in sessionStorage to restore after login
+      sessionStorage.setItem('pendingProjectSubmission', JSON.stringify(data));
+      
+      toast({
+        title: "Account Required",
+        description: "Creating your account first, then we'll submit your project...",
+        variant: "default",
+      });
+      
+      // Redirect to login with Google OAuth
+      setTimeout(() => {
+        window.location.href = "/api/login";
+      }, 1000);
+      return;
+    }
+    
+    // User is authenticated, submit project directly
     projectMutation.mutate(data);
   };
+
+  // Check for pending project submission after authentication
+  useEffect(() => {
+    if (isAuthenticated && !authLoading) {
+      const pendingSubmission = sessionStorage.getItem('pendingProjectSubmission');
+      if (pendingSubmission) {
+        try {
+          const data = JSON.parse(pendingSubmission);
+          sessionStorage.removeItem('pendingProjectSubmission');
+          
+          // Fill the form with the stored data
+          projectForm.reset(data);
+          
+          toast({
+            title: "Account Created Successfully!",
+            description: "Now submitting your project...",
+            variant: "default",
+          });
+          
+          // Submit the project automatically
+          setTimeout(() => {
+            projectMutation.mutate(data);
+          }, 1500);
+          
+        } catch (error) {
+          console.error('Error processing pending submission:', error);
+          sessionStorage.removeItem('pendingProjectSubmission');
+        }
+      }
+    }
+  }, [isAuthenticated, authLoading, projectForm, projectMutation]);
 
   return (
     <>
