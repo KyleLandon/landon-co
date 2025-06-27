@@ -1,22 +1,76 @@
-import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
-import { Clock, MessageCircle, CheckCircle, DollarSign, User, LogOut, AlertCircle, RefreshCw, Mail, Phone } from "lucide-react";
+import { Clock, MessageCircle, CheckCircle, DollarSign, User, LogOut, AlertCircle, RefreshCw, Mail, Phone, Edit, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { LoadingPage, LoadingCard } from "@/components/ui/loading-spinner";
 import { ErrorBoundary } from "@/components/error-boundary";
 import ProjectRequestDialog from "@/components/project-request-dialog";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
 import type { Project } from "@/types";
 
 export default function Dashboard() {
   const { user, authError, refetchAuth } = useAuth();
   const { toast } = useToast();
+  const queryClient = useQueryClient();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+  
+  // Update profile mutation
+  const updateProfileMutation = useMutation({
+    mutationFn: async (updates: any) => {
+      const res = await apiRequest("PUT", `/api/users/profile`, updates);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      setProfileOpen(false);
+      toast({
+        title: "Success",
+        description: "Profile updated successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update profile",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Support form mutation
+  const supportMutation = useMutation({
+    mutationFn: async (supportData: any) => {
+      const res = await apiRequest("POST", "/api/support", supportData);
+      return res.json();
+    },
+    onSuccess: () => {
+      setSupportOpen(false);
+      toast({
+        title: "Success",
+        description: "Support request sent successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to send support request",
+        variant: "destructive",
+      });
+    },
+  });
   
   const { data: projects = [], isLoading, error, refetch } = useQuery<Project[]>({
     queryKey: ["/api/my-projects"],
@@ -274,7 +328,20 @@ export default function Dashboard() {
                 </Card>
               </ProjectRequestDialog>
               
-              <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+              <Card 
+                className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer"
+                onClick={() => {
+                  if (projects.length > 0) {
+                    window.location.href = `/project/${projects[0].id}`;
+                  } else {
+                    toast({
+                      title: "No Projects",
+                      description: "You don't have any active projects yet. Start by creating a new project!",
+                      variant: "default",
+                    });
+                  }
+                }}
+              >
                 <CardContent className="p-6 text-center">
                   <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2 text-white">View Progress</h3>

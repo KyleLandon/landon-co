@@ -26,6 +26,7 @@ export default function AdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [editingUser, setEditingUser] = useState<any>(null);
   const [userToDelete, setUserToDelete] = useState<any>(null);
+  const [userSearchTerm, setUserSearchTerm] = useState("");
   
   // Fetch all data
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
@@ -532,6 +533,18 @@ export default function AdminDashboard() {
               <Card className="bg-black border-white/10 border-2">
                 <CardHeader className="border-b border-white/10 pb-4">
                   <CardTitle className="text-white font-mono text-xl">User Management</CardTitle>
+                  {/* User Search */}
+                  <div className="flex items-center gap-4 mt-4">
+                    <div className="relative flex-1">
+                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <Input
+                        placeholder="Search users by email or name..."
+                        value={userSearchTerm}
+                        onChange={(e) => setUserSearchTerm(e.target.value)}
+                        className="pl-10 bg-transparent border-white/20 text-white font-mono focus:border-white/40"
+                      />
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className="pt-6">
                   <div className="overflow-x-auto">
@@ -546,7 +559,13 @@ export default function AdminDashboard() {
                         </tr>
                       </thead>
                       <tbody>
-                        {users.map((user: any) => (
+                        {users
+                          .filter((user: any) => 
+                            userSearchTerm === "" || 
+                            user.email?.toLowerCase().includes(userSearchTerm.toLowerCase()) ||
+                            `${user.firstName || ''} ${user.lastName || ''}`.toLowerCase().includes(userSearchTerm.toLowerCase())
+                          )
+                          .map((user: any) => (
                           <tr key={user.id} className="border-b border-white/5 hover:bg-white/5">
                             <td className="py-3 px-4 text-gray-300 font-mono text-sm">{user.id}</td>
                             <td className="py-3 px-4 text-gray-300 font-mono text-sm">{user.email}</td>
