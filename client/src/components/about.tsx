@@ -4,8 +4,9 @@ import aboutImage from "@assets/image_1751028167774.jpeg";
 
 const About = () => {
   const skills = [
-    "React", "TypeScript", "WordPress", "Shopify", "Figma", "SEO",
-    "Next.js", "Node.js", "Tailwind CSS", "GraphQL", "MongoDB", "Automation"
+    "Web Development", "Branding", "Workflow Automation", "IT Consulting",
+    "Custom Solutions", "Business Strategy", "Technical Support", "Digital Marketing",
+    "React", "TypeScript", "WordPress", "Shopify"
   ];
 
   return (
@@ -46,15 +47,35 @@ const About = () => {
             <motion.div variants={fadeInUp} className="space-y-6">
               <div className="space-y-6 text-lg text-gray-300 leading-relaxed font-mono">
                 <motion.p variants={fadeInUp}>
-                  Hi, I'm Landon – a web designer and developer passionate about creating digital experiences that help local businesses thrive online.
+                  Landon & Co. was founded to help entrepreneurs overcome the hurdle of building a 
+                  digital presence—without breaking the bank. Our mission is simple: provide 
+                  affordable, high-quality services that empower hardworking business owners and 
+                  give them a head start in the modern online world.
                 </motion.p>
                 
                 <motion.p variants={fadeInUp}>
-                  With over 5 years of experience in web development, I specialize in building modern, responsive websites that not only look great but also drive real business results.
+                  We specialize in web development, branding, workflow automations, and IT consulting. 
+                  Whether you're launching your first website or need a digital facelift, Landon & Co. 
+                  is here to guide you. We don't just build sites—we solve problems. From technical 
+                  issues to business process inefficiencies, we offer custom solutions to help your 
+                  business run smarter.
                 </motion.p>
                 
                 <motion.p variants={fadeInUp}>
-                  I'm committed to supporting local businesses and helping them succeed in the digital world through clean design, solid code, and authentic user experiences.
+                  What sets us apart is our commitment to people over profit. We care deeply about 
+                  our clients' success and aim to build lasting relationships based on trust, 
+                  transparency, and results.
+                </motion.p>
+                
+                <motion.p variants={fadeInUp}>
+                  Kyle Landon, the founder, was raised by an entrepreneur and started working in his 
+                  family's small business at the age of 11. Growing up in the fast-paced world of 
+                  small business taught him what owners truly need to succeed—and he's bringing that 
+                  experience to every project.
+                </motion.p>
+                
+                <motion.p variants={fadeInUp} className="text-white font-semibold">
+                  At Landon & Co., we're not just building websites—we're building long-term partnerships.
                 </motion.p>
               </div>
 
