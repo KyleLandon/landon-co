@@ -9,7 +9,7 @@ import AdminLayout from "../admin-layout";
 export default function AdminDashboard() {
   // Fetch dashboard stats
   const { data: stats } = useQuery<any>({
-    queryKey: ["/api/admin/dashboard-stats"],
+    queryKey: ["/api/admin/stats"],
   });
 
   const { data: projects = [] } = useQuery<any[]>({
