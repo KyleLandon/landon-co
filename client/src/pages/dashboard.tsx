@@ -103,7 +103,7 @@ export default function Dashboard() {
                 <CardContent className="pt-6">
                   <Alert className="mb-4">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="text-gray-300">
+                    <AlertDescription className="text-white">
                       Failed to load your projects. Please check your connection and try again.
                     </AlertDescription>
                   </Alert>
@@ -262,7 +262,10 @@ export default function Dashboard() {
           >
             <h2 className="text-2xl font-mono font-bold mb-6">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+              <Card 
+                className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer"
+                onClick={() => window.location.href = "/#work-together"}
+              >
                 <CardContent className="p-6 text-center">
                   <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2">New Project</h3>
@@ -282,7 +285,7 @@ export default function Dashboard() {
                 <CardContent className="p-6 text-center">
                   <User className="w-8 h-8 text-purple-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2">Profile</h3>
-                  <p className="text-gray-400 font-mono text-sm">Update your information</p>
+                  <p className="text-white font-mono text-sm">Update your information</p>
                 </CardContent>
               </Card>
               
@@ -290,7 +293,7 @@ export default function Dashboard() {
                 <CardContent className="p-6 text-center">
                   <MessageCircle className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2">Support</h3>
-                  <p className="text-gray-400 font-mono text-sm">Get help or ask questions</p>
+                  <p className="text-white font-mono text-sm">Get help or ask questions</p>
                 </CardContent>
               </Card>
             </div>
