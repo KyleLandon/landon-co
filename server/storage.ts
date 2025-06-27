@@ -56,6 +56,11 @@ export interface IStorage {
   createProjectUpdate(update: InsertProjectUpdate): Promise<ProjectUpdate>;
   getProjectUpdates(projectId: number): Promise<ProjectUpdate[]>;
   updateProjectUpdateStatus(id: number, isCompleted: boolean): Promise<ProjectUpdate>;
+  
+  // Notification operations
+  getRecentMessages(limit: number): Promise<any[]>;
+  getRecentContacts(limit: number): Promise<Contact[]>;
+  getRecentProjectSubmissions(limit: number): Promise<ProjectSubmission[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -232,6 +237,47 @@ export class DatabaseStorage implements IStorage {
       .where(eq(projectUpdates.id, id))
       .returning();
     return update;
+  }
+
+  // Notification operations
+  async getRecentMessages(limit: number): Promise<any[]> {
+    const result = await db
+      .select({
+        id: messages.id,
+        projectId: messages.projectId,
+        senderId: messages.senderId,
+        message: messages.message,
+        createdAt: messages.createdAt,
+        projectTitle: projects.title,
+        senderName: users.firstName
+      })
+      .from(messages)
+      .leftJoin(projects, eq(messages.projectId, projects.id))
+      .leftJoin(users, eq(messages.senderId, users.id))
+      .orderBy(desc(messages.createdAt))
+      .limit(limit);
+    
+    return result;
+  }
+
+  async getRecentContacts(limit: number): Promise<Contact[]> {
+    const result = await db
+      .select()
+      .from(contacts)
+      .orderBy(desc(contacts.createdAt))
+      .limit(limit);
+    
+    return result;
+  }
+
+  async getRecentProjectSubmissions(limit: number): Promise<ProjectSubmission[]> {
+    const result = await db
+      .select()
+      .from(projectSubmissions)
+      .orderBy(desc(projectSubmissions.createdAt))
+      .limit(limit);
+    
+    return result;
   }
 }
 

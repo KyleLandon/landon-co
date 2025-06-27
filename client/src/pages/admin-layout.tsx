@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
+import { NotificationBell } from "@/components/notification-bell";
 import { Users, FolderOpen, Plus, MessageSquare, Settings, LogOut, Menu, X } from "lucide-react";
 import { Link, useLocation } from "wouter";
 

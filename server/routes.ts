@@ -630,6 +630,53 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get unread message count for admin notifications
+  app.get("/api/admin/unread-count", isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const unreadCount = await storage.getUnreadMessagesCount(userId);
+      res.json(unreadCount);
+    } catch (error) {
+      console.error('Error fetching unread count:', error);
+      res.status(500).json({ message: "Failed to fetch unread count" });
+    }
+  });
+
+  // Get recent activity for admin notifications
+  app.get("/api/admin/recent-activity", isAuthenticated, isAdmin, async (req: any, res) => {
+    try {
+      // Get recent messages, contacts, and project submissions
+      const recentMessages = await storage.getRecentMessages(10);
+      const recentContacts = await storage.getRecentContacts(5);
+      const recentSubmissions = await storage.getRecentProjectSubmissions(5);
+      
+      // Combine and sort by timestamp
+      const activities = [
+        ...recentMessages.map(msg => ({
+          ...msg,
+          type: 'message',
+          createdAt: msg.createdAt
+        })),
+        ...recentContacts.map(contact => ({
+          ...contact,
+          type: 'contact',
+          createdAt: contact.createdAt
+        })),
+        ...recentSubmissions.map(submission => ({
+          ...submission,
+          type: 'submission',
+          createdAt: submission.createdAt
+        }))
+      ].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+       .slice(0, 15); // Keep most recent 15 items
+      
+      res.json(activities);
+    } catch (error) {
+      console.error('Error fetching recent activity:', error);
+      res.status(500).json({ message: "Failed to fetch recent activity" });
+    }
+  });
+
   const httpServer = createServer(app);
   
   // Setup WebSocket server for real-time messaging
