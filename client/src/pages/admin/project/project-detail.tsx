@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,7 +9,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { Edit, Save, X, User, Mail, Phone, Calendar, DollarSign, Clock, MessageCircle } from "lucide-react";
+import { 
+  Edit, 
+  Save, 
+  X, 
+  User, 
+  Mail, 
+  Phone, 
+  Calendar, 
+  DollarSign, 
+  Clock, 
+  MessageCircle, 
+  ArrowLeft, 
+  Activity,
+  FileText,
+  Settings,
+  Users,
+  BarChart3,
+  Timeline
+} from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import AdminLayout from "../admin-layout";
 import type { Project, User as UserType } from "@shared/schema";
