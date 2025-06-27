@@ -39,7 +39,7 @@ export default function AdminProjectMessages() {
   const sendMessage = useMutation({
     mutationFn: async (messageData: { message: string }) => {
       console.log("Sending message from admin:", messageData);
-      return apiRequest(`/api/projects/${id}/messages`, "POST", messageData);
+      return apiRequest("POST", `/api/projects/${id}/messages`, messageData);
     },
     onSuccess: () => {
       console.log("Message sent successfully from admin");
@@ -62,7 +62,7 @@ export default function AdminProjectMessages() {
 
   const markAsRead = useMutation({
     mutationFn: async (messageId: number) => {
-      return apiRequest(`/api/messages/${messageId}/read`, "PATCH");
+      return apiRequest("PATCH", `/api/messages/${messageId}/read`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });

@@ -67,7 +67,7 @@ export default function AdminProjectDetail() {
 
   const updateProject = useMutation({
     mutationFn: async (data: any) => {
-      return apiRequest(`/api/projects/${id}`, "PATCH", data);
+      return apiRequest("PATCH", `/api/projects/${id}`, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}`] });

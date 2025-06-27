@@ -112,7 +112,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
   // Delete file mutation
   const deleteFile = useMutation({
     mutationFn: async (fileId: number) => {
-      return apiRequest(`/api/files/${fileId}`, "DELETE");
+      return apiRequest("DELETE", `/api/files/${fileId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${projectId}/files`] });
@@ -133,7 +133,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
   // Toggle file visibility mutation (admin only)
   const toggleVisibility = useMutation({
     mutationFn: async ({ fileId, isPublic }: { fileId: number; isPublic: boolean }) => {
-      return apiRequest(`/api/files/${fileId}/visibility`, "PATCH", { isPublic });
+      return apiRequest("PATCH", `/api/files/${fileId}/visibility`, { isPublic });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${projectId}/files`] });

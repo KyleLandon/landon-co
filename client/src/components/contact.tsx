@@ -46,7 +46,7 @@ const Contact = () => {
 
   const contactMutation = useMutation({
     mutationFn: async (data: ContactForm) => {
-      return await apiRequest("/api/contact", "POST", data);
+      return await apiRequest("POST", "/api/contact", data);
     },
     onSuccess: () => {
       toast({
@@ -97,7 +97,7 @@ const Contact = () => {
 
   const projectMutation = useMutation({
     mutationFn: async (data: ProjectSubmissionForm) => {
-      return await apiRequest("/api/project-submissions", "POST", data);
+      return await apiRequest("POST", "/api/project-submissions", data);
     },
     onSuccess: (response: any) => {
       if (isAuthenticated && response.project) {

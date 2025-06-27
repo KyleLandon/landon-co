@@ -87,7 +87,7 @@ export default function AdvancedMessaging({
 
   const sendMessageMutation = useMutation({
     mutationFn: async (data: { message: string; replyTo?: number }) => {
-      return apiRequest(`/api/projects/${projectId}/messages`, "POST", {
+      return apiRequest("POST", `/api/projects/${projectId}/messages`, {
         message: data.message,
         replyTo: data.replyTo
       });
