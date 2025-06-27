@@ -17,6 +17,7 @@ import AdminClients from "@/pages/admin/clients";
 import AdminMessages from "@/pages/admin/messages";
 import AdminSettings from "@/pages/admin/settings";
 import ProjectDetail from "@/pages/project-detail";
+
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -36,13 +37,7 @@ function Router() {
         <>
           <Route path="/dashboard" component={Dashboard} />
           <Route path="/project/:id" component={ProjectDetail} />
-          <Route path="/projects/:id" component={ProjectOverview} />
-          <Route path="/projects/:id/messages" component={ProjectMessages} />
-          <Route path="/projects/:id/timeline" component={ProjectDetail} />
-          <Route path="/projects/:id/updates" component={ProjectDetail} />
-          <Route path="/projects/:id/invoices" component={ProjectDetail} />
-          <Route path="/projects/:id/files" component={ProjectDetail} />
-          <Route path="/projects/:id/settings" component={ProjectDetail} />
+
         </>
       )}
       
