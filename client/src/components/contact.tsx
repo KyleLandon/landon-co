@@ -97,7 +97,7 @@ const Contact = () => {
 
   const projectMutation = useMutation({
     mutationFn: async (data: ProjectSubmissionForm) => {
-      return await apiRequest("/api/project-submissions", "POST", data);
+      return await apiRequest("POST", "/api/project-submissions", data);
     },
     onSuccess: (response: any) => {
       if (isAuthenticated && response.project) {
