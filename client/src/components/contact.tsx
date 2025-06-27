@@ -85,6 +85,7 @@ const Contact = () => {
       budget: "",
       timeline: "",
       description: "",
+      website: "",
     },
   });
 
@@ -244,6 +245,26 @@ const Contact = () => {
                               placeholder="your@email.com" 
                               className="bg-zinc-800 border-gray-700 text-white font-mono"
                               {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={projectForm.control}
+                      name="website"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono">Current Website (if any)</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="https://yourwebsite.com" 
+                              className="bg-zinc-800 border-gray-700 text-white font-mono"
+                              value={field.value || ""}
+                              onChange={field.onChange}
+                              onBlur={field.onBlur}
+                              name={field.name}
                             />
                           </FormControl>
                           <FormMessage />
