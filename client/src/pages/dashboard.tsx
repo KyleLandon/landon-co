@@ -1,20 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
-import { Clock, MessageCircle, CheckCircle, DollarSign, User, LogOut } from "lucide-react";
+import { Clock, MessageCircle, CheckCircle, DollarSign, User, LogOut, AlertCircle, RefreshCw, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
+import { LoadingPage, LoadingCard } from "@/components/ui/loading-spinner";
+import { ErrorBoundary } from "@/components/error-boundary";
+import { useToast } from "@/hooks/use-toast";
 import type { Project } from "@/types";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, authError, refetchAuth } = useAuth();
+  const { toast } = useToast();
   
-  const { data: projects = [], isLoading } = useQuery<Project[]>({
+  const { data: projects = [], isLoading, error, refetch } = useQuery<Project[]>({
     queryKey: ["/api/my-projects"],
+    retry: (failureCount, error) => {
+      if (error?.message?.includes("401") || error?.message?.includes("403")) {
+        return false;
+      }
+      return failureCount < 2;
+    },
   });
+
+  // Handle errors separately using useEffect for better error management
+  if (error && !error.message.includes("401")) {
+    console.error("Failed to load projects:", error);
+  }
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -37,12 +53,79 @@ export default function Dashboard() {
   };
 
   if (isLoading) {
+    return <LoadingPage message="Loading your dashboard..." />;
+  }
+
+  // Handle authentication errors
+  if (authError) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white font-mono">Loading your dashboard...</p>
+      <div className="min-h-screen bg-black flex items-center justify-center p-6">
+        <Card className="bg-gray-900 border-gray-700 max-w-md">
+          <CardContent className="pt-6">
+            <Alert className="mb-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="text-gray-300">
+                Authentication error. Please try logging in again.
+              </AlertDescription>
+            </Alert>
+            <div className="flex space-x-3">
+              <Button onClick={() => refetchAuth()} className="flex-1 bg-white text-black font-mono">
+                <RefreshCw className="w-4 h-4 mr-2" />
+                Retry
+              </Button>
+              <Button 
+                onClick={() => window.location.href = "/api/login"}
+                variant="outline" 
+                className="flex-1 border-gray-600 text-white font-mono"
+              >
+                Sign In Again
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Handle project loading errors
+  if (error && !error.message.includes("401")) {
+    return (
+      <div className="min-h-screen bg-black text-white">
+        <Navigation />
+        <div className="pt-24 pb-16">
+          <div className="container mx-auto px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="max-w-md mx-auto"
+            >
+              <Card className="bg-gray-900 border-gray-700">
+                <CardContent className="pt-6">
+                  <Alert className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription className="text-gray-300">
+                      Failed to load your projects. Please check your connection and try again.
+                    </AlertDescription>
+                  </Alert>
+                  <div className="flex space-x-3">
+                    <Button onClick={() => refetch()} className="flex-1 bg-white text-black font-mono">
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      Try Again
+                    </Button>
+                    <Button 
+                      onClick={() => window.location.href = "/"}
+                      variant="outline" 
+                      className="flex-1 border-gray-600 text-white font-mono"
+                    >
+                      Go Home
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
+        <Footer />
       </div>
     );
   }
