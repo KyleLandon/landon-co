@@ -38,6 +38,7 @@ export default function Dashboard() {
       case "active": return "bg-green-500";
       case "proposal": return "bg-yellow-500";
       case "completed": return "bg-blue-500";
+      case "pending": return "bg-orange-500";
       case "inquiry": return "bg-gray-500";
       default: return "bg-gray-500";
     }
@@ -48,6 +49,7 @@ export default function Dashboard() {
       case "active": return "In Progress";
       case "proposal": return "Proposal";
       case "completed": return "Completed";
+      case "pending": return "Pending Review";
       case "inquiry": return "Initial Inquiry";
       default: return status;
     }

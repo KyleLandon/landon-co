@@ -93,6 +93,7 @@ export default function AdminDashboard() {
       case "active": return "bg-green-500";
       case "proposal": return "bg-yellow-500";
       case "completed": return "bg-blue-500";
+      case "pending": return "bg-orange-500";
       case "inquiry": return "bg-gray-500";
       default: return "bg-gray-500";
     }
@@ -103,6 +104,7 @@ export default function AdminDashboard() {
       case "active": return "In Progress";
       case "proposal": return "Proposal";
       case "completed": return "Completed";
+      case "pending": return "Pending Review";
       case "inquiry": return "Initial Inquiry";
       default: return status;
     }
@@ -122,7 +124,7 @@ export default function AdminDashboard() {
   const activeProjects = projects.filter((p: any) => p.status === "active").length;
   const totalRevenue = projects.reduce((sum: number, p: any) => sum + (parseFloat(p.budget) || 0), 0);
   const pendingContacts = contacts.filter((c: any) => !c.responded).length;
-  const pendingSubmissions = projectSubmissions.filter((s: any) => s.status === "pending").length;
+  const pendingSubmissions = Array.isArray(projectSubmissions) ? projectSubmissions.filter((s: any) => s.status === "pending").length : 0;
 
   return (
     <div className="min-h-screen bg-black text-white">
