@@ -54,7 +54,7 @@ const Navigation = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             className="cursor-pointer group"
-            onClick={() => scrollToSection("home")}
+            onClick={() => window.location.href = "/"}
           >
             <img
               src={whiteLogo}

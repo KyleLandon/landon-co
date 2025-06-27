@@ -180,9 +180,9 @@ export default function Dashboard() {
             {projects.length === 0 ? (
               <Card className="bg-zinc-900 border-zinc-800 text-center py-12">
                 <CardContent className="pt-6">
-                  <MessageCircle className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+                  <MessageCircle className="w-16 h-16 text-white mx-auto mb-4" />
                   <h3 className="text-xl font-mono font-bold mb-2">No Projects Yet</h3>
-                  <p className="text-gray-400 font-mono mb-6">
+                  <p className="text-white font-mono mb-6">
                     When you start working with us, your projects will appear here.
                   </p>
                   <Button
@@ -212,7 +212,7 @@ export default function Dashboard() {
                             {getStatusText(project.status)}
                           </Badge>
                         </div>
-                        <CardDescription className="font-mono text-gray-400">
+                        <CardDescription className="font-mono text-white">
                           {project.description}
                         </CardDescription>
                       </CardHeader>
@@ -231,7 +231,7 @@ export default function Dashboard() {
                           {project.startDate && (
                             <div className="flex items-center space-x-2">
                               <Clock className="w-4 h-4 text-blue-500" />
-                              <span className="font-mono text-sm text-gray-400">
+                              <span className="font-mono text-sm text-white">
                                 Started {new Date(project.startDate).toLocaleDateString()}
                               </span>
                             </div>
@@ -266,7 +266,7 @@ export default function Dashboard() {
                 <CardContent className="p-6 text-center">
                   <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2">New Project</h3>
-                  <p className="text-gray-400 font-mono text-sm">Start a new project with us</p>
+                  <p className="text-white font-mono text-sm">Start a new project with us</p>
                 </CardContent>
               </Card>
               
@@ -274,7 +274,7 @@ export default function Dashboard() {
                 <CardContent className="p-6 text-center">
                   <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
                   <h3 className="font-mono font-bold mb-2">View Progress</h3>
-                  <p className="text-gray-400 font-mono text-sm">Check project milestones</p>
+                  <p className="text-white font-mono text-sm">Check project milestones</p>
                 </CardContent>
               </Card>
               
