@@ -105,6 +105,22 @@ export const projectSubmissions = pgTable("project_submissions", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Project files for file sharing and storage
+export const projectFiles = pgTable("project_files", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer("project_id").references(() => projects.id, { onDelete: "cascade" }).notNull(),
+  uploadedBy: varchar("uploaded_by").references(() => users.id).notNull(),
+  fileName: varchar("file_name").notNull(),
+  originalName: varchar("original_name").notNull(),
+  fileSize: integer("file_size").notNull(),
+  mimeType: varchar("mime_type").notNull(),
+  filePath: varchar("file_path").notNull(),
+  fileCategory: varchar("file_category").default("general").notNull(), // general, asset, deliverable, reference
+  description: text("description"),
+  isPublic: boolean("is_public").default(false).notNull(), // visible to client
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   projects: many(projects),
@@ -118,6 +134,7 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
   }),
   messages: many(messages),
   updates: many(projectUpdates),
+  files: many(projectFiles),
 }));
 
 export const messagesRelations = relations(messages, ({ one }) => ({
@@ -135,6 +152,17 @@ export const projectUpdatesRelations = relations(projectUpdates, ({ one }) => ({
   project: one(projects, {
     fields: [projectUpdates.projectId],
     references: [projects.id],
+  }),
+}));
+
+export const projectFilesRelations = relations(projectFiles, ({ one }) => ({
+  project: one(projects, {
+    fields: [projectFiles.projectId],
+    references: [projects.id],
+  }),
+  uploader: one(users, {
+    fields: [projectFiles.uploadedBy],
+    references: [users.id],
   }),
 }));
 
@@ -190,6 +218,19 @@ export const insertProjectSubmissionSchema = createInsertSchema(projectSubmissio
   additionalNotes: true,
 });
 
+export const insertProjectFileSchema = createInsertSchema(projectFiles).pick({
+  projectId: true,
+  uploadedBy: true,
+  fileName: true,
+  originalName: true,
+  fileSize: true,
+  mimeType: true,
+  filePath: true,
+  fileCategory: true,
+  description: true,
+  isPublic: true,
+});
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -203,3 +244,5 @@ export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
 export type InsertProjectSubmission = z.infer<typeof insertProjectSubmissionSchema>;
 export type ProjectSubmission = typeof projectSubmissions.$inferSelect;
+export type InsertProjectFile = z.infer<typeof insertProjectFileSchema>;
+export type ProjectFile = typeof projectFiles.$inferSelect;
