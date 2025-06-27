@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { insertContactSchema } from "@shared/schema";
 import type { z } from "zod";
-import { Mail, Phone, MessageCircle, ExternalLink } from "lucide-react";
+import { Mail, Phone, MessageCircle, ExternalLink, Instagram, Twitter, Briefcase } from "lucide-react";
 import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
 
 const formSchema = insertContactSchema.extend({
@@ -101,7 +101,7 @@ const Contact = () => {
               <p className="text-gray-400 font-mono text-lg">Ready to start your project? Reach out using any method below</p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-6">
               {/* Email Card */}
               <motion.a
                 href="mailto:info@landonco.co"
@@ -172,6 +172,84 @@ const Contact = () => {
                   </div>
                 </div>
               </motion.div>
+
+              {/* Instagram Card */}
+              <motion.a
+                href="https://instagram.com/landonandco"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <Instagram className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Instagram</h4>
+                    <p className="text-gray-300 font-mono text-sm">@landonandco</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">Follow</span>
+                  </div>
+                </div>
+              </motion.a>
+
+              {/* X (Twitter) Card */}
+              <motion.a
+                href="https://x.com/landonandco"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.5 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <Twitter className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">X (Twitter)</h4>
+                    <p className="text-gray-300 font-mono text-sm">@landonandco</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">Follow</span>
+                  </div>
+                </div>
+              </motion.a>
+
+              {/* Indeed Card */}
+              <motion.a
+                href="https://indeed.com/cmp/landon-and-co"
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <Briefcase className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Indeed</h4>
+                    <p className="text-gray-300 font-mono text-sm">Company Profile</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">View Jobs</span>
+                  </div>
+                </div>
+              </motion.a>
             </div>
           </motion.div>
         </div>
