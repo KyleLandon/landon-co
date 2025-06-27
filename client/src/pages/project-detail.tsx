@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
+import AdvancedMessaging from "@/components/advanced-messaging";
 import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import type { Project, Message, ProjectUpdate } from "@/types";
@@ -23,7 +24,6 @@ export default function ProjectDetail() {
   const { user } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [messageText, setMessageText] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -33,7 +33,6 @@ export default function ProjectDetail() {
     startDate: "",
     endDate: ""
   });
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const projectId = parseInt(id || "0");
 
   const { data: project, isLoading: projectLoading } = useQuery<Project>({
@@ -250,7 +249,28 @@ export default function ProjectDetail() {
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <Navigation />
+      {/* Simplified Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/10">
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <div className="flex items-center">
+              <img 
+                src="/attached_assets/white_transparent_1750909506258.png" 
+                alt="Landon & Co." 
+                className="h-8 w-auto"
+              />
+            </div>
+            
+            {/* User Menu */}
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <User className="w-4 h-4 text-black" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
       
       <div className="pt-24 pb-16">
         <div className="container mx-auto px-6">
@@ -397,7 +417,7 @@ export default function ProjectDetail() {
             transition={{ delay: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
           >
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-black border-white/20">
               <CardHeader>
                 <CardTitle className="font-mono text-white flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
@@ -426,7 +446,7 @@ export default function ProjectDetail() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-black border-white/20">
               <CardHeader>
                 <CardTitle className="font-mono text-white flex items-center">
                   <MessageCircle className="w-4 h-4 mr-2" />
@@ -442,7 +462,7 @@ export default function ProjectDetail() {
             </Card>
 
             {project.budget && (
-              <Card className="bg-gray-900 border-gray-700">
+              <Card className="bg-black border-white/20">
                 <CardHeader>
                   <CardTitle className="font-mono text-white">Budget</CardTitle>
                 </CardHeader>
@@ -463,7 +483,7 @@ export default function ProjectDetail() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
             >
-              <Card className="bg-gray-900 border-gray-700">
+              <Card className="bg-black border-white/20">
                 <CardHeader>
                   <CardTitle className="font-mono text-white">Project Updates</CardTitle>
                   <CardDescription className="text-gray-400">
@@ -505,65 +525,22 @@ export default function ProjectDetail() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
             >
-              <Card className="bg-gray-900 border-gray-700">
+              <Card className="bg-black border-white/20">
                 <CardHeader>
                   <CardTitle className="font-mono text-white">Messages</CardTitle>
                   <CardDescription className="text-gray-400">
                     Communication with the development team
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  {/* Messages List */}
-                  <div className="space-y-4 max-h-64 overflow-y-auto mb-4">
-                    {messages.length === 0 ? (
-                      <p className="text-gray-400 font-mono text-center py-8">
-                        No messages yet. Start the conversation!
-                      </p>
-                    ) : (
-                      <>
-                        {messages.map((message: any) => (
-                          <div key={message.id} className="flex space-x-3">
-                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                              <User className="w-4 h-4 text-gray-300" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2 mb-1">
-                                <span className="font-mono text-sm text-white">
-                                  {message.senderId === user?.id ? "You" : "Admin"}
-                                </span>
-                                <span className="text-xs text-gray-400 font-mono">
-                                  {new Date(message.createdAt).toLocaleString()}
-                                </span>
-                              </div>
-                              <p className="text-gray-300 font-mono text-sm">
-                                {message.message}
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-                        <div ref={messagesEndRef} />
-                      </>
-                    )}
-                  </div>
-
-                  {/* Send Message Form */}
-                  <form onSubmit={handleSendMessage} className="flex space-x-2">
-                    <Input
-                      value={messageText}
-                      onChange={(e) => setMessageText(e.target.value)}
-                      placeholder="Type your message..."
-                      className="bg-black border-gray-700 font-mono"
-                      disabled={sendMessageMutation.isPending}
+                <CardContent className="p-0">
+                  <div className="h-96">
+                    <AdvancedMessaging
+                      projectId={id || ""}
+                      messages={messages}
+                      currentUserId={user?.id || ""}
+                      isAdmin={user?.role === "admin"}
                     />
-                    <Button 
-                      type="submit" 
-                      size="icon"
-                      disabled={sendMessageMutation.isPending || !messageText.trim()}
-                      className="bg-white text-black hover:bg-gray-200"
-                    >
-                      <Send className="w-4 h-4" />
-                    </Button>
-                  </form>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
