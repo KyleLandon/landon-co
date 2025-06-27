@@ -154,7 +154,7 @@ export default function ProjectOverviewSimple() {
         {/* Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Messages */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-black border-white">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <MessageCircle className="w-5 h-5 mr-2" />
@@ -165,12 +165,12 @@ export default function ProjectOverviewSimple() {
               {messageCount > 0 ? (
                 <div className="space-y-3">
                   {Array.isArray(messages) && messages.slice(-3).map((message: any) => (
-                    <div key={message.id} className="p-3 bg-gray-800 rounded-lg">
+                    <div key={message.id} className="p-3 bg-black border border-white rounded-lg">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm text-gray-400 font-mono">
+                        <span className="text-sm text-white font-mono">
                           {message.senderId === (project as any)?.clientId ? "You" : "Admin"}
                         </span>
-                        <span className="text-xs text-gray-500 font-mono">
+                        <span className="text-xs text-white font-mono">
                           {new Date(message.createdAt).toLocaleDateString()}
                         </span>
                       </div>
@@ -181,7 +181,7 @@ export default function ProjectOverviewSimple() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-400 font-mono text-center py-4">
+                <p className="text-white font-mono text-center py-4">
                   No messages yet
                 </p>
               )}
@@ -189,7 +189,7 @@ export default function ProjectOverviewSimple() {
           </Card>
 
           {/* Project Info */}
-          <Card className="bg-gray-900 border-gray-800">
+          <Card className="bg-black border-white">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2" />
@@ -199,14 +199,14 @@ export default function ProjectOverviewSimple() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <div className="text-sm text-gray-400 font-mono mb-1">Status</div>
+                  <div className="text-sm text-white font-mono mb-1">Status</div>
                   <div className="text-white font-mono">
                     {getStatusText((project as any)?.status || "proposal")}
                   </div>
                 </div>
                 {(project as any)?.startDate && (
                   <div>
-                    <div className="text-sm text-gray-400 font-mono mb-1">Start Date</div>
+                    <div className="text-sm text-white font-mono mb-1">Start Date</div>
                     <div className="text-white font-mono">
                       {new Date((project as any).startDate).toLocaleDateString()}
                     </div>
@@ -214,7 +214,7 @@ export default function ProjectOverviewSimple() {
                 )}
                 {(project as any)?.endDate && (
                   <div>
-                    <div className="text-sm text-gray-400 font-mono mb-1">Expected Completion</div>
+                    <div className="text-sm text-white font-mono mb-1">Expected Completion</div>
                     <div className="text-white font-mono">
                       {new Date((project as any).endDate).toLocaleDateString()}
                     </div>
