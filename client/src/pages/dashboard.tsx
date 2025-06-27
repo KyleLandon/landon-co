@@ -294,7 +294,7 @@ export default function Dashboard() {
                           )}
                           
                           <Button
-                            onClick={() => window.location.href = `/project/${project.id}`}
+                            onClick={() => window.location.href = `/projects/${project.id}`}
                             className="w-full bg-white text-black hover:bg-gray-200 font-mono mt-4"
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
