@@ -19,6 +19,11 @@ import AdminSettings from "@/pages/admin/settings";
 import ProjectDetail from "@/pages/project-detail";
 import ProjectOverviewSimple from "@/pages/project-overview-simple";
 import ProjectMessages from "@/pages/project-messages";
+import ProjectTimeline from "@/pages/project-timeline";
+import ProjectUpdates from "@/pages/project-updates";
+import ProjectInvoices from "@/pages/project-invoices";
+import ProjectFiles from "@/pages/project-files";
+import ProjectSettings from "@/pages/project-settings";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -40,11 +45,11 @@ function Router() {
           <Route path="/project/:id" component={ProjectDetail} />
           <Route path="/projects/:id" component={ProjectOverviewSimple} />
           <Route path="/projects/:id/messages" component={ProjectMessages} />
-          <Route path="/projects/:id/timeline" component={ProjectDetail} />
-          <Route path="/projects/:id/updates" component={ProjectDetail} />
-          <Route path="/projects/:id/invoices" component={ProjectDetail} />
-          <Route path="/projects/:id/files" component={ProjectDetail} />
-          <Route path="/projects/:id/settings" component={ProjectDetail} />
+          <Route path="/projects/:id/timeline" component={ProjectTimeline} />
+          <Route path="/projects/:id/updates" component={ProjectUpdates} />
+          <Route path="/projects/:id/invoices" component={ProjectInvoices} />
+          <Route path="/projects/:id/files" component={ProjectFiles} />
+          <Route path="/projects/:id/settings" component={ProjectSettings} />
         </>
       )}
       

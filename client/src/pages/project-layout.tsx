@@ -76,9 +76,9 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Mobile header */}
-      <div className="lg:hidden bg-gray-900 border-b border-gray-800 p-4">
+      <div className="lg:hidden bg-black border-b border-white p-4">
         <div className="flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono">
+          <Link href="/dashboard" className="flex items-center text-white hover:text-white font-mono">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Link>
