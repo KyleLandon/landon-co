@@ -152,7 +152,7 @@ export default function AdminProjectDetail() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-mono font-bold text-white">{project.title} ⭐ NEW DESIGN LOADED ⭐</h1>
+                <h1 className="text-2xl font-mono font-bold text-white">{project.title}</h1>
                 <p className="text-gray-400 font-mono text-sm mt-1">{project.description}</p>
               </div>
             </div>
@@ -522,6 +522,18 @@ export default function AdminProjectDetail() {
                     <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <Settings className="w-4 h-4 mr-2" />
                       Manage Files
+                    </Button>
+                  </Link>
+                  <Link href={`/admin/projects/${id}/contracts`}>
+                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                      <FileText className="w-4 h-4 mr-2" />
+                      Contracts
+                    </Button>
+                  </Link>
+                  <Link href={`/admin/projects/${id}/invoices`}>
+                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                      <DollarSign className="w-4 h-4 mr-2" />
+                      Invoices
                     </Button>
                   </Link>
                 </CardContent>

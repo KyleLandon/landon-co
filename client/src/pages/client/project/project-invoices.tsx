@@ -1,254 +1,352 @@
+import { useState } from "react";
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Receipt, Download, DollarSign, Calendar, FileText, CreditCard } from "lucide-react";
-import ProjectLayout from "./project-layout";
-import type { Project } from "@shared/schema";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Receipt, Calendar, DollarSign, CheckCircle, CreditCard, Download, Clock } from "lucide-react";
+import type { Project, Invoice } from "@shared/schema";
 
-// Mock invoice data structure for now
-interface Invoice {
-  id: number;
-  number: string;
-  amount: number;
-  status: "paid" | "pending" | "overdue";
-  dueDate: Date;
-  issueDate: Date;
-  description: string;
-  items: {
-    description: string;
-    quantity: number;
-    rate: number;
-    amount: number;
-  }[];
-}
-
-export default function ProjectInvoices() {
+export default function ClientProjectInvoices() {
   const { id } = useParams();
+  const [payingInvoice, setPayingInvoice] = useState<Invoice | null>(null);
 
-  const { data: project, isLoading } = useQuery<Project>({
+  const { data: project, isLoading: projectLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${id}`],
     enabled: !!id,
   });
 
-  if (isLoading) {
-    return (
-      <ProjectLayout>
-        <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading invoices...</div>
-        </div>
-      </ProjectLayout>
-    );
-  }
-
-  // Mock invoices for demonstration
-  const invoices: Invoice[] = [
-    {
-      id: 1,
-      number: "INV-2024-001",
-      amount: 2500,
-      status: "paid",
-      dueDate: new Date("2024-12-15"),
-      issueDate: new Date("2024-11-15"),
-      description: "Initial project setup and wireframes",
-      items: [
-        { description: "Project Planning & Strategy", quantity: 1, rate: 800, amount: 800 },
-        { description: "Wireframe Design", quantity: 1, rate: 600, amount: 600 },
-        { description: "Initial Development Setup", quantity: 1, rate: 1100, amount: 1100 }
-      ]
-    },
-    {
-      id: 2,
-      number: "INV-2024-002",
-      amount: 3500,
-      status: "pending",
-      dueDate: new Date("2025-01-15"),
-      issueDate: new Date("2024-12-15"),
-      description: "Frontend development and design implementation",
-      items: [
-        { description: "Frontend Development", quantity: 1, rate: 2000, amount: 2000 },
-        { description: "UI/UX Implementation", quantity: 1, rate: 1500, amount: 1500 }
-      ]
-    }
-  ];
-
-  const totalAmount = invoices.reduce((sum, inv) => sum + inv.amount, 0);
-  const paidAmount = invoices.filter(inv => inv.status === "paid").reduce((sum, inv) => sum + inv.amount, 0);
-  const pendingAmount = invoices.filter(inv => inv.status === "pending").reduce((sum, inv) => sum + inv.amount, 0);
+  const { data: invoices = [], isLoading: invoicesLoading } = useQuery<Invoice[]>({
+    queryKey: [`/api/projects/${id}/invoices`],
+    enabled: !!id,
+  });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "paid": return "bg-green-900 text-green-300";
-      case "pending": return "bg-yellow-900 text-yellow-300";
-      case "overdue": return "bg-red-900 text-red-300";
-      default: return "bg-gray-900 text-gray-300";
+      case "paid": return "bg-green-500";
+      case "sent": return "bg-blue-500";
+      case "draft": return "bg-gray-500";
+      case "overdue": return "bg-red-500";
+      case "cancelled": return "bg-orange-500";
+      default: return "bg-gray-500";
     }
   };
 
+  const isOverdue = (invoice: Invoice) => {
+    if (!invoice.dueDate || invoice.status === "paid") return false;
+    return new Date(invoice.dueDate) < new Date();
+  };
+
+  const formatCurrency = (amount: string) => {
+    const num = parseFloat(amount);
+    return num.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  };
+
+  if (projectLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-400 font-mono">Loading project...</div>
+      </div>
+    );
+  }
+
+  if (!project) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-gray-400 font-mono">Project not found</div>
+      </div>
+    );
+  }
+
   return (
-    <ProjectLayout>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Invoices</h1>
-            <p className="text-gray-400 font-mono mt-2">Billing and payment information</p>
-          </div>
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-white font-mono">Invoices</h1>
+        <p className="text-gray-400 font-mono mt-2">
+          View and pay invoices for project: {project.title}
+        </p>
+      </div>
 
-        {/* Financial Overview */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <DollarSign className="w-8 h-8 text-blue-400 mr-3" />
-                <div>
-                  <p className="text-2xl font-bold text-white font-mono">${totalAmount.toLocaleString()}</p>
-                  <p className="text-gray-400 font-mono text-sm">Total Project Value</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <CreditCard className="w-8 h-8 text-green-400 mr-3" />
-                <div>
-                  <p className="text-2xl font-bold text-white font-mono">${paidAmount.toLocaleString()}</p>
-                  <p className="text-gray-400 font-mono text-sm">Paid</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <Receipt className="w-8 h-8 text-yellow-400 mr-3" />
-                <div>
-                  <p className="text-2xl font-bold text-white font-mono">${pendingAmount.toLocaleString()}</p>
-                  <p className="text-gray-400 font-mono text-sm">Pending</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 border-gray-800">
-            <CardContent className="p-6">
-              <div className="flex items-center">
-                <FileText className="w-8 h-8 text-purple-400 mr-3" />
-                <div>
-                  <p className="text-2xl font-bold text-white font-mono">{invoices.length}</p>
-                  <p className="text-gray-400 font-mono text-sm">Invoices</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Invoices List */}
+      {/* Invoice Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white font-mono flex items-center">
-              <Receipt className="w-5 h-5 mr-2" />
-              Invoice History
-            </CardTitle>
-            <CardDescription className="text-gray-400 font-mono">
-              All invoices for this project
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {invoices.map((invoice) => (
-                <div key={invoice.id} className="p-6 bg-gray-800 rounded-lg border border-gray-700">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-white font-mono font-semibold text-lg">{invoice.number}</h3>
-                      <p className="text-gray-400 font-mono text-sm mt-1">{invoice.description}</p>
-                      <div className="flex items-center space-x-4 mt-3">
-                        <Badge className={`font-mono ${getStatusColor(invoice.status)}`}>
-                          {invoice.status.toUpperCase()}
-                        </Badge>
-                        <span className="text-gray-500 font-mono text-xs flex items-center">
-                          <Calendar className="w-3 h-3 mr-1" />
-                          Due: {invoice.dueDate.toLocaleDateString()}
-                        </span>
-                        <span className="text-gray-500 font-mono text-xs">
-                          Issued: {invoice.issueDate.toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-2xl font-bold text-white font-mono">${invoice.amount.toLocaleString()}</p>
-                      <Button variant="outline" size="sm" className="mt-3 bg-gray-700 border-gray-600 text-white hover:bg-gray-600 font-mono">
-                        <Download className="w-4 h-4 mr-2" />
-                        Download PDF
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Invoice Items */}
-                  <div className="border-t border-gray-700 pt-4">
-                    <h4 className="text-gray-300 font-mono font-semibold mb-3">Invoice Items</h4>
-                    <div className="space-y-2">
-                      {invoice.items.map((item, index) => (
-                        <div key={index} className="flex justify-between items-center text-sm font-mono">
-                          <span className="text-gray-400">{item.description}</span>
-                          <span className="text-white">${item.amount.toLocaleString()}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {invoices.length === 0 && (
-              <div className="text-center py-12">
-                <Receipt className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 font-mono">No invoices yet</p>
-                <p className="text-gray-500 font-mono text-sm mt-2">
-                  Invoices will appear here as the project progresses
-                </p>
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 font-mono text-xs">Total Invoices</p>
+                <p className="text-white font-mono text-xl font-bold">{invoices.length}</p>
               </div>
-            )}
+              <Receipt className="w-8 h-8 text-blue-400" />
+            </div>
           </CardContent>
         </Card>
 
-        {/* Payment Information */}
         <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white font-mono flex items-center">
-              <CreditCard className="w-5 h-5 mr-2" />
-              Payment Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-white font-mono font-semibold mb-3">Payment Methods</h4>
-                <div className="space-y-2 text-sm font-mono text-gray-400">
-                  <p>• Bank Transfer (ACH)</p>
-                  <p>• Wire Transfer</p>
-                  <p>• Check (upon request)</p>
-                  <p>• Online Payment Portal</p>
-                </div>
+                <p className="text-gray-400 font-mono text-xs">Paid</p>
+                <p className="text-green-400 font-mono text-xl font-bold">
+                  {invoices.filter(inv => inv.status === "paid").length}
+                </p>
               </div>
+              <CheckCircle className="w-8 h-8 text-green-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
               <div>
-                <h4 className="text-white font-mono font-semibold mb-3">Payment Terms</h4>
-                <div className="space-y-2 text-sm font-mono text-gray-400">
-                  <p>• Net 30 days from invoice date</p>
-                  <p>• Late fees apply after 30 days</p>
-                  <p>• Payment confirmation via email</p>
-                  <p>• Contact for payment questions</p>
-                </div>
+                <p className="text-gray-400 font-mono text-xs">Pending</p>
+                <p className="text-yellow-400 font-mono text-xl font-bold">
+                  {invoices.filter(inv => inv.status === "sent").length}
+                </p>
               </div>
+              <Clock className="w-8 h-8 text-yellow-400" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-gray-400 font-mono text-xs">Total Amount</p>
+                <p className="text-white font-mono text-xl font-bold">
+                  {formatCurrency(
+                    invoices.reduce((sum, inv) => sum + parseFloat(inv.totalAmount), 0).toString()
+                  )}
+                </p>
+              </div>
+              <DollarSign className="w-8 h-8 text-green-400" />
             </div>
           </CardContent>
         </Card>
       </div>
-    </ProjectLayout>
+
+      {/* Invoices List */}
+      {invoicesLoading ? (
+        <div className="flex items-center justify-center h-32">
+          <div className="text-gray-400 font-mono">Loading invoices...</div>
+        </div>
+      ) : invoices.length === 0 ? (
+        <Card className="bg-gray-900 border-gray-800">
+          <CardContent className="p-12 text-center">
+            <Receipt className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <h3 className="text-xl font-mono text-white mb-2">No Invoices Yet</h3>
+            <p className="text-gray-400 font-mono">
+              Invoices will appear here when your project manager sends them
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-6">
+          {invoices.map((invoice) => (
+            <Card key={invoice.id} className={`bg-gray-900 border-gray-800 ${isOverdue(invoice) ? 'border-red-500' : ''}`}>
+              <CardHeader>
+                <div className="flex justify-between items-start">
+                  <div>
+                    <CardTitle className="text-white font-mono text-xl">{invoice.title}</CardTitle>
+                    <CardDescription className="text-gray-400 font-mono mt-1">
+                      Invoice #{invoice.invoiceNumber}
+                    </CardDescription>
+                    {invoice.description && (
+                      <CardDescription className="text-gray-400 font-mono mt-2">
+                        {invoice.description}
+                      </CardDescription>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <Badge className={`${getStatusColor(invoice.status)} text-white font-mono`}>
+                      {invoice.status?.toUpperCase()}
+                    </Badge>
+                    {isOverdue(invoice) && (
+                      <Badge className="bg-red-500 text-white font-mono">
+                        OVERDUE
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+                  <div className="flex items-center text-green-400 font-mono text-lg font-bold">
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    {formatCurrency(invoice.totalAmount)}
+                  </div>
+                  <div className="flex items-center text-blue-400 font-mono text-sm">
+                    <Calendar className="w-4 h-4 mr-2" />
+                    Created {invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString() : "Unknown"}
+                  </div>
+                  {invoice.dueDate && (
+                    <div className={`flex items-center font-mono text-sm ${isOverdue(invoice) ? 'text-red-400' : 'text-orange-400'}`}>
+                      <Clock className="w-4 h-4 mr-2" />
+                      Due {new Date(invoice.dueDate).toLocaleDateString()}
+                    </div>
+                  )}
+                  {invoice.paidAt && (
+                    <div className="flex items-center text-green-400 font-mono text-sm">
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Paid {new Date(invoice.paidAt).toLocaleDateString()}
+                    </div>
+                  )}
+                </div>
+
+                {/* Invoice Items Preview */}
+                {invoice.items && Array.isArray(invoice.items) && (
+                  <div className="bg-gray-800 p-4 rounded-lg mb-4">
+                    <h4 className="text-white font-mono text-sm font-bold mb-3">Invoice Items:</h4>
+                    <div className="space-y-2">
+                      {(invoice.items as any[]).slice(0, 3).map((item: any, index: number) => (
+                        <div key={index} className="flex justify-between items-center text-sm">
+                          <span className="text-gray-300 font-mono">
+                            {item.description} (Qty: {item.quantity})
+                          </span>
+                          <span className="text-white font-mono">
+                            {formatCurrency((item.quantity * item.rate).toString())}
+                          </span>
+                        </div>
+                      ))}
+                      {(invoice.items as any[]).length > 3 && (
+                        <p className="text-gray-400 font-mono text-xs">
+                          ... and {(invoice.items as any[]).length - 3} more items
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div className="border-t border-gray-600 pt-3 mt-3">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-400 font-mono">Subtotal:</span>
+                        <span className="text-white font-mono">{formatCurrency(invoice.subtotal)}</span>
+                      </div>
+                      {parseFloat(invoice.taxAmount) > 0 && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-400 font-mono">Tax:</span>
+                          <span className="text-white font-mono">{formatCurrency(invoice.taxAmount)}</span>
+                        </div>
+                      )}
+                      <div className="flex justify-between text-lg font-bold border-t border-gray-600 pt-2 mt-2">
+                        <span className="text-white font-mono">Total:</span>
+                        <span className="text-green-400 font-mono">{formatCurrency(invoice.totalAmount)}</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-3">
+                  <Button
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                  >
+                    <Download className="w-4 h-4 mr-2" />
+                    Download PDF
+                  </Button>
+                  
+                  {invoice.status === "sent" && (
+                    <Dialog open={payingInvoice?.id === invoice.id} onOpenChange={() => setPayingInvoice(null)}>
+                      <DialogTrigger asChild>
+                        <Button
+                          size="sm"
+                          onClick={() => setPayingInvoice(invoice)}
+                          className="bg-green-600 hover:bg-green-700 text-white font-mono"
+                        >
+                          <CreditCard className="w-4 h-4 mr-2" />
+                          Pay Now
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="bg-gray-900 border-gray-700 max-w-2xl">
+                        <DialogHeader>
+                          <DialogTitle className="text-white font-mono">Pay Invoice: {invoice.title}</DialogTitle>
+                        </DialogHeader>
+                        
+                        <div className="space-y-6">
+                          <div className="bg-gray-800 p-4 rounded-lg">
+                            <div className="flex justify-between items-center mb-4">
+                              <h3 className="text-white font-mono text-lg">Invoice #{invoice.invoiceNumber}</h3>
+                              <span className="text-green-400 font-mono text-xl font-bold">
+                                {formatCurrency(invoice.totalAmount)}
+                              </span>
+                            </div>
+                            {invoice.dueDate && (
+                              <p className="text-gray-400 font-mono text-sm">
+                                Due: {new Date(invoice.dueDate).toLocaleDateString()}
+                              </p>
+                            )}
+                          </div>
+
+                          <div className="space-y-4">
+                            <h4 className="text-white font-mono text-lg">Payment Options</h4>
+                            
+                            <div className="grid gap-3">
+                              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono p-6 h-auto">
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center">
+                                    <CreditCard className="w-6 h-6 mr-3" />
+                                    <div className="text-left">
+                                      <p className="font-bold">Pay with Credit Card</p>
+                                      <p className="text-sm opacity-80">Secure payment via Stripe</p>
+                                    </div>
+                                  </div>
+                                  <span className="text-sm">Instant</span>
+                                </div>
+                              </Button>
+
+                              <Button 
+                                variant="outline" 
+                                className="bg-transparent border-gray-600 text-white hover:bg-gray-800 font-mono p-6 h-auto"
+                              >
+                                <div className="flex items-center justify-between w-full">
+                                  <div className="flex items-center">
+                                    <DollarSign className="w-6 h-6 mr-3" />
+                                    <div className="text-left">
+                                      <p className="font-bold">Bank Transfer</p>
+                                      <p className="text-sm opacity-80">Direct bank transfer</p>
+                                    </div>
+                                  </div>
+                                  <span className="text-sm">1-3 days</span>
+                                </div>
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                            <p className="text-blue-800 font-mono text-sm">
+                              <strong>Secure Payment:</strong> All payments are processed securely. 
+                              Your payment information is encrypted and protected.
+                            </p>
+                          </div>
+
+                          <div className="flex gap-3 pt-4">
+                            <Button
+                              type="button"
+                              variant="outline"
+                              onClick={() => setPayingInvoice(null)}
+                              className="flex-1 bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                            >
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  )}
+
+                  {invoice.status === "paid" && (
+                    <Badge className="bg-green-500 text-white font-mono px-3 py-1">
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      Paid
+                    </Badge>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

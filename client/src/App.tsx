@@ -19,6 +19,8 @@ import AdminProjectDetail from "@/pages/admin/project/project-detail";
 import AdminProjectMessages from "@/pages/admin/project/project-messages";
 import AdminProjectTimeline from "@/pages/admin/project/project-timeline";
 import AdminProjectFiles from "@/pages/admin/project/project-files";
+import AdminProjectContracts from "@/pages/admin/project/project-contracts";
+import AdminProjectInvoices from "@/pages/admin/project/project-invoices";
 import ProjectDetail from "@/pages/client/project/project-detail";
 import ProjectOverviewSimple from "@/pages/client/project/project-overview-simple";
 import ProjectMessages from "@/pages/client/project/project-messages";
@@ -27,6 +29,7 @@ import ProjectUpdates from "@/pages/client/project/project-updates";
 import ProjectInvoices from "@/pages/client/project/project-invoices";
 import ProjectFiles from "@/pages/client/project/project-files";
 import ProjectSettings from "@/pages/client/project/project-settings";
+import ProjectContracts from "@/pages/client/project/project-contracts";
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -53,6 +56,7 @@ function Router() {
           <Route path="/projects/:id/invoices" component={ProjectInvoices} />
           <Route path="/projects/:id/files" component={ProjectFiles} />
           <Route path="/projects/:id/settings" component={ProjectSettings} />
+          <Route path="/projects/:id/contracts" component={ProjectContracts} />
         </>
       )}
       
@@ -68,6 +72,8 @@ function Router() {
           <Route path="/admin/projects/:id/messages" component={AdminProjectMessages} />
           <Route path="/admin/projects/:id/timeline" component={AdminProjectTimeline} />
           <Route path="/admin/projects/:id/files" component={AdminProjectFiles} />
+          <Route path="/admin/projects/:id/contracts" component={AdminProjectContracts} />
+          <Route path="/admin/projects/:id/invoices" component={AdminProjectInvoices} />
         </>
       )}
       
