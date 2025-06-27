@@ -83,12 +83,15 @@ const Contact = () => {
     defaultValues: {
       name: "",
       email: "",
+      phone: "",
+      companyName: "",
       projectTitle: "",
       projectType: "",
       budget: "",
       timeline: "",
       description: "",
       website: "",
+      additionalNotes: "",
     },
   });
 

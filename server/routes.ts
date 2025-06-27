@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail } from "./email";
-import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema } from "@shared/schema";
+import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -76,7 +76,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Project submission from "Let's Work" form
   app.post("/api/project-submissions", async (req, res) => {
     try {
-      const projectSubmissionData = req.body;
+      // Handle incoming data with defaults for optional fields
+      const projectSubmissionData = {
+        name: req.body.name || "",
+        email: req.body.email || "",
+        phone: req.body.phone || null,
+        companyName: req.body.companyName || null,
+        projectTitle: req.body.projectTitle || "",
+        projectType: req.body.projectType || "",
+        description: req.body.description || "",
+        budget: req.body.budget || "",
+        timeline: req.body.timeline || "",
+        website: req.body.website || null,
+        additionalNotes: req.body.additionalNotes || null,
+      };
       
       // Check if user is authenticated
       if (req.isAuthenticated && req.isAuthenticated() && req.user) {
@@ -121,11 +134,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       }
     } catch (error) {
-      console.error('Project submission error:', error);
-      res.status(500).json({ 
-        success: false, 
-        message: "Failed to submit project. Please try again." 
-      });
+      if (error instanceof z.ZodError) {
+        console.error('Project submission validation error:', error.errors);
+        res.status(400).json({ 
+          success: false, 
+          message: "Invalid form data", 
+          errors: error.errors 
+        });
+      } else {
+        console.error('Project submission error:', error);
+        res.status(500).json({ 
+          success: false, 
+          message: "Failed to submit project. Please try again." 
+        });
+      }
     }
   });
 
