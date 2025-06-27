@@ -125,7 +125,7 @@ const Gallery = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="bg-transparent border-white/30 text-white hover:bg-white/10"
+                className="bg-transparent border-white/30 text-white hover:bg-white/10 mr-8"
                 onClick={() => selectedProject?.url && window.open(selectedProject.url, '_blank')}
               >
                 <ExternalLink size={14} className="mr-1" />
