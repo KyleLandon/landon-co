@@ -57,8 +57,7 @@ export default function AdvancedMessaging({
   const [searchQuery, setSearchQuery] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [replyingTo, setReplyingTo] = useState<MessageType | null>(null);
-  const [attachments, setAttachments] = useState<File[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -108,27 +107,14 @@ export default function AdvancedMessaging({
     }
   };
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    setAttachments(prev => [...prev, ...files]);
-  };
 
-  const removeAttachment = (index: number) => {
-    setAttachments(prev => prev.filter((_, i) => i !== index));
-  };
 
   const addEmoji = (emoji: string) => {
     setMessageText(prev => prev + emoji);
     setShowEmojiPicker(false);
   };
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-  };
+
 
   const getSenderName = (senderId: string) => {
     return senderId === currentUserId ? "You" : isAdmin ? "Client" : "Admin";
@@ -282,16 +268,6 @@ export default function AdvancedMessaging({
       {/* Message Input */}
       <div className="p-4 border-t border-white/10">
         <form onSubmit={handleSendMessage} className="flex gap-2">
-          {/* Attachment Button */}
-          <Button
-            type="button"
-            size="icon"
-            variant="ghost"
-            onClick={() => fileInputRef.current?.click()}
-            className="text-gray-400 hover:text-white"
-          >
-            <Paperclip className="w-4 h-4" />
-          </Button>
 
           {/* Emoji Button */}
           <div className="relative">
@@ -341,16 +317,6 @@ export default function AdvancedMessaging({
             <Send className="w-4 h-4" />
           </Button>
         </form>
-
-        {/* Hidden File Input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          onChange={handleFileSelect}
-          className="hidden"
-          accept="image/*,.pdf,.doc,.docx,.txt"
-        />
       </div>
 
       {/* Click outside to close emoji picker */}
