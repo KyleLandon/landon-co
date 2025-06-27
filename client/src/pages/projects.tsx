@@ -5,6 +5,7 @@ import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import willWorkImage from "@assets/image_1750913419157.png";
+import comicMysteryImage from "@assets/comic_mystery_boxes.png";
 
 const projects = [
   {
@@ -19,10 +20,10 @@ const projects = [
   },
   {
     id: 2,
-    title: "E-Commerce Platform",
-    description: "Modern e-commerce solution with React, Node.js, and Stripe integration",
-    image: "/api/placeholder/600/400",
-    tags: ["React", "Node.js", "Stripe", "MongoDB"],
+    title: "Comic Mystery Boxes",
+    description: "E-commerce platform for curated comic book mystery boxes with modern design and seamless shopping experience",
+    image: comicMysteryImage,
+    tags: ["React", "E-commerce", "Comic Books", "Mystery Boxes"],
     demoUrl: "#",
     githubUrl: "#",
     category: "Web Development"

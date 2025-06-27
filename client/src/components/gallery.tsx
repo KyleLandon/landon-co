@@ -5,6 +5,7 @@ import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import willWorkImage from "@assets/image_1750913419157.png";
+import comicMysteryImage from "@assets/comic_mystery_boxes.png";
 
 const Gallery = () => {
   const ref = useRef(null);
@@ -18,9 +19,9 @@ const Gallery = () => {
       category: "CONSTRUCTION",
     },
     {
-      src: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop&auto=format&q=75",
-      alt: "E-commerce website design showcasing modern online shopping experience",
-      title: "ARTISAN COFFEE",
+      src: comicMysteryImage,
+      alt: "Comic Mystery Boxes e-commerce website featuring curated comic book mystery boxes",
+      title: "COMIC MYSTERY BOXES",
       category: "E-COMMERCE",
     },
     {
