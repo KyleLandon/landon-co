@@ -70,8 +70,116 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className="relative overflow-hidden bg-zinc-900 py-20">
-      <div className="container relative z-10 mx-auto px-4">
+    <>
+      {/* Contact Info Section */}
+      <section id="contact" className="relative py-20 bg-gradient-to-b from-black via-zinc-900 to-zinc-800 overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="mb-16 text-center text-4xl font-bold tracking-wider sm:text-5xl font-mono uppercase"
+            style={{
+              textShadow: "3px 3px 6px rgba(0,0,0,0.8)",
+              filter: "contrast(1.3)",
+              color: "white",
+            }}
+          >
+            CONTACT
+          </motion.h2>
+
+          {/* Contact Info Cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-4xl"
+          >
+            <div className="text-center mb-12">
+              <p className="text-gray-400 font-mono text-lg">Ready to start your project? Reach out using any method below</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Email Card */}
+              <motion.a
+                href="mailto:info@landonco.co"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Email</h4>
+                    <p className="text-gray-300 font-mono text-sm">info@landonco.co</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">Send Message</span>
+                  </div>
+                </div>
+              </motion.a>
+
+              {/* Phone Card */}
+              <motion.a
+                href="tel:+19403892685"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <Phone className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Phone</h4>
+                    <p className="text-gray-300 font-mono text-sm">(940) 389-2685</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <ExternalLink className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">Call Now</span>
+                  </div>
+                </div>
+              </motion.a>
+
+              {/* Discord Card */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300"
+              >
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                    <MessageCircle className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Discord</h4>
+                    <p className="text-gray-300 font-mono text-sm">kylelandon</p>
+                  </div>
+                  <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                    <MessageCircle className="w-4 h-4 mr-2" />
+                    <span className="font-mono text-xs uppercase">Chat</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section id="work-together" className="relative overflow-hidden bg-zinc-900 py-20">
+        <div className="container relative z-10 mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -232,94 +340,7 @@ const Contact = () => {
           </Form>
         </motion.div>
         
-        {/* Contact Info Section - Modern Cards Layout */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="mt-16 mx-auto max-w-4xl"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-white font-mono text-2xl uppercase tracking-wider">
-              GET IN TOUCH
-            </h3>
-            <p className="text-gray-400 font-mono text-sm mt-2">Ready to start your project? Reach out using any method below</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Email Card */}
-            <motion.a
-              href="mailto:info@landonco.co"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
-                  <Mail className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Email</h4>
-                  <p className="text-gray-300 font-mono text-sm">info@landonco.co</p>
-                </div>
-                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  <span className="font-mono text-xs uppercase">Send Message</span>
-                </div>
-              </div>
-            </motion.a>
 
-            {/* Phone Card */}
-            <motion.a
-              href="tel:+19403892685"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
-            >
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
-                  <Phone className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Phone</h4>
-                  <p className="text-gray-300 font-mono text-sm">(940) 389-2685</p>
-                </div>
-                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  <span className="font-mono text-xs uppercase">Call Now</span>
-                </div>
-              </div>
-            </motion.a>
-
-            {/* Discord Card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              whileHover={{ scale: 1.05, y: -5 }}
-              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300"
-            >
-              <div className="flex flex-col items-center text-center space-y-4">
-                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
-                  <MessageCircle className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Discord</h4>
-                  <p className="text-gray-300 font-mono text-sm">kylelandon</p>
-                </div>
-                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
-                  <MessageCircle className="w-4 h-4 mr-2" />
-                  <span className="font-mono text-xs uppercase">Chat</span>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
       </div>
       <div className="absolute inset-0 z-0 opacity-10">
         <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -328,7 +349,8 @@ const Contact = () => {
           ))}
         </svg>
       </div>
-    </section>
+      </section>
+    </>
   );
 };
 
