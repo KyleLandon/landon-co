@@ -37,8 +37,8 @@ export default function Home() {
       <Navigation />
       <main>
         <Hero />
-        <About />
         <Gallery />
+        <About />
         <Contact />
       </main>
       <Footer />

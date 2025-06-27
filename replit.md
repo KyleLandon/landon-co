@@ -156,6 +156,12 @@ Changelog:
   - Moved contact info below form to prioritize form completion
   - Fixed contact form functionality - now properly stores submissions
   - Updated error handling to provide better user feedback
+- December 27, 2025. About section reconstruction and layout optimization
+  - Rebuilt About section with V0-style design matching site aesthetic
+  - Added personal image to About section using uploaded photo
+  - Reordered page layout: Hero → Gallery → About → Contact → Footer
+  - Updated About section with professional description and skills showcase
+  - Applied consistent styling with monospace fonts and grid background
 ```
 
 ## User Preferences

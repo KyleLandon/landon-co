@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import aboutImage from "@assets/image_1751028167774.jpeg";
 
 const About = () => {
   const skills = [
@@ -32,8 +33,8 @@ const About = () => {
             <motion.div variants={fadeInUp}>
               <div className="relative">
                 <motion.img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=600"
-                  alt="Professional workspace"
+                  src={aboutImage}
+                  alt="Landon - Web Developer"
                   className="w-full h-auto grayscale hover:grayscale-0 transition-all duration-500"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
