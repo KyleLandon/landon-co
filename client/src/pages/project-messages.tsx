@@ -4,12 +4,25 @@ import { useAuth } from "@/hooks/useAuth";
 import AdvancedMessaging from "@/components/advanced-messaging";
 import ProjectLayout from "./project-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { Message } from "@shared/schema";
+
+// Convert database message format to component format
+const convertMessages = (messages: Message[]) => {
+  return messages.map(msg => ({
+    id: msg.id,
+    senderId: msg.senderId,
+    message: msg.message,
+    createdAt: msg.createdAt || new Date(),
+    attachments: msg.attachments ? JSON.parse(msg.attachments) : undefined,
+    replyTo: msg.replyTo || undefined
+  }));
+};
 
 export default function ProjectMessages() {
   const { id } = useParams();
   const { user } = useAuth();
 
-  const { data: messages, isLoading } = useQuery({
+  const { data: messages, isLoading } = useQuery<Message[]>({
     queryKey: [`/api/projects/${id}/messages`],
     enabled: !!id,
   });
@@ -35,7 +48,7 @@ export default function ProjectMessages() {
             <div className="h-full">
               <AdvancedMessaging
                 projectId={id || ""}
-                messages={messages || []}
+                messages={convertMessages(messages || [])}
                 currentUserId={user?.id || ""}
                 isAdmin={user?.role === "admin"}
               />

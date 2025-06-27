@@ -252,14 +252,14 @@ export default function ProjectOverview() {
         </div>
 
         {/* Timeline Preview */}
-        {(project.startDate || project.endDate) && (
+        {(project?.startDate || project?.endDate) && (
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono">Project Timeline</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex items-center space-x-8">
-                {project.startDate && (
+                {project?.startDate && (
                   <div className="text-center">
                     <div className="text-gray-400 font-mono text-sm mb-1">Start Date</div>
                     <div className="text-white font-mono">
@@ -267,7 +267,7 @@ export default function ProjectOverview() {
                     </div>
                   </div>
                 )}
-                {project.endDate && (
+                {project?.endDate && (
                   <div className="text-center">
                     <div className="text-gray-400 font-mono text-sm mb-1">End Date</div>
                     <div className="text-white font-mono">
