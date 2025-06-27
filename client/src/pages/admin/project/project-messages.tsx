@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 import { Send, MessageCircle, User, Clock, CheckCircle2 } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
 import AdminLayout from "../admin-layout";
@@ -14,6 +15,7 @@ import type { Project, Message, User as UserType } from "@shared/schema";
 export default function AdminProjectMessages() {
   const { id } = useParams();
   const { toast } = useToast();
+  const { user } = useAuth();
   const queryClient = useQueryClient();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [newMessage, setNewMessage] = useState("");
