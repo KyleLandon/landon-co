@@ -34,6 +34,10 @@ export default function AdminDashboard() {
     queryKey: ["/api/admin/contacts"],
   });
 
+  const { data: projectSubmissions = [], isLoading: submissionsLoading } = useQuery<any[]>({
+    queryKey: ["/api/admin/project-submissions"],
+  });
+
   // Create project mutation
   const createProjectMutation = useMutation({
     mutationFn: async (projectData: any) => {
@@ -104,7 +108,7 @@ export default function AdminDashboard() {
     }
   };
 
-  if (projectsLoading || contactsLoading) {
+  if (projectsLoading || contactsLoading || submissionsLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
@@ -118,6 +122,7 @@ export default function AdminDashboard() {
   const activeProjects = projects.filter((p: any) => p.status === "active").length;
   const totalRevenue = projects.reduce((sum: number, p: any) => sum + (parseFloat(p.budget) || 0), 0);
   const pendingContacts = contacts.filter((c: any) => !c.responded).length;
+  const pendingSubmissions = projectSubmissions.filter((s: any) => s.status === "pending").length;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -176,11 +181,11 @@ export default function AdminDashboard() {
 
             <Card className="bg-zinc-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-mono text-white">Project Requests</CardTitle>
+                <CardTitle className="text-sm font-mono text-white">Pending Submissions</CardTitle>
                 <MessageCircle className="h-4 w-4 text-white" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-mono font-bold text-white">{pendingContacts}</div>
+                <div className="text-2xl font-mono font-bold text-white">{pendingSubmissions}</div>
               </CardContent>
             </Card>
           </motion.div>

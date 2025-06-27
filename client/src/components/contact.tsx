@@ -106,7 +106,7 @@ const Contact = () => {
         });
         
         projectForm.reset();
-        queryClient.invalidateQueries({ queryKey: ["/api/projects"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/my-projects"] });
         
         // Redirect to dashboard after 2 seconds
         setTimeout(() => {
