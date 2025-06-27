@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 interface UseWebSocketOptions {
   onMessage?: (data: any) => void;
@@ -9,7 +9,12 @@ interface UseWebSocketOptions {
 export function useWebSocket(options: UseWebSocketOptions = {}) {
   const wsRef = useRef<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
-  const { onMessage, onConnect, onDisconnect } = options;
+  const optionsRef = useRef(options);
+  
+  // Update options ref when options change
+  useEffect(() => {
+    optionsRef.current = options;
+  }, [options]);
 
   useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
@@ -21,13 +26,13 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     ws.onopen = () => {
       console.log('WebSocket connected');
       setIsConnected(true);
-      onConnect?.();
+      optionsRef.current.onConnect?.();
     };
 
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        onMessage?.(data);
+        optionsRef.current.onMessage?.(data);
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
       }
@@ -36,7 +41,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     ws.onclose = () => {
       console.log('WebSocket disconnected');
       setIsConnected(false);
-      onDisconnect?.();
+      optionsRef.current.onDisconnect?.();
     };
 
     ws.onerror = (error) => {
@@ -44,19 +49,21 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
     };
 
     return () => {
-      ws.close();
+      if (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING) {
+        ws.close();
+      }
     };
-  }, [onMessage, onConnect, onDisconnect]);
+  }, []); // Remove dependencies to prevent reconnections
 
-  const sendMessage = (data: any) => {
+  const sendMessage = useCallback((data: any) => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
       wsRef.current.send(JSON.stringify(data));
     }
-  };
+  }, []);
 
-  const joinProject = (projectId: number) => {
+  const joinProject = useCallback((projectId: number) => {
     sendMessage({ type: 'join-project', projectId });
-  };
+  }, [sendMessage]);
 
   return {
     isConnected,

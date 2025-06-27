@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import { useWebSocket } from "@/hooks/useWebSocket";
 import { motion } from "framer-motion";
-import { ArrowLeft, MessageCircle, Clock, User, Send, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, MessageCircle, Clock, User, Send, CheckCircle2, Edit, Save, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
@@ -21,16 +24,60 @@ export default function ProjectDetail() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [messageText, setMessageText] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const projectId = parseInt(id || "0");
 
   const { data: project, isLoading: projectLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${id}`],
     enabled: !!id,
   });
 
-  const { data: messages = [], isLoading: messagesLoading } = useQuery<Message[]>({
+  const { data: messages = [], isLoading: messagesLoading, refetch: refetchMessages } = useQuery<Message[]>({
     queryKey: [`/api/projects/${id}/messages`],
     enabled: !!id,
   });
+
+  // WebSocket connection for real-time messaging
+  const { joinProject } = useWebSocket({
+    onMessage: (data) => {
+      if (data.type === 'message-received') {
+        // Invalidate and refetch messages to show new message
+        queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
+        
+        // Auto-scroll to bottom when new message arrives
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    },
+    onConnect: () => {
+      console.log('Connected to WebSocket');
+      if (projectId) {
+        joinProject(projectId);
+      }
+    }
+  });
+
+  // Join project room when component mounts or project ID changes
+  useEffect(() => {
+    if (projectId) {
+      // Add a small delay to ensure WebSocket is connected
+      const timer = setTimeout(() => {
+        joinProject(projectId);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [projectId, joinProject]);
+
+  // Auto-scroll to bottom when messages load initially
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, [messages.length]);
 
   const { data: updates = [], isLoading: updatesLoading } = useQuery<ProjectUpdate[]>({
     queryKey: [`/api/projects/${id}/updates`],
@@ -273,26 +320,29 @@ export default function ProjectDetail() {
                         No messages yet. Start the conversation!
                       </p>
                     ) : (
-                      messages.map((message: any) => (
-                        <div key={message.id} className="flex space-x-3">
-                          <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                            <User className="w-4 h-4 text-gray-300" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-2 mb-1">
-                              <span className="font-mono text-sm text-white">
-                                {message.senderId === user?.id ? "You" : "Admin"}
-                              </span>
-                              <span className="text-xs text-gray-400 font-mono">
-                                {new Date(message.createdAt).toLocaleString()}
-                              </span>
+                      <>
+                        {messages.map((message: any) => (
+                          <div key={message.id} className="flex space-x-3">
+                            <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                              <User className="w-4 h-4 text-gray-300" />
                             </div>
-                            <p className="text-gray-300 font-mono text-sm">
-                              {message.message}
-                            </p>
+                            <div className="flex-1">
+                              <div className="flex items-center space-x-2 mb-1">
+                                <span className="font-mono text-sm text-white">
+                                  {message.senderId === user?.id ? "You" : "Admin"}
+                                </span>
+                                <span className="text-xs text-gray-400 font-mono">
+                                  {new Date(message.createdAt).toLocaleString()}
+                                </span>
+                              </div>
+                              <p className="text-gray-300 font-mono text-sm">
+                                {message.message}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      ))
+                        ))}
+                        <div ref={messagesEndRef} />
+                      </>
                     )}
                   </div>
 
