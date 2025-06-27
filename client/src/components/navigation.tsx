@@ -84,7 +84,7 @@ const Navigation = () => {
                 boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
               }}
             >
-              Let's Talk
+              Let's Work
             </motion.button>
           </div>
 
@@ -157,7 +157,7 @@ const Navigation = () => {
                   onClick={() => scrollToSection("contact")}
                   className="btn-primary w-full justify-center mt-4"
                 >
-                  Let's Talk
+                  Let's Work
                 </motion.button>
               </div>
             </motion.div>
