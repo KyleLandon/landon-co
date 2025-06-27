@@ -86,14 +86,25 @@ const About = () => {
                     small business taught him what owners truly need to succeed—and he's bringing that 
                     experience to every project.
                   </motion.p>
-                  
-                  <motion.p variants={fadeInUp} className="text-white font-semibold">
-                    At Landon & Co., we're not just building websites—we're building long-term partnerships.
-                  </motion.p>
                 </div>
               </div>
             </motion.div>
           </div>
+
+          {/* Highlighted Mission Statement */}
+          <motion.div variants={fadeInUp} className="flex justify-center mb-12">
+            <div className="max-w-2xl bg-gradient-to-r from-zinc-800/50 to-zinc-700/50 p-8 rounded-lg border-2 border-white/20 shadow-2xl">
+              <motion.p 
+                variants={fadeInUp} 
+                className="text-xl text-center text-white font-bold font-mono leading-relaxed"
+                style={{
+                  textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                }}
+              >
+                At Landon & Co., we're not just building websites—we're building long-term partnerships.
+              </motion.p>
+            </div>
+          </motion.div>
 
           {/* Centered Skills Section */}
           <motion.div variants={fadeInUp} className="flex justify-center">
