@@ -70,7 +70,19 @@ export default function AdminDashboard() {
     });
   };
 
-
+  const createProjectFromContact = (contact: any) => {
+    // Extract project type and budget from the contact message/project field
+    const projectTitle = contact.project || `Project for ${contact.name}`;
+    const description = `Project request from ${contact.name}:\n\n${contact.message}`;
+    
+    createProjectMutation.mutate({
+      clientId: contact.email, // Use email as client identifier
+      title: projectTitle,
+      description: description,
+      status: "inquiry", // Start as inquiry status
+      budget: contact.budget ? parseFloat(contact.budget.replace(/[^0-9.]/g, '')) : undefined,
+    });
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -90,20 +102,6 @@ export default function AdminDashboard() {
       case "inquiry": return "Initial Inquiry";
       default: return status;
     }
-  };
-
-  const createProjectFromContact = (contact: any) => {
-    // Extract project type and budget from the contact message/project field
-    const projectTitle = contact.project || `Project for ${contact.name}`;
-    const description = `Project request from ${contact.name}:\n\n${contact.message}`;
-    
-    createProjectMutation.mutate({
-      clientId: contact.email, // Use email as client identifier
-      title: projectTitle,
-      description: description,
-      status: "inquiry", // Start as inquiry status
-      budget: contact.budget ? parseFloat(contact.budget.replace(/[^0-9.]/g, '')) : undefined,
-    });
   };
 
   if (projectsLoading || contactsLoading) {
