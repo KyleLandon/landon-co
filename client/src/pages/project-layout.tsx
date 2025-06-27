@@ -93,24 +93,24 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
 
       <div className="flex">
         {/* Desktop Sidebar */}
-        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-gray-900 border-r border-gray-800">
+        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-black border-r border-white">
           {/* Logo */}
-          <div className="flex items-center px-6 py-4 border-b border-gray-800">
+          <div className="flex items-center px-6 py-4 border-b border-white">
             <Link href="/dashboard">
               <img src={logoPath} alt="Landon & Co." className="h-8" />
             </Link>
           </div>
 
           {/* Project info */}
-          <div className="px-6 py-4 border-b border-gray-800">
-            <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono text-sm mb-2">
+          <div className="px-6 py-4 border-b border-white">
+            <Link href="/dashboard" className="flex items-center text-white hover:text-white font-mono text-sm mb-2">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
             </Link>
             <h1 className="text-lg font-bold text-white font-mono">
               {(project as any)?.title || "Project"}
             </h1>
-            <p className="text-sm text-gray-400 font-mono mt-1">
+            <p className="text-sm text-white font-mono mt-1">
               Project #{id}
             </p>
           </div>
@@ -124,8 +124,8 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
                 className={`
                   group flex items-center px-3 py-2 text-sm font-mono rounded-md transition-colors
                   ${item.current 
-                    ? 'bg-gray-800 text-white' 
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                    ? 'bg-white text-black' 
+                    : 'text-white hover:text-black hover:bg-white'
                   }
                 `}
               >
@@ -136,11 +136,11 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
           </nav>
 
           {/* User info */}
-          <div className="px-6 py-4 border-t border-gray-800">
+          <div className="px-6 py-4 border-t border-white">
             <div className="flex items-center">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-mono text-white">
+                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                  <span className="text-sm font-mono text-black">
                     {user?.firstName?.charAt(0) || user?.email?.charAt(0) || "U"}
                   </span>
                 </div>
@@ -149,7 +149,7 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
                 <p className="text-sm font-mono text-white truncate">
                   {user?.firstName || user?.email || "User"}
                 </p>
-                <p className="text-xs font-mono text-gray-400">Client</p>
+                <p className="text-xs font-mono text-white">Client</p>
               </div>
             </div>
           </div>
@@ -164,7 +164,7 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
       </div>
 
       {/* Mobile bottom navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800">
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-white">
         <div className="flex justify-around py-2">
           {navigation.slice(0, 5).map((item) => (
             <Link
@@ -172,7 +172,7 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
               href={item.href}
               className={`
                 flex flex-col items-center py-2 px-3 text-xs font-mono
-                ${item.current ? 'text-white' : 'text-gray-400'}
+                ${item.current ? 'text-white' : 'text-white'}
               `}
             >
               <item.icon className="h-5 w-5 mb-1" />

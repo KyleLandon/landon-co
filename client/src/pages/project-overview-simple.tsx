@@ -79,25 +79,25 @@ export default function ProjectOverviewSimple() {
       title: "Total Budget",
       value: (project as any)?.budget ? `$${parseInt((project as any).budget).toLocaleString()}` : "TBD",
       icon: DollarSign,
-      color: "text-green-400"
+      color: "text-white"
     },
     {
       title: "Messages",
       value: messageCount,
       icon: MessageCircle,
-      color: "text-blue-400"
+      color: "text-white"
     },
     {
       title: "Updates",
       value: `${completedUpdates}/${updateCount}`,
       icon: CheckCircle,
-      color: "text-yellow-400"
+      color: "text-white"
     },
     {
       title: "Progress",
       value: updateCount > 0 ? `${Math.round((completedUpdates / updateCount) * 100)}%` : "0%",
       icon: TrendingUp,
-      color: "text-purple-400"
+      color: "text-white"
     }
   ];
 
@@ -136,11 +136,11 @@ export default function ProjectOverviewSimple() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className="bg-gray-900 border-gray-800">
+              <Card className="bg-black border-white">
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-gray-400 font-mono text-sm">{stat.title}</p>
+                      <p className="text-white font-mono text-sm">{stat.title}</p>
                       <p className="text-2xl font-bold text-white font-mono">{stat.value}</p>
                     </div>
                     <stat.icon className={`w-8 h-8 ${stat.color}`} />
