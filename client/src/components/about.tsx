@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import aboutImage from "@assets/image_1751028167774.jpeg";
+import aboutImage from "@/assets/about-image.svg";
 
 const About = () => {
   const skills = [

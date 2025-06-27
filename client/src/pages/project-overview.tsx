@@ -15,6 +15,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import ProjectLayout from "./project-layout";
+import type { Project, Message, ProjectUpdate } from "@shared/schema";
 
 export default function ProjectOverview() {
   const { id } = useParams();

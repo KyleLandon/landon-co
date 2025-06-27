@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ExternalLink, X } from "lucide-react";
-import willWorkImage from "@assets/image_1750913419157.png";
-import comicMysteryImage from "@assets/comic_mystery_boxes.png";
+import willWorkImage from "@/assets/willwork-project.svg";
+import comicMysteryImage from "@/assets/comic-project.svg";
 
 const Gallery = () => {
   const ref = useRef(null);

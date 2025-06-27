@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
-import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
+import whiteLogo from "@/assets/logo-white.svg";
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
