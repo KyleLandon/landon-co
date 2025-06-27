@@ -61,6 +61,29 @@ export default function AdvancedMessaging({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const [previousMessageCount, setPreviousMessageCount] = useState(0);
+
+  // Notification sound function
+  const playMessageSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.setValueAtTime(520, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(660, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.25);
+
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.25);
+    } catch (error) {
+      console.log('Audio not available or blocked by browser');
+    }
+  };
 
   const sendMessageMutation = useMutation({
     mutationFn: async (data: { message: string; replyTo?: number }) => {
@@ -110,7 +133,18 @@ export default function AdvancedMessaging({
     setShowEmojiPicker(false);
   };
 
-
+  // Auto-scroll to bottom and play sound for new messages
+  useEffect(() => {
+    if (messages && messages.length > previousMessageCount && previousMessageCount > 0) {
+      // Check if the new message is from someone else (not the current user)
+      const latestMessage = messages[messages.length - 1];
+      if (latestMessage && latestMessage.senderId !== currentUserId) {
+        playMessageSound();
+      }
+    }
+    setPreviousMessageCount(messages?.length || 0);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, previousMessageCount, currentUserId]);
 
   const getSenderName = (senderId: string) => {
     return senderId === currentUserId ? "You" : isAdmin ? "Client" : "Admin";

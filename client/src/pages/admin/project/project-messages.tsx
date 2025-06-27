@@ -98,12 +98,15 @@ export default function AdminProjectMessages() {
   // Auto-scroll to bottom when new messages arrive and play sound
   useEffect(() => {
     if (messages && messages.length > previousMessageCount && previousMessageCount > 0) {
-      // New message(s) arrived, play notification sound
-      playMessageSound();
+      // Check if the new message is from a client (not admin)
+      const latestMessage = messages[messages.length - 1];
+      if (latestMessage && latestMessage.senderId !== user?.id) {
+        playMessageSound();
+      }
     }
     setPreviousMessageCount(messages?.length || 0);
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages, previousMessageCount]);
+  }, [messages, previousMessageCount, user?.id]);
 
   // Mark unread messages as read when viewed
   useEffect(() => {

@@ -226,6 +226,13 @@ Changelog:
   - Added comprehensive API endpoints: PATCH /api/projects/:id, PATCH /api/project-updates/:id, GET /api/users/:id
   - Notification system tracks new messages, contacts, and project submissions with audio feedback
   - Graceful audio fallback for browsers that block autoplay or don't support Web Audio API
+- December 27, 2025. Enhanced message notification sounds for all users
+  - Added notification sounds to AdvancedMessaging component for both admin and client interfaces
+  - Messages play gentle notification sound (520Hz-660Hz) when receiving messages from other users
+  - Smart detection: only plays sound for incoming messages from others, not self-sent messages
+  - Admin messaging interface has dedicated sound for client messages (600Hz-800Hz pattern)
+  - Client messaging interface has notification sound for admin/other user messages
+  - All messaging interfaces now provide immediate audio feedback for new message arrivals
 ```
 
 ## User Preferences
