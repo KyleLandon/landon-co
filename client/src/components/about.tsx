@@ -6,7 +6,7 @@ const About = () => {
   const skills = [
     "Web Development", "Branding", "Workflow Automation", "IT Consulting",
     "Custom Solutions", "Business Strategy", "Technical Support", "Digital Marketing",
-    "React", "TypeScript", "WordPress", "Shopify"
+    "React", "TypeScript", "JavaScript", "HTML + CSS", "Shopify"
   ];
 
   return (
