@@ -37,7 +37,7 @@ export default function AdminProjectTimeline() {
 
   const addUpdate = useMutation({
     mutationFn: async (updateData: typeof newUpdate) => {
-      return apiRequest(`/api/projects/${id}/updates`, "POST", updateData);
+      return apiRequest("POST", `/api/projects/${id}/updates`, updateData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/updates`] });
@@ -59,7 +59,7 @@ export default function AdminProjectTimeline() {
 
   const toggleUpdateStatus = useMutation({
     mutationFn: async ({ updateId, isCompleted }: { updateId: number; isCompleted: boolean }) => {
-      return apiRequest(`/api/project-updates/${updateId}`, "PATCH", { isCompleted });
+      return apiRequest("PATCH", `/api/project-updates/${updateId}`, { isCompleted });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/updates`] });
@@ -79,7 +79,7 @@ export default function AdminProjectTimeline() {
 
   const deleteUpdate = useMutation({
     mutationFn: async (updateId: number) => {
-      return apiRequest(`/api/project-updates/${updateId}`, "DELETE");
+      return apiRequest("DELETE", `/api/project-updates/${updateId}`);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/updates`] });
