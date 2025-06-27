@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
-import { Clock, MessageCircle, CheckCircle, DollarSign, User, Plus, Settings, Mail, Phone } from "lucide-react";
+import { Clock, MessageCircle, CheckCircle, DollarSign, User, Plus, Settings, Mail, Phone, Filter, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,8 @@ export default function AdminDashboard() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [newProjectOpen, setNewProjectOpen] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState("");
   
   // Fetch all data
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
@@ -115,7 +117,7 @@ export default function AdminDashboard() {
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h1 className="text-4xl font-mono font-bold mb-2">Admin Dashboard</h1>
+            <h1 className="text-4xl font-mono font-bold mb-2 text-white">Admin Dashboard</h1>
             <p className="text-gray-400 font-mono">Welcome back, {user?.firstName}</p>
           </motion.div>
 
@@ -126,30 +128,30 @@ export default function AdminDashboard() {
             transition={{ delay: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
           >
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-zinc-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-mono text-gray-400">Active Projects</CardTitle>
-                <Clock className="h-4 w-4 text-green-500" />
+                <CardTitle className="text-sm font-mono text-white">Active Projects</CardTitle>
+                <Clock className="h-4 w-4 text-white" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-mono font-bold text-white">{activeProjects}</div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-zinc-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-mono text-gray-400">Total Projects</CardTitle>
-                <CheckCircle className="h-4 w-4 text-blue-500" />
+                <CardTitle className="text-sm font-mono text-white">Total Projects</CardTitle>
+                <CheckCircle className="h-4 w-4 text-white" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-mono font-bold text-white">{projects.length}</div>
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-zinc-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-mono text-gray-400">Total Revenue</CardTitle>
-                <DollarSign className="h-4 w-4 text-green-500" />
+                <CardTitle className="text-sm font-mono text-white">Total Revenue</CardTitle>
+                <DollarSign className="h-4 w-4 text-white" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-mono font-bold text-white">
@@ -158,10 +160,10 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-gray-900 border-gray-700">
+            <Card className="bg-zinc-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-sm font-mono text-gray-400">New Contacts</CardTitle>
-                <MessageCircle className="h-4 w-4 text-yellow-500" />
+                <CardTitle className="text-sm font-mono text-white">Project Requests</CardTitle>
+                <MessageCircle className="h-4 w-4 text-white" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-mono font-bold text-white">{pendingContacts}</div>
@@ -183,10 +185,10 @@ export default function AdminDashboard() {
                   New Project
                 </Button>
               </DialogTrigger>
-              <DialogContent className="bg-gray-900 border-gray-700 text-white">
+              <DialogContent className="bg-black border-gray-800 text-white">
                 <DialogHeader>
-                  <DialogTitle className="font-mono">Create New Project</DialogTitle>
-                  <DialogDescription className="text-gray-400">
+                  <DialogTitle className="font-mono text-white">Create New Project</DialogTitle>
+                  <DialogDescription className="text-gray-400 font-mono">
                     Add a new project for a client.
                   </DialogDescription>
                 </DialogHeader>
@@ -297,44 +299,155 @@ export default function AdminDashboard() {
               </Card>
             </motion.div>
 
-            {/* Recent Contacts */}
+            {/* Project Requests Management */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <Card className="bg-gray-900 border-gray-700">
+              <Card className="bg-zinc-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="font-mono text-white">Recent Contacts</CardTitle>
-                  <CardDescription className="text-gray-400">
-                    New inquiries and messages
-                  </CardDescription>
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <CardTitle className="font-mono text-white">Project Requests</CardTitle>
+                      <CardDescription className="text-gray-400 font-mono">
+                        Manage incoming project requests and convert to projects
+                      </CardDescription>
+                    </div>
+                    <Badge className="bg-white text-black font-mono">
+                      {contacts.length} total
+                    </Badge>
+                  </div>
+                  
+                  {/* Filters and Search */}
+                  <div className="flex gap-4 mt-4">
+                    <div className="flex-1">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                        <Input
+                          placeholder="Search by name, email, or project type..."
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className="pl-10 bg-zinc-800 border-gray-700 text-white font-mono"
+                        />
+                      </div>
+                    </div>
+                    <Select value={filterStatus} onValueChange={setFilterStatus}>
+                      <SelectTrigger className="w-48 bg-zinc-800 border-gray-700 text-white font-mono">
+                        <Filter className="w-4 h-4 mr-2" />
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-zinc-900 border-gray-700">
+                        <SelectItem value="all" className="font-mono">All Requests</SelectItem>
+                        <SelectItem value="unresponded" className="font-mono">Unresponded</SelectItem>
+                        <SelectItem value="responded" className="font-mono">Responded</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {contacts.slice(0, 10).map((contact: any) => (
-                      <div key={contact.id} className="border-l-4 border-gray-700 pl-4">
-                        <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-mono font-medium text-white">{contact.name}</h4>
-                          <span className="text-xs text-gray-400 font-mono">
-                            {new Date(contact.createdAt).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <div className="space-y-1 text-sm text-gray-400 font-mono">
-                          <div className="flex items-center">
-                            <Mail className="w-3 h-3 mr-2" />
-                            {contact.email}
+                    {contacts
+                      .filter((contact: any) => {
+                        const matchesSearch = searchTerm === "" || 
+                          contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          contact.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          contact.project?.toLowerCase().includes(searchTerm.toLowerCase());
+                        
+                        const matchesFilter = filterStatus === "all" || 
+                          (filterStatus === "unresponded" && !contact.responded) ||
+                          (filterStatus === "responded" && contact.responded);
+                        
+                        return matchesSearch && matchesFilter;
+                      })
+                      .map((contact: any) => (
+                      <div key={contact.id} className="border border-gray-700 rounded-lg p-4 hover:border-gray-600 transition-colors">
+                        <div className="flex justify-between items-start mb-3">
+                          <div className="flex items-center gap-3">
+                            <h4 className="font-mono font-medium text-white">{contact.name}</h4>
+                            <Badge 
+                              variant={contact.responded ? "default" : "secondary"}
+                              className={`font-mono text-xs ${
+                                contact.responded 
+                                  ? "bg-green-500 text-white" 
+                                  : "bg-gray-600 text-white"
+                              }`}
+                            >
+                              {contact.responded ? "Responded" : "New"}
+                            </Badge>
                           </div>
-                          {contact.phone && (
-                            <div className="flex items-center">
-                              <Phone className="w-3 h-3 mr-2" />
-                              {contact.phone}
+                          <div className="text-right">
+                            <span className="text-xs text-gray-400 font-mono block">
+                              {new Date(contact.createdAt).toLocaleDateString()}
+                            </span>
+                            <span className="text-xs text-gray-500 font-mono">
+                              ID: {contact.id}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                          <div className="space-y-2">
+                            <div className="flex items-center text-sm text-gray-400 font-mono">
+                              <Mail className="w-3 h-3 mr-2" />
+                              {contact.email}
                             </div>
-                          )}
-                          <p className="mt-2 text-gray-300">{contact.message}</p>
+                            {contact.phone && (
+                              <div className="flex items-center text-sm text-gray-400 font-mono">
+                                <Phone className="w-3 h-3 mr-2" />
+                                {contact.phone}
+                              </div>
+                            )}
+                          </div>
+                          
+                          <div className="space-y-2">
+                            {contact.project && (
+                              <div className="text-sm font-mono">
+                                <span className="text-gray-400">Project Type: </span>
+                                <span className="text-white">{contact.project}</span>
+                              </div>
+                            )}
+                            {contact.budget && (
+                              <div className="text-sm font-mono">
+                                <span className="text-gray-400">Budget: </span>
+                                <span className="text-white">{contact.budget}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        
+                        <p className="text-sm text-gray-300 font-mono mb-3 line-clamp-2">
+                          {contact.message}
+                        </p>
+                        
+                        <div className="flex justify-between items-center">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-gray-700 text-white hover:bg-zinc-800 font-mono"
+                            onClick={() => {
+                              // Pre-fill create project form with contact info
+                              const clientEmail = contact.email;
+                              setNewProjectOpen(true);
+                            }}
+                          >
+                            <Plus className="w-4 h-4 mr-2" />
+                            Create Project
+                          </Button>
+                          
+                          <div className="text-xs text-gray-500 font-mono">
+                            Client Email: {contact.email}
+                          </div>
                         </div>
                       </div>
                     ))}
+                    
+                    {contacts.length === 0 && (
+                      <div className="text-center py-8">
+                        <MessageCircle className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                        <p className="text-gray-400 font-mono">No project requests yet</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
