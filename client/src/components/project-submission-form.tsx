@@ -113,7 +113,7 @@ const ProjectSubmissionForm = () => {
   ];
 
   return (
-    <section className="py-20 bg-black relative overflow-hidden">
+    <section id="project-submission" className="py-20 bg-black relative overflow-hidden">
       {/* Background Grid */}
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       
@@ -126,7 +126,7 @@ const ProjectSubmissionForm = () => {
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-mono">
-            Let's Work Together
+            Let's Build Together
           </h2>
           <p className="text-xl text-gray-400 max-w-2xl mx-auto font-mono">
             Ready to start your project? Tell us about your vision and we'll make it reality.

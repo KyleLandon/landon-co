@@ -80,7 +80,7 @@ export default function AdminDashboard() {
       title: projectTitle,
       description: description,
       status: "inquiry", // Start as inquiry status
-      budget: contact.budget ? parseFloat(contact.budget.replace(/[^0-9.]/g, '')) : undefined,
+      budget: contact.budget || undefined,
     });
   };
 
