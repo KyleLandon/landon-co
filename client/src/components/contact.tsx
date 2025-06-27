@@ -74,6 +74,46 @@ const Contact = () => {
     contactMutation.mutate(submissionData);
   };
 
+  // Project submission form setup
+  const projectForm = useForm<ProjectSubmissionForm>({
+    resolver: zodResolver(projectSubmissionFormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      projectTitle: "",
+      projectType: "",
+      budget: "",
+      timeline: "",
+      description: "",
+    },
+  });
+
+  const projectMutation = useMutation({
+    mutationFn: async (data: ProjectSubmissionForm) => {
+      await apiRequest("/api/project-submissions", "POST", data);
+    },
+    onSuccess: () => {
+      toast({
+        title: "Project Submitted Successfully!",
+        description: "We'll create your account and be in touch within 24 hours.",
+        variant: "default",
+      });
+      projectForm.reset();
+      queryClient.invalidateQueries({ queryKey: ["/api/project-submissions"] });
+    },
+    onError: (error: Error) => {
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Please try again or contact us directly.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const onProjectSubmit = (data: ProjectSubmissionForm) => {
+    projectMutation.mutate(data);
+  };
+
   return (
     <>
       {/* Hero Contact Section */}
@@ -166,7 +206,8 @@ const Contact = () => {
               </div>
               
               {/* Project Submission Form */}
-              <form className="space-y-6">
+              <Form {...projectForm}>
+                <form onSubmit={projectForm.handleSubmit(onProjectSubmit)} className="space-y-6">
                 {/* Contact Information */}
                 <div className="space-y-4">
                   <h4 className="text-lg font-mono text-white flex items-center gap-2">
@@ -174,35 +215,41 @@ const Contact = () => {
                     Contact Information
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2">Full Name *</label>
-                      <Input 
-                        placeholder="Your full name" 
-                        className="bg-zinc-800 border-gray-700 text-white font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2">Email Address *</label>
-                      <Input 
-                        type="email"
-                        placeholder="your@email.com" 
-                        className="bg-zinc-800 border-gray-700 text-white font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2">Phone Number</label>
-                      <Input 
-                        placeholder="(555) 123-4567" 
-                        className="bg-zinc-800 border-gray-700 text-white font-mono"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2">Company Name</label>
-                      <Input 
-                        placeholder="Your company (optional)" 
-                        className="bg-zinc-800 border-gray-700 text-white font-mono"
-                      />
-                    </div>
+                    <FormField
+                      control={projectForm.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono">Full Name *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Your full name" 
+                              className="bg-zinc-800 border-gray-700 text-white font-mono"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={projectForm.control}
+                      name="email"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono">Email Address *</FormLabel>
+                          <FormControl>
+                            <Input 
+                              type="email"
+                              placeholder="your@email.com" 
+                              className="bg-zinc-800 border-gray-700 text-white font-mono"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 </div>
 
@@ -212,49 +259,77 @@ const Contact = () => {
                     <Briefcase className="w-5 h-5" />
                     Project Details
                   </h4>
-                  <div>
-                    <label className="block text-white font-mono text-sm mb-2">Project Title *</label>
-                    <Input 
-                      placeholder="e.g., E-commerce Website for Fashion Brand" 
-                      className="bg-zinc-800 border-gray-700 text-white font-mono"
-                    />
-                  </div>
+                  <FormField
+                    control={projectForm.control}
+                    name="projectTitle"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white font-mono">Project Title *</FormLabel>
+                        <FormControl>
+                          <Input 
+                            placeholder="e.g., E-commerce Website for Fashion Brand" 
+                            className="bg-zinc-800 border-gray-700 text-white font-mono"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2">Project Type *</label>
-                      <Select>
-                        <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-zinc-900 border-gray-700">
-                          <SelectItem value="website" className="font-mono text-white hover:text-black">Website Development</SelectItem>
-                          <SelectItem value="ecommerce" className="font-mono text-white hover:text-black">E-commerce Store</SelectItem>
-                          <SelectItem value="webapp" className="font-mono text-white hover:text-black">Web Application</SelectItem>
-                          <SelectItem value="branding" className="font-mono text-white hover:text-black">Brand Identity & Design</SelectItem>
-                          <SelectItem value="automation" className="font-mono text-white hover:text-black">Business Automation</SelectItem>
-                          <SelectItem value="other" className="font-mono text-white hover:text-black">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2 flex items-center gap-1">
-                        <DollarSign className="w-4 h-4" />
-                        Budget Range *
-                      </label>
-                      <Select>
-                        <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
-                          <SelectValue placeholder="Select budget" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-zinc-900 border-gray-700">
-                          <SelectItem value="under-5k" className="font-mono text-white hover:text-black">Under $5K</SelectItem>
-                          <SelectItem value="5k-10k" className="font-mono text-white hover:text-black">$5K - $10K</SelectItem>
-                          <SelectItem value="10k-25k" className="font-mono text-white hover:text-black">$10K - $25K</SelectItem>
-                          <SelectItem value="25k-50k" className="font-mono text-white hover:text-black">$25K - $50K</SelectItem>
-                          <SelectItem value="50k-100k" className="font-mono text-white hover:text-black">$50K - $100K</SelectItem>
-                          <SelectItem value="100k+" className="font-mono text-white hover:text-black">$100K+</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <FormField
+                      control={projectForm.control}
+                      name="projectType"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono">Project Type *</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
+                                <SelectValue placeholder="Select type" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-zinc-900 border-gray-700">
+                              <SelectItem value="website" className="font-mono text-white hover:text-black">Website Development</SelectItem>
+                              <SelectItem value="ecommerce" className="font-mono text-white hover:text-black">E-commerce Store</SelectItem>
+                              <SelectItem value="webapp" className="font-mono text-white hover:text-black">Web Application</SelectItem>
+                              <SelectItem value="branding" className="font-mono text-white hover:text-black">Brand Identity & Design</SelectItem>
+                              <SelectItem value="automation" className="font-mono text-white hover:text-black">Business Automation</SelectItem>
+                              <SelectItem value="other" className="font-mono text-white hover:text-black">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={projectForm.control}
+                      name="budget"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono flex items-center gap-1">
+                            <DollarSign className="w-4 h-4" />
+                            Budget Range *
+                          </FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
+                                <SelectValue placeholder="Select budget" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-zinc-900 border-gray-700">
+                              <SelectItem value="under-5k" className="font-mono text-white hover:text-black">Under $5K</SelectItem>
+                              <SelectItem value="5k-10k" className="font-mono text-white hover:text-black">$5K - $10K</SelectItem>
+                              <SelectItem value="10k-25k" className="font-mono text-white hover:text-black">$10K - $25K</SelectItem>
+                              <SelectItem value="25k-50k" className="font-mono text-white hover:text-black">$25K - $50K</SelectItem>
+                              <SelectItem value="50k-100k" className="font-mono text-white hover:text-black">$50K - $100K</SelectItem>
+                              <SelectItem value="100k+" className="font-mono text-white hover:text-black">$100K+</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <div>
                       <label className="block text-white font-mono text-sm mb-2 flex items-center gap-1">
                         <Clock className="w-4 h-4" />
@@ -288,10 +363,12 @@ const Contact = () => {
                 <Button 
                   type="submit" 
                   className="w-full bg-white text-black hover:bg-gray-200 font-mono text-lg py-6"
+                  disabled={projectMutation.isPending}
                 >
-                  Submit Project & Create Account
+                  {projectMutation.isPending ? "Submitting..." : "Submit Project & Create Account"}
                 </Button>
               </form>
+              </Form>
             </div>
           </motion.div>
 
