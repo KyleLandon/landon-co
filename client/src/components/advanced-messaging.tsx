@@ -73,10 +73,6 @@ export default function AdvancedMessaging({
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${projectId}/messages`] });
       setMessageText("");
       setReplyingTo(null);
-      toast({
-        title: "Message sent",
-        description: "Your message has been sent successfully",
-      });
     },
     onError: () => {
       toast({
