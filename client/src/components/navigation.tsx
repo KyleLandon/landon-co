@@ -65,7 +65,7 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">
-            {navItems.map((item, index) => (
+            {!isAuthenticated && navItems.map((item, index) => (
               <motion.button
                 key={item.id}
                 initial={{ opacity: 0, y: -20 }}
@@ -82,18 +82,20 @@ const Navigation = () => {
               </motion.button>
             ))}
             
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
-              onClick={() => scrollToSection("work-together")}
-              className="btn-primary magnetic-button shadow-xl backdrop-blur-sm"
-              style={{
-                boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
-              }}
-            >
-              Let's Work
-            </motion.button>
+            {!isAuthenticated && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.8, duration: 0.6 }}
+                onClick={() => scrollToSection("work-together")}
+                className="btn-primary magnetic-button shadow-xl backdrop-blur-sm"
+                style={{
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
+                }}
+              >
+                Let's Work
+              </motion.button>
+            )}
 
             {/* Account Menu */}
             <div className="relative">

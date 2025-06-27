@@ -181,7 +181,7 @@ export default function Dashboard() {
               <Card className="bg-zinc-900 border-zinc-800 text-center py-12">
                 <CardContent className="pt-6">
                   <MessageCircle className="w-16 h-16 text-white mx-auto mb-4" />
-                  <h3 className="text-xl font-mono font-bold mb-2">No Projects Yet</h3>
+                  <h3 className="text-xl font-mono font-bold mb-2 text-white">No Projects Yet</h3>
                   <p className="text-white font-mono mb-6">
                     When you start working with us, your projects will appear here.
                   </p>
@@ -268,7 +268,7 @@ export default function Dashboard() {
               >
                 <CardContent className="p-6 text-center">
                   <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2">New Project</h3>
+                  <h3 className="font-mono font-bold mb-2 text-white">New Project</h3>
                   <p className="text-white font-mono text-sm">Start a new project with us</p>
                 </CardContent>
               </Card>
@@ -276,7 +276,7 @@ export default function Dashboard() {
               <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2">View Progress</h3>
+                  <h3 className="font-mono font-bold mb-2 text-white">View Progress</h3>
                   <p className="text-white font-mono text-sm">Check project milestones</p>
                 </CardContent>
               </Card>
@@ -284,7 +284,7 @@ export default function Dashboard() {
               <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <User className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2">Profile</h3>
+                  <h3 className="font-mono font-bold mb-2 text-white">Profile</h3>
                   <p className="text-white font-mono text-sm">Update your information</p>
                 </CardContent>
               </Card>
@@ -292,7 +292,7 @@ export default function Dashboard() {
               <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
                 <CardContent className="p-6 text-center">
                   <MessageCircle className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2">Support</h3>
+                  <h3 className="font-mono font-bold mb-2 text-white">Support</h3>
                   <p className="text-white font-mono text-sm">Get help or ask questions</p>
                 </CardContent>
               </Card>
