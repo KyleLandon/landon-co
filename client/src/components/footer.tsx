@@ -104,7 +104,7 @@ const Footer = () => {
                 Projects
               </a>
               <a
-                href="#work-together"
+                href="#contact"
                 className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
               >
                 Contact
