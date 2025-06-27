@@ -199,8 +199,8 @@ export default function AdminDashboard() {
                       <Input
                         id="clientId"
                         name="clientId"
-                        placeholder="Enter client ID"
-                        className="bg-black border-gray-700"
+                        placeholder="Enter client ID or email"
+                        className="bg-zinc-900 border-gray-700 text-white font-mono"
                         required
                       />
                     </div>
@@ -210,7 +210,7 @@ export default function AdminDashboard() {
                         id="title"
                         name="title"
                         placeholder="Enter project title"
-                        className="bg-black border-gray-700"
+                        className="bg-zinc-900 border-gray-700 text-white font-mono"
                         required
                       />
                     </div>
@@ -220,20 +220,20 @@ export default function AdminDashboard() {
                         id="description"
                         name="description"
                         placeholder="Enter project description"
-                        className="bg-black border-gray-700"
+                        className="bg-zinc-900 border-gray-700 text-white font-mono"
                       />
                     </div>
                     <div>
                       <Label htmlFor="status" className="font-mono">Status</Label>
                       <Select name="status" defaultValue="inquiry">
-                        <SelectTrigger className="bg-black border-gray-700">
+                        <SelectTrigger className="bg-zinc-900 border-gray-700 text-white font-mono">
                           <SelectValue />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="inquiry">Initial Inquiry</SelectItem>
-                          <SelectItem value="proposal">Proposal</SelectItem>
-                          <SelectItem value="active">Active</SelectItem>
-                          <SelectItem value="completed">Completed</SelectItem>
+                        <SelectContent className="bg-zinc-900 border-gray-700">
+                          <SelectItem value="inquiry" className="font-mono">Initial Inquiry</SelectItem>
+                          <SelectItem value="proposal" className="font-mono">Proposal</SelectItem>
+                          <SelectItem value="active" className="font-mono">Active</SelectItem>
+                          <SelectItem value="completed" className="font-mono">Completed</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
@@ -245,7 +245,7 @@ export default function AdminDashboard() {
                         type="number"
                         step="0.01"
                         placeholder="Enter budget"
-                        className="bg-black border-gray-700"
+                        className="bg-zinc-900 border-gray-700 text-white font-mono"
                       />
                     </div>
                   </div>
