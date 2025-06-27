@@ -170,6 +170,9 @@ Changelog:
   - Added viewport meta tag and theme color for mobile optimization
   - Layered font imports to reduce render-blocking resources
   - Added comprehensive meta tags for better SEO and social sharing
+- December 27, 2025. Contact form budget options update
+  - Updated budget dropdown to include: Less than $500, $1,000, $2,500, $5,000, Greater than $10,000
+  - Simplified budget ranges to match client's preferred pricing structure
 ```
 
 ## User Preferences

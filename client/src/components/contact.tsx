@@ -339,12 +339,11 @@ const Contact = () => {
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent className="bg-zinc-900 border-gray-700">
-                              <SelectItem value="under-5k" className="font-mono text-white hover:text-black">Under $5K</SelectItem>
-                              <SelectItem value="5k-10k" className="font-mono text-white hover:text-black">$5K - $10K</SelectItem>
-                              <SelectItem value="10k-25k" className="font-mono text-white hover:text-black">$10K - $25K</SelectItem>
-                              <SelectItem value="25k-50k" className="font-mono text-white hover:text-black">$25K - $50K</SelectItem>
-                              <SelectItem value="50k-100k" className="font-mono text-white hover:text-black">$50K - $100K</SelectItem>
-                              <SelectItem value="100k+" className="font-mono text-white hover:text-black">$100K+</SelectItem>
+                              <SelectItem value="less-than-500" className="font-mono text-white hover:text-black">Less than $500</SelectItem>
+                              <SelectItem value="1000" className="font-mono text-white hover:text-black">$1,000</SelectItem>
+                              <SelectItem value="2500" className="font-mono text-white hover:text-black">$2,500</SelectItem>
+                              <SelectItem value="5000" className="font-mono text-white hover:text-black">$5,000</SelectItem>
+                              <SelectItem value="greater-than-10000" className="font-mono text-white hover:text-black">Greater than $10,000</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />
