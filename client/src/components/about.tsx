@@ -45,6 +45,18 @@ const About = () => {
                 decoding="async"
               />
               <div className="absolute inset-6 bg-black/10 rounded pointer-events-none"></div>
+              
+              {/* Name Tag */}
+              <motion.div 
+                className="absolute bottom-8 left-8 bg-black/80 backdrop-blur-sm border border-white/20 px-3 py-1 rounded"
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5, duration: 0.3 }}
+              >
+                <span className="text-white font-mono text-sm font-semibold tracking-wider uppercase">
+                  Kyle Landon
+                </span>
+              </motion.div>
             </div>
           </motion.div>
 
