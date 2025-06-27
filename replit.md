@@ -190,6 +190,14 @@ Changelog:
   - Fixed project creation validation errors with proper data formatting
   - Enhanced client dashboard with functional Profile, Support, and View Progress buttons
   - All admin pages maintain consistent black/white/gray theme with monospace fonts
+- December 27, 2025. Real-time messaging and admin project editing features
+  - Implemented auto-refreshing messages (3-second intervals) to eliminate need for manual refresh
+  - Added comprehensive admin project editing interface accessible from project detail pages
+  - Created Discord-style notification bell component for real-time admin alerts
+  - Added WebSocket infrastructure for future real-time messaging (currently using polling)
+  - Admin editing includes: title, description, status, budget, start/end dates
+  - Notification system tracks new messages, project requests, and contact submissions
+  - Enhanced admin layout with notification bell in both mobile and desktop headers
 ```
 
 ## User Preferences

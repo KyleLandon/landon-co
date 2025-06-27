@@ -158,7 +158,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Menu className="w-4 h-4" />
             </Button>
             <h1 className="text-lg font-mono font-bold">Admin Dashboard</h1>
-            <div></div>
+            <NotificationBell />
+          </div>
+        </div>
+
+        {/* Top bar - Desktop only */}
+        <div className="hidden lg:block bg-zinc-900 border-b border-white/10 px-6 py-4">
+          <div className="flex items-center justify-end">
+            <NotificationBell />
           </div>
         </div>
 
