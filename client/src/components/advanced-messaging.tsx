@@ -189,37 +189,7 @@ export default function AdvancedMessaging({
                     {message.message}
                   </div>
 
-                  {/* Attachments */}
-                  {message.attachments && message.attachments.length > 0 && (
-                    <div className="mt-2 space-y-2">
-                      {message.attachments.map((attachment) => (
-                        <div
-                          key={attachment.id}
-                          className="flex items-center gap-2 p-2 bg-black/20 rounded"
-                        >
-                          {attachment.type === 'image' ? (
-                            <Image className="w-4 h-4" />
-                          ) : (
-                            <Paperclip className="w-4 h-4" />
-                          )}
-                          <span className="text-xs flex-1 truncate">
-                            {attachment.name}
-                          </span>
-                          <span className="text-xs opacity-60">
-                            {formatFileSize(attachment.size)}
-                          </span>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-6 w-6 p-0"
-                            onClick={() => window.open(attachment.url, '_blank')}
-                          >
-                            <Download className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+
 
                   {/* Reply Button */}
                   <Button
@@ -283,13 +253,13 @@ export default function AdvancedMessaging({
 
             {/* Emoji Picker */}
             {showEmojiPicker && (
-              <div className="absolute bottom-12 left-0 bg-black border border-white/20 rounded-lg p-3 grid grid-cols-6 gap-2 z-10">
+              <div className="absolute bottom-12 left-0 bg-black border border-white/20 rounded-lg p-3 grid grid-cols-6 gap-1 z-10 w-64">
                 {EMOJI_LIST.map((emoji) => (
                   <button
                     key={emoji}
                     type="button"
                     onClick={() => addEmoji(emoji)}
-                    className="hover:bg-gray-800 p-1 rounded text-lg"
+                    className="hover:bg-gray-800 p-2 rounded text-lg w-8 h-8 flex items-center justify-center"
                   >
                     {emoji}
                   </button>
