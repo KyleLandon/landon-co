@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ExternalLink, X } from "lucide-react";
-import willWorkImage from "@/assets/willwork-project.svg";
+import willWorkImage from "@/assets/willwork-project.png";
 import comicMysteryImage from "@/assets/comic-project.svg";
 
 const Gallery = () => {

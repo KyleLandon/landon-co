@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
-import willWorkImage from "@/assets/willwork-project.svg";
+import willWorkImage from "@/assets/willwork-project.png";
 import comicMysteryImage from "@/assets/comic-project.svg";
 
 const projects = [
