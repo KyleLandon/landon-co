@@ -24,6 +24,15 @@ export default function ProjectDetail() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [messageText, setMessageText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    description: "",
+    status: "",
+    budget: "",
+    startDate: "",
+    endDate: ""
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const projectId = parseInt(id || "0");
 
@@ -37,38 +46,32 @@ export default function ProjectDetail() {
     enabled: !!id,
   });
 
-  // WebSocket connection for real-time messaging
-  const { joinProject } = useWebSocket({
-    onMessage: (data) => {
-      if (data.type === 'message-received') {
-        // Invalidate and refetch messages to show new message
-        queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
-        
-        // Auto-scroll to bottom when new message arrives
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-        }, 100);
-      }
-    },
-    onConnect: () => {
-      console.log('Connected to WebSocket');
-      if (projectId) {
-        joinProject(projectId);
-      }
-    }
-  });
+  // WebSocket connection for real-time messaging (temporarily disabled during development)
+  // const { joinProject } = useWebSocket({
+  //   onMessage: (data) => {
+  //     if (data.type === 'message-received') {
+  //       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
+  //       setTimeout(() => {
+  //         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  //       }, 100);
+  //     }
+  //   },
+  //   onConnect: () => {
+  //     console.log('Connected to WebSocket');
+  //     if (projectId) {
+  //       joinProject(projectId);
+  //     }
+  //   }
+  // });
 
-  // Join project room when component mounts or project ID changes
+  // Auto-refetch messages every 3 seconds for real-time effect (temporary solution)
   useEffect(() => {
-    if (projectId) {
-      // Add a small delay to ensure WebSocket is connected
-      const timer = setTimeout(() => {
-        joinProject(projectId);
-      }, 500);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [projectId, joinProject]);
+    const interval = setInterval(() => {
+      queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
+    }, 3000);
+    
+    return () => clearInterval(interval);
+  }, [id, queryClient]);
 
   // Auto-scroll to bottom when messages load initially
   useEffect(() => {
@@ -106,10 +109,97 @@ export default function ProjectDetail() {
     },
   });
 
+  const updateProjectMutation = useMutation({
+    mutationFn: async (updates: any) => {
+      const res = await apiRequest("PUT", `/api/admin/projects/${id}`, updates);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}`] });
+      setIsEditing(false);
+      toast({
+        title: "Project updated",
+        description: "Project details have been updated successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update project",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // Populate edit form when project data loads
+  useEffect(() => {
+    if (project && !isEditing) {
+      setEditForm({
+        title: project.title || "",
+        description: project.description || "",
+        status: project.status || "",
+        budget: project.budget ? project.budget.toString() : "",
+        startDate: project.startDate ? new Date(project.startDate).toISOString().split('T')[0] : "",
+        endDate: project.endDate ? new Date(project.endDate).toISOString().split('T')[0] : ""
+      });
+    }
+  }, [project, isEditing]);
+
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (messageText.trim()) {
       sendMessageMutation.mutate(messageText);
+    }
+  };
+
+  const handleStartEdit = () => {
+    if (project) {
+      setEditForm({
+        title: project.title || "",
+        description: project.description || "",
+        status: project.status || "",
+        budget: project.budget ? project.budget.toString() : "",
+        startDate: project.startDate ? new Date(project.startDate).toISOString().split('T')[0] : "",
+        endDate: project.endDate ? new Date(project.endDate).toISOString().split('T')[0] : ""
+      });
+      setIsEditing(true);
+    }
+  };
+
+  const handleSaveEdit = () => {
+    const updates: any = {
+      title: editForm.title,
+      description: editForm.description,
+      status: editForm.status,
+    };
+    
+    if (editForm.budget) {
+      updates.budget = parseFloat(editForm.budget);
+    }
+    
+    if (editForm.startDate) {
+      updates.startDate = new Date(editForm.startDate).toISOString();
+    }
+    
+    if (editForm.endDate) {
+      updates.endDate = new Date(editForm.endDate).toISOString();
+    }
+    
+    updateProjectMutation.mutate(updates);
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    // Reset form to current project values
+    if (project) {
+      setEditForm({
+        title: project.title || "",
+        description: project.description || "",
+        status: project.status || "",
+        budget: project.budget ? project.budget.toString() : "",
+        startDate: project.startDate ? new Date(project.startDate).toISOString().split('T')[0] : "",
+        endDate: project.endDate ? new Date(project.endDate).toISOString().split('T')[0] : ""
+      });
     }
   };
 
@@ -179,15 +269,125 @@ export default function ProjectDetail() {
               Back to Dashboard
             </Button>
             
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-4xl font-mono font-bold mb-2">{project.title}</h1>
-                <p className="text-gray-400 font-mono">{project.description}</p>
+            {isEditing ? (
+              // Edit Mode
+              <div className="space-y-6 bg-gray-900 border border-gray-700 rounded-lg p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-2xl font-mono font-bold text-white">Edit Project</h2>
+                  <div className="flex gap-2">
+                    <Button 
+                      onClick={handleSaveEdit}
+                      disabled={updateProjectMutation.isPending}
+                      className="bg-green-600 text-white hover:bg-green-700 font-mono"
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      {updateProjectMutation.isPending ? "Saving..." : "Save"}
+                    </Button>
+                    <Button 
+                      onClick={handleCancelEdit}
+                      variant="outline"
+                      className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">Project Title</Label>
+                    <Input
+                      value={editForm.title}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
+                      className="bg-black border-gray-600 text-white font-mono"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">Status</Label>
+                    <Select 
+                      value={editForm.status} 
+                      onValueChange={(value) => setEditForm(prev => ({ ...prev, status: value }))}
+                    >
+                      <SelectTrigger className="bg-black border-gray-600 text-white font-mono">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="bg-black border-gray-600 text-white">
+                        <SelectItem value="inquiry">Initial Inquiry</SelectItem>
+                        <SelectItem value="proposal">Proposal</SelectItem>
+                        <SelectItem value="active">In Progress</SelectItem>
+                        <SelectItem value="completed">Completed</SelectItem>
+                        <SelectItem value="pending">Pending</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="md:col-span-2">
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">Description</Label>
+                    <Textarea
+                      value={editForm.description}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
+                      className="bg-black border-gray-600 text-white font-mono min-h-[80px]"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">Budget</Label>
+                    <Input
+                      type="number"
+                      value={editForm.budget}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, budget: e.target.value }))}
+                      className="bg-black border-gray-600 text-white font-mono"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">Start Date</Label>
+                    <Input
+                      type="date"
+                      value={editForm.startDate}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, startDate: e.target.value }))}
+                      className="bg-black border-gray-600 text-white font-mono"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label className="text-sm font-mono text-gray-300 block mb-2">End Date</Label>
+                    <Input
+                      type="date"
+                      value={editForm.endDate}
+                      onChange={(e) => setEditForm(prev => ({ ...prev, endDate: e.target.value }))}
+                      className="bg-black border-gray-600 text-white font-mono"
+                    />
+                  </div>
+                </div>
               </div>
-              <Badge className={`${getStatusColor(project.status)} text-white font-mono`}>
-                {getStatusText(project.status)}
-              </Badge>
-            </div>
+            ) : (
+              // View Mode
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-4xl font-mono font-bold mb-2">{project.title}</h1>
+                  <p className="text-gray-400 font-mono">{project.description}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  {user?.role === "admin" && (
+                    <Button 
+                      onClick={handleStartEdit}
+                      variant="outline"
+                      className="bg-transparent border-blue-500 text-blue-400 hover:bg-blue-500/10 font-mono"
+                    >
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit Project
+                    </Button>
+                  )}
+                  <Badge className={`${getStatusColor(project.status)} text-white font-mono`}>
+                    {getStatusText(project.status)}
+                  </Badge>
+                </div>
+              </div>
+            )}
           </motion.div>
 
           {/* Project Info */}
