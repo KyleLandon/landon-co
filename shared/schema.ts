@@ -121,6 +121,48 @@ export const projectFiles = pgTable("project_files", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Contracts for digital signing
+export const contracts = pgTable("contracts", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer("project_id").references(() => projects.id, { onDelete: "cascade" }).notNull(),
+  title: varchar("title").notNull(),
+  description: text("description"),
+  content: text("content").notNull(),
+  terms: text("terms"),
+  totalAmount: varchar("total_amount"), // Using varchar for flexibility with currency formatting
+  status: varchar("status").default("draft").notNull(), // draft, sent, signed, completed, cancelled
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  signedBy: varchar("signed_by").references(() => users.id),
+  signedAt: timestamp("signed_at"),
+  signature: text("signature"), // Base64 encoded signature
+  clientIp: varchar("client_ip"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// Invoices with payment processing
+export const invoices = pgTable("invoices", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  projectId: integer("project_id").references(() => projects.id, { onDelete: "cascade" }).notNull(),
+  contractId: integer("contract_id").references(() => contracts.id),
+  invoiceNumber: varchar("invoice_number").unique().notNull(),
+  title: varchar("title").notNull(),
+  description: text("description"),
+  items: jsonb("items").notNull(), // Array of {description, quantity, rate, amount}
+  subtotal: varchar("subtotal").notNull(), // Using varchar for currency formatting
+  taxRate: varchar("tax_rate").default("0"),
+  taxAmount: varchar("tax_amount").default("0"),
+  totalAmount: varchar("total_amount").notNull(),
+  status: varchar("status").default("draft").notNull(), // draft, sent, paid, overdue, cancelled
+  dueDate: timestamp("due_date"),
+  paidAt: timestamp("paid_at"),
+  paymentMethod: varchar("payment_method"), // stripe, bank_transfer, etc.
+  stripePaymentIntentId: varchar("stripe_payment_intent_id"),
+  createdBy: varchar("created_by").references(() => users.id).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   projects: many(projects),
@@ -135,6 +177,8 @@ export const projectsRelations = relations(projects, ({ one, many }) => ({
   messages: many(messages),
   updates: many(projectUpdates),
   files: many(projectFiles),
+  contracts: many(contracts),
+  invoices: many(invoices),
 }));
 
 export const messagesRelations = relations(messages, ({ one }) => ({
@@ -162,6 +206,37 @@ export const projectFilesRelations = relations(projectFiles, ({ one }) => ({
   }),
   uploader: one(users, {
     fields: [projectFiles.uploadedBy],
+    references: [users.id],
+  }),
+}));
+
+export const contractsRelations = relations(contracts, ({ one, many }) => ({
+  project: one(projects, {
+    fields: [contracts.projectId],
+    references: [projects.id],
+  }),
+  creator: one(users, {
+    fields: [contracts.createdBy],
+    references: [users.id],
+  }),
+  signer: one(users, {
+    fields: [contracts.signedBy],
+    references: [users.id],
+  }),
+  invoices: many(invoices),
+}));
+
+export const invoicesRelations = relations(invoices, ({ one }) => ({
+  project: one(projects, {
+    fields: [invoices.projectId],
+    references: [projects.id],
+  }),
+  contract: one(contracts, {
+    fields: [invoices.contractId],
+    references: [contracts.id],
+  }),
+  creator: one(users, {
+    fields: [invoices.createdBy],
     references: [users.id],
   }),
 }));
@@ -231,6 +306,31 @@ export const insertProjectFileSchema = createInsertSchema(projectFiles).pick({
   isPublic: true,
 });
 
+export const insertContractSchema = createInsertSchema(contracts).pick({
+  projectId: true,
+  title: true,
+  description: true,
+  content: true,
+  terms: true,
+  totalAmount: true,
+  createdBy: true,
+});
+
+export const insertInvoiceSchema = createInsertSchema(invoices).pick({
+  projectId: true,
+  contractId: true,
+  invoiceNumber: true,
+  title: true,
+  description: true,
+  items: true,
+  subtotal: true,
+  taxRate: true,
+  taxAmount: true,
+  totalAmount: true,
+  dueDate: true,
+  createdBy: true,
+});
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -246,3 +346,7 @@ export type InsertProjectSubmission = z.infer<typeof insertProjectSubmissionSche
 export type ProjectSubmission = typeof projectSubmissions.$inferSelect;
 export type InsertProjectFile = z.infer<typeof insertProjectFileSchema>;
 export type ProjectFile = typeof projectFiles.$inferSelect;
+export type InsertContract = z.infer<typeof insertContractSchema>;
+export type Contract = typeof contracts.$inferSelect;
+export type InsertInvoice = z.infer<typeof insertInvoiceSchema>;
+export type Invoice = typeof invoices.$inferSelect;

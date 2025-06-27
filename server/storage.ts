@@ -71,6 +71,23 @@ export interface IStorage {
   getProjectFile(fileId: number): Promise<ProjectFile | undefined>;
   deleteProjectFile(fileId: number): Promise<void>;
   updateProjectFileVisibility(fileId: number, isPublic: boolean): Promise<ProjectFile>;
+  
+  // Contract operations
+  createContract(contract: InsertContract): Promise<Contract>;
+  getProjectContracts(projectId: number): Promise<Contract[]>;
+  getContract(contractId: number): Promise<Contract | undefined>;
+  updateContract(contractId: number, updates: Partial<Contract>): Promise<Contract>;
+  signContract(contractId: number, signedBy: string, signature: string, clientIp: string): Promise<Contract>;
+  deleteContract(contractId: number): Promise<void>;
+  
+  // Invoice operations
+  createInvoice(invoice: InsertInvoice): Promise<Invoice>;
+  getProjectInvoices(projectId: number): Promise<Invoice[]>;
+  getInvoice(invoiceId: number): Promise<Invoice | undefined>;
+  updateInvoice(invoiceId: number, updates: Partial<Invoice>): Promise<Invoice>;
+  markInvoicePaid(invoiceId: number, paymentMethod: string, stripePaymentIntentId?: string): Promise<Invoice>;
+  deleteInvoice(invoiceId: number): Promise<void>;
+  generateInvoiceNumber(): string;
 }
 
 export class DatabaseStorage implements IStorage {
