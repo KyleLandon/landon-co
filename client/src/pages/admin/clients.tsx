@@ -123,7 +123,7 @@ export default function AdminClients() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="bg-zinc-900 border-white/10 border-2 hover:border-white/20 transition-colors">
+              <Card className="bg-gray-900 border-gray-800 hover:border-gray-700 transition-colors">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">

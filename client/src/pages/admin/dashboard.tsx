@@ -118,7 +118,7 @@ export default function AdminDashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4 }}
           >
-            <Card className="bg-zinc-900 border-white/10 border-2">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <CardTitle className="text-white font-mono flex items-center">
                   <Activity className="w-5 h-5 mr-2" />
@@ -130,7 +130,7 @@ export default function AdminDashboard() {
                   {recentActivity.length > 0 ? (
                     recentActivity.map((activity, index) => (
                       <div key={index} className="flex items-start space-x-3">
-                        <div className="w-2 h-2 bg-white rounded-full mt-2"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full mt-2"></div>
                         <div className="flex-1">
                           <p className="text-white font-mono text-sm">{activity.title}</p>
                           <p className="text-gray-400 font-mono text-xs">{activity.description}</p>
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5 }}
           >
-            <Card className="bg-zinc-900 border-white/10 border-2">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <CardTitle className="text-white font-mono flex items-center">
                   <TrendingUp className="w-5 h-5 mr-2" />
@@ -164,19 +164,19 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="space-y-3">
                   <Link href="/admin/projects">
-                    <Button className="w-full bg-white text-black hover:bg-gray-200 font-mono justify-start">
+                    <Button className="w-full bg-gray-800 text-white hover:bg-gray-700 font-mono justify-start">
                       <FolderOpen className="w-4 h-4 mr-2" />
                       Manage Projects
                     </Button>
                   </Link>
                   <Link href="/admin/clients">
-                    <Button className="w-full bg-transparent border-white/20 text-white hover:bg-white/10 font-mono justify-start" variant="outline">
+                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono justify-start" variant="outline">
                       <Users className="w-4 h-4 mr-2" />
                       View Clients
                     </Button>
                   </Link>
                   <Link href="/admin/messages">
-                    <Button className="w-full bg-transparent border-white/20 text-white hover:bg-white/10 font-mono justify-start" variant="outline">
+                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono justify-start" variant="outline">
                       <MessageSquare className="w-4 h-4 mr-2" />
                       Check Messages
                     </Button>
@@ -193,7 +193,7 @@ export default function AdminDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <Card className="bg-zinc-900 border-white/10 border-2">
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono">Project Status Overview</CardTitle>
             </CardHeader>

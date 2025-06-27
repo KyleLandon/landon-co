@@ -48,7 +48,7 @@ export default function AdminSettings() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Company Settings */}
-          <Card className="bg-zinc-900 border-white/10 border-2">
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <SettingsIcon className="w-5 h-5 mr-2" />

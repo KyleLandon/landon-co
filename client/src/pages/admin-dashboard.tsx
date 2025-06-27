@@ -201,7 +201,7 @@ export default function AdminDashboard() {
             transition={{ delay: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
           >
-            <Card className="bg-zinc-900 border-gray-800">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-mono text-white">Active Projects</CardTitle>
                 <Clock className="h-4 w-4 text-white" />
@@ -211,7 +211,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900 border-gray-800">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-mono text-white">Total Projects</CardTitle>
                 <CheckCircle className="h-4 w-4 text-white" />
@@ -221,7 +221,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900 border-gray-800">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-mono text-white">Total Revenue</CardTitle>
                 <DollarSign className="h-4 w-4 text-white" />
@@ -233,7 +233,7 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
 
-            <Card className="bg-zinc-900 border-gray-800">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader className="flex flex-row items-center justify-between pb-2">
                 <CardTitle className="text-sm font-mono text-white">Pending Submissions</CardTitle>
                 <MessageCircle className="h-4 w-4 text-white" />
