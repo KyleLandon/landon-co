@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Filter, Edit, Trash2, Plus, Clock, DollarSign, User, FolderOpen } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
-import AdminLayout from "../admin-layout";
+import AdminLayout from "./admin-layout";
 
 export default function AdminProjects() {
   const { toast } = useToast();

@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Search, Edit, Trash2, Users, Mail, Phone, Calendar } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
-import AdminLayout from "../admin-layout";
+import AdminLayout from "@/pages/admin-layout";
 
 export default function AdminClients() {
   const { toast } = useToast();

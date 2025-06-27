@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Settings as SettingsIcon, Database, Mail, Key, Shield, Save } from "lucide-react";
-import AdminLayout from "../admin-layout";
+import AdminLayout from "@/pages/admin-layout";
 
 export default function AdminSettings() {
   const { toast } = useToast();
