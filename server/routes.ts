@@ -73,6 +73,57 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Project submission from "Let's Work" form (unauthenticated)
+  app.post("/api/project-submissions", async (req, res) => {
+    try {
+      const projectSubmissionData = req.body;
+      
+      // Store the project submission
+      const submission = await storage.createProjectSubmission(projectSubmissionData);
+
+      res.json({
+        success: true,
+        message: "Project submitted successfully! We'll review your submission and get back to you within 24 hours.",
+        submission: {
+          id: submission.id,
+          projectTitle: submission.projectTitle,
+          createdAt: submission.createdAt
+        }
+      });
+    } catch (error) {
+      console.error('Project submission error:', error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to submit project. Please try again." 
+      });
+    }
+  });
+
+  // Get all project submissions (admin only)
+  app.get("/api/admin/project-submissions", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const submissions = await storage.getProjectSubmissions();
+      res.json(submissions);
+    } catch (error) {
+      console.error("Error fetching project submissions:", error);
+      res.status(500).json({ message: "Failed to fetch project submissions" });
+    }
+  });
+
+  // Update project submission status (admin only)
+  app.patch("/api/admin/project-submissions/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
+      
+      const submission = await storage.updateProjectSubmissionStatus(parseInt(id), status);
+      res.json(submission);
+    } catch (error) {
+      console.error("Error updating project submission:", error);
+      res.status(500).json({ message: "Failed to update project submission" });
+    }
+  });
+
   // Project request from authenticated client
   app.post("/api/project-request", isAuthenticated, async (req: any, res) => {
     try {
