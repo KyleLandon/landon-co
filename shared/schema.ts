@@ -58,6 +58,8 @@ export const messages = pgTable("messages", {
   projectId: integer("project_id").notNull().references(() => projects.id),
   senderId: varchar("sender_id").notNull().references(() => users.id),
   message: text("message").notNull(),
+  replyTo: integer("reply_to"),
+  attachments: text("attachments"), // JSON string of attachments
   isRead: boolean("is_read").notNull().default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -153,6 +155,8 @@ export const insertMessageSchema = createInsertSchema(messages).pick({
   projectId: true,
   senderId: true,
   message: true,
+  replyTo: true,
+  attachments: true,
 });
 
 export const insertProjectUpdateSchema = createInsertSchema(projectUpdates).pick({
