@@ -325,7 +325,7 @@ export default function AdminProjects() {
       {/* Edit Project Dialog */}
       {editingProject && (
         <Dialog open={!!editingProject} onOpenChange={() => setEditingProject(null)}>
-          <DialogContent className="bg-black border-white/20 text-white max-w-md">
+          <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-md">
             <DialogHeader>
               <DialogTitle className="font-mono text-xl">Edit Project</DialogTitle>
             </DialogHeader>
@@ -347,7 +347,7 @@ export default function AdminProjects() {
                 <Input
                   name="title"
                   defaultValue={editingProject.title}
-                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                   required
                 />
               </div>
@@ -356,7 +356,7 @@ export default function AdminProjects() {
                 <Textarea
                   name="description"
                   defaultValue={editingProject.description}
-                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none min-h-[100px]"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none min-h-[100px]"
                   required
                 />
               </div>
@@ -365,7 +365,7 @@ export default function AdminProjects() {
                 <select
                   name="status"
                   defaultValue={editingProject.status}
-                  className="w-full p-3 bg-black border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                 >
                   <option value="inquiry">Inquiry</option>
                   <option value="proposal">Proposal</option>
@@ -380,7 +380,7 @@ export default function AdminProjects() {
                   name="budget"
                   type="number"
                   defaultValue={editingProject.budget || ''}
-                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                 />
               </div>
               <div className="flex gap-3 pt-4">
@@ -395,7 +395,7 @@ export default function AdminProjects() {
                   type="button"
                   variant="outline"
                   onClick={() => setEditingProject(null)}
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                  className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
                 >
                   Cancel
                 </Button>
