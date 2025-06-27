@@ -85,6 +85,24 @@ export const contacts = pgTable("contacts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+// Project submissions from "Let's Work" form
+export const projectSubmissions = pgTable("project_submissions", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  name: varchar("name").notNull(),
+  email: varchar("email").notNull(),
+  phone: varchar("phone"),
+  companyName: varchar("company_name"),
+  projectTitle: varchar("project_title").notNull(),
+  projectType: varchar("project_type").notNull(),
+  description: text("description").notNull(),
+  budget: varchar("budget").notNull(),
+  timeline: varchar("timeline").notNull(),
+  website: varchar("website"),
+  additionalNotes: text("additional_notes"),
+  status: varchar("status").default("pending"), // pending, reviewed, converted, rejected
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 // Relations
 export const usersRelations = relations(users, ({ many }) => ({
   projects: many(projects),
@@ -154,6 +172,20 @@ export const insertContactSchema = createInsertSchema(contacts).pick({
   message: true,
 });
 
+export const insertProjectSubmissionSchema = createInsertSchema(projectSubmissions).pick({
+  name: true,
+  email: true,
+  phone: true,
+  companyName: true,
+  projectTitle: true,
+  projectType: true,
+  description: true,
+  budget: true,
+  timeline: true,
+  website: true,
+  additionalNotes: true,
+});
+
 // Types
 export type UpsertUser = typeof users.$inferInsert;
 export type User = typeof users.$inferSelect;
@@ -165,3 +197,5 @@ export type InsertProjectUpdate = z.infer<typeof insertProjectUpdateSchema>;
 export type ProjectUpdate = typeof projectUpdates.$inferSelect;
 export type InsertContact = z.infer<typeof insertContactSchema>;
 export type Contact = typeof contacts.$inferSelect;
+export type InsertProjectSubmission = z.infer<typeof insertProjectSubmissionSchema>;
+export type ProjectSubmission = typeof projectSubmissions.$inferSelect;

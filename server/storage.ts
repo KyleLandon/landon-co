@@ -4,6 +4,7 @@ import {
   projects,
   messages,
   projectUpdates,
+  projectSubmissions,
   type User,
   type UpsertUser,
   type Contact,
@@ -14,6 +15,8 @@ import {
   type InsertMessage,
   type ProjectUpdate,
   type InsertProjectUpdate,
+  type ProjectSubmission,
+  type InsertProjectSubmission,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
