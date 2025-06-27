@@ -657,6 +657,164 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Contract Management Routes
+  app.post("/api/projects/:id/contracts", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const userId = (req.user as any).claims.sub;
+      const contractData = { ...req.body, projectId, createdBy: userId };
+      
+      const contract = await storage.createContract(contractData);
+      res.json(contract);
+    } catch (error) {
+      console.error("Error creating contract:", error);
+      res.status(500).json({ message: "Failed to create contract" });
+    }
+  });
+
+  app.get("/api/projects/:id/contracts", isAuthenticated, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const contracts = await storage.getProjectContracts(projectId);
+      res.json(contracts);
+    } catch (error) {
+      console.error("Error fetching contracts:", error);
+      res.status(500).json({ message: "Failed to fetch contracts" });
+    }
+  });
+
+  app.get("/api/contracts/:id", isAuthenticated, async (req, res) => {
+    try {
+      const contractId = parseInt(req.params.id);
+      const contract = await storage.getContract(contractId);
+      if (!contract) {
+        return res.status(404).json({ message: "Contract not found" });
+      }
+      res.json(contract);
+    } catch (error) {
+      console.error("Error fetching contract:", error);
+      res.status(500).json({ message: "Failed to fetch contract" });
+    }
+  });
+
+  app.patch("/api/contracts/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const contractId = parseInt(req.params.id);
+      const contract = await storage.updateContract(contractId, req.body);
+      res.json(contract);
+    } catch (error) {
+      console.error("Error updating contract:", error);
+      res.status(500).json({ message: "Failed to update contract" });
+    }
+  });
+
+  app.post("/api/contracts/:id/sign", isAuthenticated, async (req, res) => {
+    try {
+      const contractId = parseInt(req.params.id);
+      const userId = (req.user as any).claims.sub;
+      const { signature } = req.body;
+      const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
+      
+      const contract = await storage.signContract(contractId, userId, signature, clientIp);
+      res.json(contract);
+    } catch (error) {
+      console.error("Error signing contract:", error);
+      res.status(500).json({ message: "Failed to sign contract" });
+    }
+  });
+
+  app.delete("/api/contracts/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const contractId = parseInt(req.params.id);
+      await storage.deleteContract(contractId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting contract:", error);
+      res.status(500).json({ message: "Failed to delete contract" });
+    }
+  });
+
+  // Invoice Management Routes
+  app.post("/api/projects/:id/invoices", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const userId = (req.user as any).claims.sub;
+      const invoiceNumber = storage.generateInvoiceNumber();
+      const invoiceData = { 
+        ...req.body, 
+        projectId, 
+        createdBy: userId, 
+        invoiceNumber 
+      };
+      
+      const invoice = await storage.createInvoice(invoiceData);
+      res.json(invoice);
+    } catch (error) {
+      console.error("Error creating invoice:", error);
+      res.status(500).json({ message: "Failed to create invoice" });
+    }
+  });
+
+  app.get("/api/projects/:id/invoices", isAuthenticated, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const invoices = await storage.getProjectInvoices(projectId);
+      res.json(invoices);
+    } catch (error) {
+      console.error("Error fetching invoices:", error);
+      res.status(500).json({ message: "Failed to fetch invoices" });
+    }
+  });
+
+  app.get("/api/invoices/:id", isAuthenticated, async (req, res) => {
+    try {
+      const invoiceId = parseInt(req.params.id);
+      const invoice = await storage.getInvoice(invoiceId);
+      if (!invoice) {
+        return res.status(404).json({ message: "Invoice not found" });
+      }
+      res.json(invoice);
+    } catch (error) {
+      console.error("Error fetching invoice:", error);
+      res.status(500).json({ message: "Failed to fetch invoice" });
+    }
+  });
+
+  app.patch("/api/invoices/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const invoiceId = parseInt(req.params.id);
+      const invoice = await storage.updateInvoice(invoiceId, req.body);
+      res.json(invoice);
+    } catch (error) {
+      console.error("Error updating invoice:", error);
+      res.status(500).json({ message: "Failed to update invoice" });
+    }
+  });
+
+  app.post("/api/invoices/:id/payment", isAuthenticated, async (req, res) => {
+    try {
+      const invoiceId = parseInt(req.params.id);
+      const { paymentMethod, stripePaymentIntentId } = req.body;
+      
+      const invoice = await storage.markInvoicePaid(invoiceId, paymentMethod, stripePaymentIntentId);
+      res.json(invoice);
+    } catch (error) {
+      console.error("Error processing payment:", error);
+      res.status(500).json({ message: "Failed to process payment" });
+    }
+  });
+
+  app.delete("/api/invoices/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const invoiceId = parseInt(req.params.id);
+      await storage.deleteInvoice(invoiceId);
+      res.json({ success: true });
+    } catch (error) {
+      console.error("Error deleting invoice:", error);
+      res.status(500).json({ message: "Failed to delete invoice" });
+    }
+  });
+
   // Mark message as read (admin and client)
   app.patch("/api/messages/:id/read", isAuthenticated, async (req, res) => {
     try {

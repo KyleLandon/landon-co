@@ -6,6 +6,8 @@ import {
   projectUpdates,
   projectSubmissions,
   projectFiles,
+  contracts,
+  invoices,
   type User,
   type UpsertUser,
   type Contact,
@@ -20,6 +22,10 @@ import {
   type InsertProjectSubmission,
   type ProjectFile,
   type InsertProjectFile,
+  type Contract,
+  type InsertContract,
+  type Invoice,
+  type InsertInvoice,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -343,6 +349,124 @@ export class DatabaseStorage implements IStorage {
       .where(eq(projectFiles.id, fileId))
       .returning();
     return file;
+  }
+
+  // Contract operations
+  async createContract(insertContract: InsertContract): Promise<Contract> {
+    const [contract] = await db
+      .insert(contracts)
+      .values(insertContract)
+      .returning();
+    return contract;
+  }
+
+  async getProjectContracts(projectId: number): Promise<Contract[]> {
+    const result = await db
+      .select()
+      .from(contracts)
+      .where(eq(contracts.projectId, projectId))
+      .orderBy(desc(contracts.createdAt));
+    return result;
+  }
+
+  async getContract(contractId: number): Promise<Contract | undefined> {
+    const [contract] = await db
+      .select()
+      .from(contracts)
+      .where(eq(contracts.id, contractId));
+    return contract;
+  }
+
+  async updateContract(contractId: number, updates: Partial<Contract>): Promise<Contract> {
+    const [contract] = await db
+      .update(contracts)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(contracts.id, contractId))
+      .returning();
+    return contract;
+  }
+
+  async signContract(contractId: number, signedBy: string, signature: string, clientIp: string): Promise<Contract> {
+    const [contract] = await db
+      .update(contracts)
+      .set({
+        status: "signed",
+        signedBy,
+        signature,
+        clientIp,
+        signedAt: new Date(),
+        updatedAt: new Date()
+      })
+      .where(eq(contracts.id, contractId))
+      .returning();
+    return contract;
+  }
+
+  async deleteContract(contractId: number): Promise<void> {
+    await db.delete(contracts).where(eq(contracts.id, contractId));
+  }
+
+  // Invoice operations
+  async createInvoice(insertInvoice: InsertInvoice): Promise<Invoice> {
+    const [invoice] = await db
+      .insert(invoices)
+      .values(insertInvoice)
+      .returning();
+    return invoice;
+  }
+
+  async getProjectInvoices(projectId: number): Promise<Invoice[]> {
+    const result = await db
+      .select()
+      .from(invoices)
+      .where(eq(invoices.projectId, projectId))
+      .orderBy(desc(invoices.createdAt));
+    return result;
+  }
+
+  async getInvoice(invoiceId: number): Promise<Invoice | undefined> {
+    const [invoice] = await db
+      .select()
+      .from(invoices)
+      .where(eq(invoices.id, invoiceId));
+    return invoice;
+  }
+
+  async updateInvoice(invoiceId: number, updates: Partial<Invoice>): Promise<Invoice> {
+    const [invoice] = await db
+      .update(invoices)
+      .set({ ...updates, updatedAt: new Date() })
+      .where(eq(invoices.id, invoiceId))
+      .returning();
+    return invoice;
+  }
+
+  async markInvoicePaid(invoiceId: number, paymentMethod: string, stripePaymentIntentId?: string): Promise<Invoice> {
+    const [invoice] = await db
+      .update(invoices)
+      .set({
+        status: "paid",
+        paidAt: new Date(),
+        paymentMethod,
+        stripePaymentIntentId,
+        updatedAt: new Date()
+      })
+      .where(eq(invoices.id, invoiceId))
+      .returning();
+    return invoice;
+  }
+
+  async deleteInvoice(invoiceId: number): Promise<void> {
+    await db.delete(invoices).where(eq(invoices.id, invoiceId));
+  }
+
+  generateInvoiceNumber(): string {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const timestamp = Date.now().toString().slice(-4);
+    return `INV-${year}${month}${day}-${timestamp}`;
   }
 }
 
