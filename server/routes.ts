@@ -6,13 +6,46 @@ import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail } from "./email";
 import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema } from "@shared/schema";
 import { z } from "zod";
+import multer from "multer";
+import path from "path";
+import express from "express";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Store connected clients by project ID for WebSocket broadcasting
   const projectConnections = new Map<number, Set<WebSocket>>();
   
+  // Configure multer for file uploads
+  const upload = multer({
+    storage: multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, 'uploads/');
+      },
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname));
+      }
+    }),
+    limits: {
+      fileSize: 10 * 1024 * 1024, // 10MB limit
+    },
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = /jpeg|jpg|png|gif|pdf|doc|docx|txt/;
+      const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+      const mimetype = allowedTypes.test(file.mimetype);
+      
+      if (mimetype && extname) {
+        return cb(null, true);
+      } else {
+        cb(new Error('Invalid file type'));
+      }
+    }
+  });
+  
   // Auth middleware
   await setupAuth(app);
+
+  // Serve uploaded files
+  app.use('/uploads', express.static('uploads'));
 
   // Auth routes
   app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
@@ -469,11 +502,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/projects/:id/messages", isAuthenticated, async (req: any, res) => {
+  app.post("/api/projects/:id/messages", isAuthenticated, upload.array('attachments', 5), async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
       const userId = req.user.claims.sub;
-      const { message } = req.body;
+      const { message, replyTo } = req.body;
+      const files = req.files as Express.Multer.File[];
 
       // Verify user has access to this project
       const project = await storage.getProject(projectId);
@@ -486,10 +520,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Access denied" });
       }
 
+      // Process attachments if any
+      const attachments = files ? files.map(file => ({
+        id: file.filename,
+        name: file.originalname,
+        url: `/uploads/${file.filename}`,
+        type: file.mimetype.startsWith('image/') ? 'image' : 'file' as 'image' | 'file',
+        size: file.size
+      })) : [];
+
       const newMessage = await storage.createMessage({
         projectId,
         senderId: userId,
-        message
+        message: message || "",
+        replyTo: replyTo ? parseInt(replyTo) : undefined,
+        attachments: attachments.length > 0 ? JSON.stringify(attachments) : undefined
       });
 
       // Broadcast new message to all connected clients for this project
