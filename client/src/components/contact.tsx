@@ -412,24 +412,28 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          {/* Contact Methods Grid */}
-          <div className="relative border-t border-zinc-800">
-            {/* Pinstripe Background */}
-            <div className="absolute inset-0 z-0 opacity-10">
-              <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                {Array.from({ length: 30 }).map((_, i) => (
-                  <line key={i} x1={i * 3.33} y1="0" x2={i * 3.33} y2="100" stroke="white" strokeWidth="0.2" />
-                ))}
-              </svg>
-            </div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20 py-16"
-            >
+        </div>
+      </section>
+
+      {/* Contact Methods Grid with Full Width Pinstripes */}
+      <section className="relative w-full border-t border-zinc-800">
+        {/* Pinstripe Background */}
+        <div className="absolute inset-0 z-0 opacity-10">
+          <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {Array.from({ length:50 }).map((_, i) => (
+              <line key={i} x1={i * 2} y1="0" x2={i * 2} y2="100" stroke="white" strokeWidth="0.2" />
+            ))}
+          </svg>
+        </div>
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto py-16"
+          >
             {/* Primary Contact - Email */}
             <motion.a
               href="mailto:info@landonco.co"
@@ -504,8 +508,6 @@ const Contact = () => {
               </div>
             </motion.div>
           </motion.div>
-          </div>
-
         </div>
       </section>
 
