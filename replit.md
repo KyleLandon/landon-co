@@ -218,6 +218,14 @@ Changelog:
   - Fixed all TypeScript errors across reorganized structure with proper null safety handling
   - Updated all import paths to match new folder structure throughout App.tsx and components
   - Maintained consistent dark theme styling (gray-950/900/800) across all admin interfaces
+- December 27, 2025. Real-time notification system with audio alerts
+  - Added notification sounds using Web Audio API for admin notifications
+  - Implemented audio alerts for new messages in project messaging (plays when new messages arrive)
+  - Enhanced notification bell with dual-tone beep system (800Hz-600Hz for notifications, 600Hz-800Hz for messages)
+  - All real-time updates working: messages refresh every 3 seconds, project edits update immediately
+  - Added comprehensive API endpoints: PATCH /api/projects/:id, PATCH /api/project-updates/:id, GET /api/users/:id
+  - Notification system tracks new messages, contacts, and project submissions with audio feedback
+  - Graceful audio fallback for browsers that block autoplay or don't support Web Audio API
 ```
 
 ## User Preferences
