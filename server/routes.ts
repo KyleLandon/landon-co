@@ -176,6 +176,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Convert project submission to actual project (admin only)
+  app.post("/api/admin/project-submissions/:id/convert", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const submissionId = parseInt(req.params.id);
+      const submissions = await storage.getProjectSubmissions();
+      const submission = submissions.find((s: any) => s.id === submissionId);
+      
+      if (!submission) {
+        return res.status(404).json({ message: "Project submission not found" });
+      }
+
+      // Check if user exists by email, create if not
+      const existingUsers = await storage.getAllUsers();
+      let clientUser = existingUsers.find((u: any) => u.email === submission.email);
+      
+      if (!clientUser) {
+        // Create a new user account for the client
+        clientUser = await storage.upsertUser({
+          id: `temp_${Date.now()}`, // Temporary ID until they authenticate
+          email: submission.email,
+          firstName: submission.name?.split(' ')[0] || null,
+          lastName: submission.name?.split(' ').slice(1).join(' ') || null,
+          profileImageUrl: null,
+          role: 'client'
+        });
+      }
+      
+      const clientId = clientUser.id;
+
+      // Create project data from submission
+      const projectData = {
+        clientId: clientId,
+        title: submission.projectTitle || `${submission.projectType} Project`,
+        description: submission.description || `${submission.projectType} project for ${submission.name}`,
+        status: "proposal",
+        budget: submission.budget ? submission.budget.replace(/\D/g, '') : null,
+        startDate: null,
+        endDate: null,
+      };
+
+      console.log("Converting submission to project:", projectData);
+      const project = await storage.createProject(projectData);
+      
+      // Update submission status
+      await storage.updateProjectSubmissionStatus(submissionId, "converted");
+      
+      res.json({ project, message: "Project created successfully from submission" });
+    } catch (error) {
+      console.error("Error converting submission to project:", error);
+      res.status(500).json({ message: "Failed to convert submission to project" });
+    }
+  });
+
   // Project request from authenticated client
   app.post("/api/project-request", isAuthenticated, async (req: any, res) => {
     try {
@@ -186,7 +239,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const { projectType, budget, timeline, description, message } = req.body;
       
-      // Create a contact entry for the project request
+      // Create an actual project for the authenticated user
+      const projectTitle = `${projectType} Project`;
+      const projectDescription = description || message || `New ${projectType} project request`;
+      
+      const projectData = {
+        clientId: userId,
+        title: projectTitle,
+        description: projectDescription,
+        status: "inquiry",
+        budget: budget && budget !== "discuss" ? budget.replace(/\D/g, '') : null,
+        startDate: null,
+        endDate: null,
+      };
+
+      console.log("Creating project for authenticated user:", projectData);
+      const project = await storage.createProject(projectData);
+      
+      // Also create a contact entry for record keeping
       const contactData = {
         name: req.user.claims.first_name && req.user.claims.last_name 
           ? `${req.user.claims.first_name} ${req.user.claims.last_name}`
@@ -196,25 +266,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
         preferredContact: 'email',
         project: projectType,
         budget: budget,
-        message: message || description
+        message: `Project created: ${projectTitle}\n\n${projectDescription}`
       };
 
       const contact = await storage.createContact(contactData);
       
       // Send email notification to admin
-      const emailSent = await sendContactEmail(contactData);
+      try {
+        await sendContactEmail(contactData);
+      } catch (emailError) {
+        console.error("Failed to send email notification:", emailError);
+      }
       
       res.json({ 
         success: true, 
-        message: "Project request submitted successfully",
-        contact,
-        emailSent 
+        message: "Project created successfully",
+        project,
+        contact
       });
     } catch (error) {
       console.error("Project request error:", error);
       res.status(500).json({ 
         success: false, 
-        message: "Failed to submit project request" 
+        message: "Failed to create project" 
       });
     }
   });
