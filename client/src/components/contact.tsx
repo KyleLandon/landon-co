@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { insertContactSchema } from "@shared/schema";
 import type { z } from "zod";
+import { Mail, Phone, MessageCircle, ExternalLink } from "lucide-react";
 import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
 
 const formSchema = insertContactSchema.extend({
@@ -231,44 +232,92 @@ const Contact = () => {
           </Form>
         </motion.div>
         
-        {/* Contact Info Section - Shows after form */}
+        {/* Contact Info Section - Modern Cards Layout */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
-          className="mt-16 mx-auto max-w-md"
+          className="mt-16 mx-auto max-w-4xl"
         >
-          <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-white font-mono text-2xl mb-8 uppercase tracking-wider">
-                CONTACT INFO
-              </h3>
-            </div>
-            <div className="space-y-8">
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Email:</div>
-                <a 
-                  href="mailto:info@landonco.co" 
-                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
-                >
-                  info@landonco.co
-                </a>
+          <div className="text-center mb-12">
+            <h3 className="text-white font-mono text-2xl uppercase tracking-wider">
+              GET IN TOUCH
+            </h3>
+            <p className="text-gray-400 font-mono text-sm mt-2">Ready to start your project? Reach out using any method below</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Email Card */}
+            <motion.a
+              href="mailto:info@landonco.co"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                  <Mail className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Email</h4>
+                  <p className="text-gray-300 font-mono text-sm">info@landonco.co</p>
+                </div>
+                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  <span className="font-mono text-xs uppercase">Send Message</span>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Phone:</div>
-                <a 
-                  href="tel:+19403892685" 
-                  className="text-white font-mono text-xl hover:text-gray-300 transition-colors duration-300 block"
-                >
-                  (940) 389-2685
-                </a>
+            </motion.a>
+
+            {/* Phone Card */}
+            <motion.a
+              href="tel:+19403892685"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                  <Phone className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Phone</h4>
+                  <p className="text-gray-300 font-mono text-sm">(940) 389-2685</p>
+                </div>
+                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                  <ExternalLink className="w-4 h-4 mr-2" />
+                  <span className="font-mono text-xs uppercase">Call Now</span>
+                </div>
               </div>
-              <div className="text-center">
-                <div className="text-gray-400 font-mono text-sm uppercase tracking-wider mb-2">Discord:</div>
-                <span className="text-white font-mono text-xl block">kylelandon</span>
+            </motion.a>
+
+            {/* Discord Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              className="group bg-zinc-800/50 border-2 border-white/20 p-6 hover:border-white/40 transition-all duration-300"
+            >
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                  <MessageCircle className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h4 className="text-white font-mono text-sm uppercase tracking-wider mb-2">Discord</h4>
+                  <p className="text-gray-300 font-mono text-sm">kylelandon</p>
+                </div>
+                <div className="flex items-center text-gray-400 group-hover:text-white transition-colors duration-300">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  <span className="font-mono text-xs uppercase">Chat</span>
+                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </motion.div>
       </div>
