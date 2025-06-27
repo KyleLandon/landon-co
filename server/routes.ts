@@ -76,6 +76,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Project submission from "Let's Work" form
   app.post("/api/project-submissions", async (req, res) => {
     try {
+      console.log("Project submission received:", req.body);
+      
       // Handle incoming data with defaults for optional fields
       const projectSubmissionData = {
         name: req.body.name || "",
@@ -90,6 +92,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         website: req.body.website || null,
         additionalNotes: req.body.additionalNotes || null,
       };
+      
+      console.log("Processed submission data:", projectSubmissionData);
       
       // Check if user is authenticated
       if (req.isAuthenticated && req.isAuthenticated() && req.user) {
