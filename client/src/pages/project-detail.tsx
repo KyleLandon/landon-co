@@ -224,7 +224,7 @@ export default function ProjectDetail() {
               <img 
                 src="/attached_assets/white_transparent_1750909506258.png" 
                 alt="Landon & Co." 
-                className="h-8 w-auto"
+                className="h-8 w-auto object-contain"
               />
             </div>
             

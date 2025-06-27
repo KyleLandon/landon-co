@@ -502,12 +502,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/projects/:id/messages", isAuthenticated, upload.array('attachments', 5), async (req: any, res) => {
+  app.post("/api/projects/:id/messages", isAuthenticated, async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
       const userId = req.user.claims.sub;
       const { message, replyTo } = req.body;
-      const files = req.files as Express.Multer.File[];
 
       // Verify user has access to this project
       const project = await storage.getProject(projectId);
@@ -520,21 +519,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Access denied" });
       }
 
-      // Process attachments if any
-      const attachments = files ? files.map(file => ({
-        id: file.filename,
-        name: file.originalname,
-        url: `/uploads/${file.filename}`,
-        type: file.mimetype.startsWith('image/') ? 'image' : 'file' as 'image' | 'file',
-        size: file.size
-      })) : [];
-
       const newMessage = await storage.createMessage({
         projectId,
         senderId: userId,
         message: message || "",
-        replyTo: replyTo ? parseInt(replyTo) : undefined,
-        attachments: attachments.length > 0 ? JSON.stringify(attachments) : undefined
+        replyTo: replyTo ? parseInt(replyTo) : undefined
       });
 
       // Broadcast new message to all connected clients for this project

@@ -64,32 +64,16 @@ export default function AdvancedMessaging({
   const queryClient = useQueryClient();
 
   const sendMessageMutation = useMutation({
-    mutationFn: async (data: { message: string; replyTo?: number; attachments?: File[] }) => {
-      const formData = new FormData();
-      formData.append('message', data.message);
-      if (data.replyTo) {
-        formData.append('replyTo', data.replyTo.toString());
-      }
-      if (data.attachments) {
-        data.attachments.forEach((file, index) => {
-          formData.append(`attachment_${index}`, file);
-        });
-      }
-      
-      const res = await fetch(`/api/projects/${projectId}/messages`, {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
+    mutationFn: async (data: { message: string; replyTo?: number }) => {
+      return apiRequest("POST", `/api/projects/${projectId}/messages`, {
+        message: data.message,
+        replyTo: data.replyTo
       });
-      
-      if (!res.ok) throw new Error('Failed to send message');
-      return res.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${projectId}/messages`] });
       setMessageText("");
       setReplyingTo(null);
-      setAttachments([]);
       toast({
         title: "Message sent",
         description: "Your message has been sent successfully",
@@ -116,11 +100,10 @@ export default function AdvancedMessaging({
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (messageText.trim() || attachments.length > 0) {
+    if (messageText.trim()) {
       sendMessageMutation.mutate({
         message: messageText,
-        replyTo: replyingTo?.id,
-        attachments: attachments
+        replyTo: replyingTo?.id
       });
     }
   };
@@ -294,39 +277,7 @@ export default function AdvancedMessaging({
         </div>
       )}
 
-      {/* Attachments Preview */}
-      {attachments.length > 0 && (
-        <div className="p-3 border-t border-white/10">
-          <div className="space-y-2">
-            {attachments.map((file, index) => (
-              <div
-                key={index}
-                className="flex items-center gap-2 p-2 bg-gray-800 rounded"
-              >
-                {file.type.startsWith('image/') ? (
-                  <Image className="w-4 h-4 text-blue-400" />
-                ) : (
-                  <Paperclip className="w-4 h-4 text-gray-400" />
-                )}
-                <span className="text-sm font-mono flex-1 truncate">
-                  {file.name}
-                </span>
-                <span className="text-xs text-gray-400">
-                  {formatFileSize(file.size)}
-                </span>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => removeAttachment(index)}
-                  className="h-6 w-6 p-0 text-red-400 hover:text-red-300"
-                >
-                  <X className="w-3 h-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+
 
       {/* Message Input */}
       <div className="p-4 border-t border-white/10">
@@ -376,7 +327,7 @@ export default function AdvancedMessaging({
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 bg-black border-white/20 font-mono"
+            className="flex-1 bg-black border-white/20 text-white placeholder:text-gray-400 font-mono"
             disabled={sendMessageMutation.isPending}
           />
 
@@ -384,7 +335,7 @@ export default function AdvancedMessaging({
           <Button 
             type="submit" 
             size="icon"
-            disabled={sendMessageMutation.isPending || (!messageText.trim() && attachments.length === 0)}
+            disabled={sendMessageMutation.isPending || !messageText.trim()}
             className="bg-white text-black hover:bg-gray-200"
           >
             <Send className="w-4 h-4" />
