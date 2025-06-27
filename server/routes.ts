@@ -73,6 +73,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Project request from authenticated client
+  app.post("/api/project-request", isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user?.claims?.sub;
+      if (!userId) {
+        return res.status(401).json({ message: "User not authenticated" });
+      }
+
+      const { projectType, budget, timeline, description, message } = req.body;
+      
+      // Create a contact entry for the project request
+      const contactData = {
+        name: req.user.claims.first_name && req.user.claims.last_name 
+          ? `${req.user.claims.first_name} ${req.user.claims.last_name}`
+          : req.user.claims.email?.split('@')[0] || 'User',
+        email: req.user.claims.email || '',
+        phone: '',
+        preferredContact: 'email',
+        project: projectType,
+        budget: budget,
+        message: message || description
+      };
+
+      const contact = await storage.createContact(contactData);
+      
+      // Send email notification to admin
+      const emailSent = await sendContactEmail(contactData);
+      
+      res.json({ 
+        success: true, 
+        message: "Project request submitted successfully",
+        contact,
+        emailSent 
+      });
+    } catch (error) {
+      console.error("Project request error:", error);
+      res.status(500).json({ 
+        success: false, 
+        message: "Failed to submit project request" 
+      });
+    }
+  });
+
   // Admin routes - Contacts management
   app.get("/api/admin/contacts", isAuthenticated, isAdmin, async (req, res) => {
     try {

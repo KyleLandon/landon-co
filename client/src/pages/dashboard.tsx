@@ -10,6 +10,7 @@ import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import { LoadingPage, LoadingCard } from "@/components/ui/loading-spinner";
 import { ErrorBoundary } from "@/components/error-boundary";
+import ProjectRequestDialog from "@/components/project-request-dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { Project } from "@/types";
 
@@ -185,12 +186,11 @@ export default function Dashboard() {
                   <p className="text-white font-mono mb-6">
                     When you start working with us, your projects will appear here.
                   </p>
-                  <Button
-                    onClick={() => window.location.href = "/#work-together"}
-                    className="bg-white text-black hover:bg-gray-200 font-mono"
-                  >
-                    Start a Project
-                  </Button>
+                  <ProjectRequestDialog>
+                    <Button className="bg-white text-black hover:bg-gray-200 font-mono">
+                      Start a Project
+                    </Button>
+                  </ProjectRequestDialog>
                 </CardContent>
               </Card>
             ) : (
@@ -262,16 +262,15 @@ export default function Dashboard() {
           >
             <h2 className="text-2xl font-mono font-bold mb-6">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card 
-                className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer"
-                onClick={() => window.location.href = "/#work-together"}
-              >
-                <CardContent className="p-6 text-center">
-                  <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2 text-white">New Project</h3>
-                  <p className="text-white font-mono text-sm">Start a new project with us</p>
-                </CardContent>
-              </Card>
+              <ProjectRequestDialog>
+                <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                  <CardContent className="p-6 text-center">
+                    <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+                    <h3 className="font-mono font-bold mb-2 text-white">New Project</h3>
+                    <p className="text-white font-mono text-sm">Start a new project with us</p>
+                  </CardContent>
+                </Card>
+              </ProjectRequestDialog>
               
               <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
                 <CardContent className="p-6 text-center">
