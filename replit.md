@@ -173,6 +173,13 @@ Changelog:
 - December 27, 2025. Contact form budget options update
   - Updated budget dropdown to include: Less than $500, $1,000, $2,500, $5,000, Greater than $10,000
   - Simplified budget ranges to match client's preferred pricing structure
+- December 27, 2025. Implemented "Submit Project & Create Account" authentication flow
+  - Added automatic Google OAuth authentication before project submission
+  - Project form data is temporarily stored during authentication process
+  - After successful login, project is automatically submitted and linked to user account
+  - Authenticated users get proper projects created instead of just submissions
+  - Users are redirected to dashboard after successful project creation
+  - Modified authentication callback to return to home page for seamless flow
 ```
 
 ## User Preferences
