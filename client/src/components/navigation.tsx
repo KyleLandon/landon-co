@@ -35,8 +35,6 @@ const Navigation = () => {
   const navItems = [
     { label: "Projects", id: "gallery" },
     { label: "About", id: "about" },
-    { label: "Let's Build", id: "project-submission" },
-    { label: "Contact", id: "contact" },
   ];
 
   return (
@@ -91,13 +89,13 @@ const Navigation = () => {
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
-                onClick={() => scrollToSection("work-together")}
+                onClick={() => scrollToSection("project-submission")}
                 className="btn-primary magnetic-button shadow-xl backdrop-blur-sm"
                 style={{
                   boxShadow: "0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.1)"
                 }}
               >
-                Let's Work
+                Let's Build
               </motion.button>
             )}
 
@@ -269,10 +267,10 @@ const Navigation = () => {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: navItems.length * 0.1, duration: 0.4 }}
-                    onClick={() => scrollToSection("work-together")}
+                    onClick={() => scrollToSection("project-submission")}
                     className="btn-primary w-full justify-center mt-4"
                   >
-                    Let's Work
+                    Let's Build
                   </motion.button>
                 )}
 
