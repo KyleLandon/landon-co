@@ -11,8 +11,8 @@ interface MessageType {
   id: number;
   senderId: string;
   message: string;
-  createdAt: string | Date;
-  replyTo?: number;
+  createdAt: string | Date | null;
+  replyTo?: number | null;
 }
 
 interface AppleMessagingProps {
@@ -158,7 +158,8 @@ export default function AppleMessaging({
     }
   };
 
-  const formatTime = (timestamp: string | Date) => {
+  const formatTime = (timestamp: string | Date | null) => {
+    if (!timestamp) return '';
     const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };

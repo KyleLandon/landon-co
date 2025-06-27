@@ -100,8 +100,11 @@ export default function AdminProjectMessages() {
                 <AppleMessaging
                   projectId={id}
                   messages={(messages || []).map(msg => ({
-                    ...msg,
-                    createdAt: msg.createdAt || new Date()
+                    id: msg.id,
+                    senderId: msg.senderId,
+                    message: msg.message,
+                    createdAt: msg.createdAt || new Date(),
+                    replyTo: msg.replyTo || undefined
                   }))}
                   currentUserId={user?.id || ""}
                   isAdmin={true}
