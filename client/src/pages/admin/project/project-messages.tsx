@@ -38,9 +38,11 @@ export default function AdminProjectMessages() {
 
   const sendMessage = useMutation({
     mutationFn: async (messageData: { message: string }) => {
+      console.log("Sending message from admin:", messageData);
       return apiRequest(`/api/projects/${id}/messages`, "POST", messageData);
     },
     onSuccess: () => {
+      console.log("Message sent successfully from admin");
       queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
       setNewMessage("");
       toast({
@@ -48,10 +50,11 @@ export default function AdminProjectMessages() {
         description: "Your message has been sent to the client",
       });
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Admin message send error:", error);
       toast({
         title: "Error",
-        description: "Failed to send message",
+        description: `Failed to send message: ${error?.message || "Unknown error"}`,
         variant: "destructive",
       });
     },
@@ -68,7 +71,24 @@ export default function AdminProjectMessages() {
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+    console.log("Admin handleSendMessage called with:", newMessage);
+    
+    if (!newMessage.trim()) {
+      console.log("Empty message, not sending");
+      return;
+    }
+    
+    if (!id) {
+      console.error("No project ID available");
+      toast({
+        title: "Error",
+        description: "Project ID is missing",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    console.log("Attempting to send message:", newMessage.trim());
     sendMessage.mutate({ message: newMessage.trim() });
   };
 

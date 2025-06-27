@@ -505,21 +505,37 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.post("/api/projects/:id/messages", isAuthenticated, async (req: any, res) => {
     try {
+      console.log("Message POST request received:", {
+        projectId: req.params.id,
+        userId: req.user?.claims?.sub,
+        body: req.body,
+        userAgent: req.get('User-Agent'),
+        headers: req.headers
+      });
+
       const projectId = parseInt(req.params.id);
       const userId = req.user.claims.sub;
       const { message, replyTo } = req.body;
 
+      if (!message || message.trim() === "") {
+        console.log("Empty message rejected");
+        return res.status(400).json({ message: "Message cannot be empty" });
+      }
+
       // Verify user has access to this project
       const project = await storage.getProject(projectId);
       if (!project) {
+        console.log("Project not found:", projectId);
         return res.status(404).json({ message: "Project not found" });
       }
 
       const user = await storage.getUser(userId);
       if (project.clientId !== userId && user?.role !== "admin") {
+        console.log("Access denied for user:", userId, "project client:", project.clientId, "user role:", user?.role);
         return res.status(403).json({ message: "Access denied" });
       }
 
+      console.log("Creating message:", { projectId, senderId: userId, message, replyTo });
       const newMessage = await storage.createMessage({
         projectId,
         senderId: userId,
@@ -547,7 +563,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json(newMessage);
     } catch (error) {
-      res.status(500).json({ message: "Failed to send message" });
+      console.error("Error sending message:", error);
+      res.status(500).json({ message: "Failed to send message", error: error instanceof Error ? error.message : String(error) });
     }
   });
 
