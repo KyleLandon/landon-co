@@ -152,7 +152,7 @@ export default function AdminProjectDetail() {
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-mono font-bold text-white">{project.title}</h1>
+                <h1 className="text-2xl font-mono font-bold text-white">{project.title} ⭐ NEW DESIGN LOADED ⭐</h1>
                 <p className="text-gray-400 font-mono text-sm mt-1">{project.description}</p>
               </div>
             </div>
