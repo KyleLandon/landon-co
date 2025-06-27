@@ -11,6 +11,9 @@ const Navigation = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated, user, isAdmin } = useAuth();
+  
+  // Check if we're on a dashboard page
+  const isDashboardPage = window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/admin');
 
   useEffect(() => {
     setIsScrolled(scrollY > 50);
@@ -65,7 +68,7 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">
-            {!isAuthenticated && navItems.map((item, index) => (
+            {(!isDashboardPage || !isAuthenticated) && navItems.map((item, index) => (
               <motion.button
                 key={item.id}
                 initial={{ opacity: 0, y: -20 }}
@@ -82,7 +85,7 @@ const Navigation = () => {
               </motion.button>
             ))}
             
-            {!isAuthenticated && (
+            {(!isDashboardPage || !isAuthenticated) && (
               <motion.button
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -245,7 +248,7 @@ const Navigation = () => {
               className="md:hidden overflow-hidden mt-6 pt-6 border-t border-white/30 bg-black/80 backdrop-blur-md rounded-lg px-4 pb-4"
             >
               <div className="space-y-6">
-                {navItems.map((item, index) => (
+                {(!isDashboardPage || !isAuthenticated) && navItems.map((item, index) => (
                   <motion.button
                     key={item.id}
                     initial={{ opacity: 0, x: -20 }}
@@ -260,15 +263,17 @@ const Navigation = () => {
                     {item.label}
                   </motion.button>
                 ))}
-                <motion.button
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1, duration: 0.4 }}
-                  onClick={() => scrollToSection("work-together")}
-                  className="btn-primary w-full justify-center mt-4"
-                >
-                  Let's Work
-                </motion.button>
+                {(!isDashboardPage || !isAuthenticated) && (
+                  <motion.button
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: navItems.length * 0.1, duration: 0.4 }}
+                    onClick={() => scrollToSection("work-together")}
+                    className="btn-primary w-full justify-center mt-4"
+                  >
+                    Let's Work
+                  </motion.button>
+                )}
 
                 {/* Mobile Account Section */}
                 <div className="border-t border-white/20 pt-4 mt-4">
