@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
 import { insertContactSchema } from "@shared/schema";
 import type { z } from "zod";
 import { Mail, Phone, MessageCircle, ExternalLink, Instagram, Twitter, Briefcase } from "lucide-react";
@@ -356,16 +356,16 @@ const Contact = () => {
                   <FormItem>
                     <FormLabel className="font-mono uppercase tracking-wider text-sm">Preferred Contact Method</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} value={field.value}>
-                        <SelectTrigger className="bg-black border-2 border-white/30 rounded-none font-mono">
-                          <SelectValue placeholder="How should we reach you?" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-black border-white/30 rounded-none">
-                          <SelectItem value="email" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Email</SelectItem>
-                          <SelectItem value="text" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Text Message</SelectItem>
-                          <SelectItem value="call" className="font-mono text-white hover:bg-white/10 focus:bg-white/10">Phone Call</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <select
+                        {...field}
+                        value={field.value || ""}
+                        className="w-full bg-black border-2 border-white/30 rounded-none font-mono p-2 text-white"
+                      >
+                        <option value="">How should we reach you?</option>
+                        <option value="email">Email</option>
+                        <option value="text">Text Message</option>
+                        <option value="call">Phone Call</option>
+                      </select>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
