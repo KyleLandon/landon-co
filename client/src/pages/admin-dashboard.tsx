@@ -337,10 +337,10 @@ export default function AdminDashboard() {
                         <Filter className="w-4 h-4 mr-2" />
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="bg-zinc-900 border-gray-700">
-                        <SelectItem value="all" className="font-mono">All Requests</SelectItem>
-                        <SelectItem value="unresponded" className="font-mono">Unresponded</SelectItem>
-                        <SelectItem value="responded" className="font-mono">Responded</SelectItem>
+                      <SelectContent className="bg-zinc-900 border-gray-700 text-white">
+                        <SelectItem value="all" className="font-mono text-white">All Requests</SelectItem>
+                        <SelectItem value="unresponded" className="font-mono text-white">Unresponded</SelectItem>
+                        <SelectItem value="responded" className="font-mono text-white">Responded</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -423,8 +423,7 @@ export default function AdminDashboard() {
                         <div className="flex justify-between items-center">
                           <Button
                             size="sm"
-                            variant="outline"
-                            className="border-gray-700 text-white hover:bg-zinc-800 font-mono"
+                            className="bg-white text-black hover:bg-gray-200 font-mono"
                             onClick={() => {
                               // Pre-fill create project form with contact info
                               const clientEmail = contact.email;
