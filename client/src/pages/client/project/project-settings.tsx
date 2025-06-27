@@ -53,7 +53,7 @@ export default function ProjectSettings() {
     defaultValues: {
       title: project?.title || "",
       description: project?.description || "",
-      status: project?.status || "active",
+      status: (project?.status as "inquiry" | "proposal" | "active" | "completed" | "cancelled") || "active",
       budget: project?.budget || "",
       startDate: project?.startDate ? new Date(project.startDate).toISOString().split('T')[0] : "",
       endDate: project?.endDate ? new Date(project.endDate).toISOString().split('T')[0] : "",

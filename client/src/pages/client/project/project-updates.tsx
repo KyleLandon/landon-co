@@ -110,7 +110,7 @@ export default function ProjectUpdates() {
                             In Progress
                           </Badge>
                           <span className="text-gray-500 font-mono text-xs">
-                            Created {new Date(update.createdAt).toLocaleDateString()}
+                            Created {update.createdAt ? new Date(update.createdAt).toLocaleDateString() : 'Unknown'}
                           </span>
                         </div>
                       </div>
@@ -150,7 +150,7 @@ export default function ProjectUpdates() {
                             Completed
                           </Badge>
                           <span className="text-gray-500 font-mono text-xs">
-                            Completed {new Date(update.createdAt).toLocaleDateString()}
+                            Completed {update.createdAt ? new Date(update.createdAt).toLocaleDateString() : 'Unknown'}
                           </span>
                         </div>
                       </div>

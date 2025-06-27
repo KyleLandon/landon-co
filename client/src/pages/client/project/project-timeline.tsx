@@ -29,7 +29,7 @@ export default function ProjectTimeline() {
     );
   }
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string | undefined) => {
     switch (status) {
       case "completed": return "bg-green-600";
       case "active": return "bg-blue-600";
@@ -59,7 +59,7 @@ export default function ProjectTimeline() {
       id: update.id + 100,
       title: update.title,
       description: update.description || "Project update",
-      date: new Date(update.createdAt),
+      date: update.createdAt ? new Date(update.createdAt) : new Date(),
       type: "update",
       status: update.isCompleted ? "completed" : "pending"
     })),
