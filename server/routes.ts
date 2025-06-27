@@ -1,5 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
+import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail } from "./email";
@@ -7,6 +8,9 @@ import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertPr
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Store connected clients by project ID for WebSocket broadcasting
+  const projectConnections = new Map<number, Set<WebSocket>>();
+  
   // Auth middleware
   await setupAuth(app);
 
@@ -488,6 +492,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message
       });
 
+      // Broadcast new message to all connected clients for this project
+      const connections = projectConnections.get(projectId);
+      if (connections) {
+        const messageWithUser = {
+          ...newMessage,
+          senderName: user?.firstName || user?.email || 'Unknown User'
+        };
+        
+        connections.forEach(client => {
+          if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({
+              type: 'message-received',
+              message: messageWithUser
+            }));
+          }
+        });
+      }
+
       res.json(newMessage);
     } catch (error) {
       res.status(500).json({ message: "Failed to send message" });
@@ -609,5 +631,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+  
+  // Setup WebSocket server for real-time messaging
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  wss.on('connection', (ws, req) => {
+    console.log('WebSocket connection established');
+    
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        
+        if (data.type === 'join-project') {
+          const projectId = parseInt(data.projectId);
+          if (!projectConnections.has(projectId)) {
+            projectConnections.set(projectId, new Set());
+          }
+          projectConnections.get(projectId)?.add(ws);
+          console.log(`Client joined project ${projectId}`);
+        }
+        
+        if (data.type === 'new-message') {
+          const projectId = parseInt(data.projectId);
+          // Broadcast to all clients connected to this project
+          const connections = projectConnections.get(projectId);
+          if (connections) {
+            connections.forEach(client => {
+              if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({
+                  type: 'message-received',
+                  message: data.message
+                }));
+              }
+            });
+          }
+        }
+      } catch (error) {
+        console.error('WebSocket message error:', error);
+      }
+    });
+    
+    ws.on('close', () => {
+      // Remove from all project connections
+      projectConnections.forEach(connections => {
+        connections.delete(ws);
+      });
+      console.log('WebSocket connection closed');
+    });
+  });
+  
   return httpServer;
 }
