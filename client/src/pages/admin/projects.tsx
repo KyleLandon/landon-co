@@ -144,7 +144,7 @@ export default function AdminProjects() {
                 New Project
               </Button>
             </DialogTrigger>
-            <DialogContent className="bg-black border-white/20 text-white max-w-md">
+            <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-md">
               <DialogHeader>
                 <DialogTitle className="font-mono text-xl">Create New Project</DialogTitle>
               </DialogHeader>
@@ -154,7 +154,7 @@ export default function AdminProjects() {
                   <Input
                     name="clientId"
                     placeholder="Enter client ID or email"
-                    className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                     required
                   />
                 </div>
@@ -163,7 +163,7 @@ export default function AdminProjects() {
                   <Input
                     name="title"
                     placeholder="Enter project title"
-                    className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                     required
                   />
                 </div>
@@ -172,7 +172,7 @@ export default function AdminProjects() {
                   <Textarea
                     name="description"
                     placeholder="Project description"
-                    className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none min-h-[100px]"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none min-h-[100px]"
                     required
                   />
                 </div>
@@ -180,7 +180,7 @@ export default function AdminProjects() {
                   <Label className="text-sm font-mono text-gray-300 block mb-2">Status</Label>
                   <select
                     name="status"
-                    className="w-full p-3 bg-black border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                   >
                     <option value="inquiry">Inquiry</option>
                     <option value="proposal">Proposal</option>
@@ -195,7 +195,7 @@ export default function AdminProjects() {
                     name="budget"
                     type="number"
                     placeholder="0.00"
-                    className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
                   />
                 </div>
                 <div className="flex gap-3 pt-4">
@@ -210,7 +210,7 @@ export default function AdminProjects() {
                     type="button"
                     variant="outline"
                     onClick={() => setNewProjectOpen(false)}
-                    className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
                   >
                     Cancel
                   </Button>
@@ -228,15 +228,15 @@ export default function AdminProjects() {
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-transparent border-white/20 text-white font-mono focus:border-white/40"
+              className="pl-10 bg-gray-800 border-gray-700 text-white font-mono focus:border-gray-600"
             />
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-48 bg-transparent border-white/20 text-white font-mono">
+            <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-white font-mono">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue />
             </SelectTrigger>
-            <SelectContent className="bg-black border-white/20 text-white">
+            <SelectContent className="bg-gray-900 border-gray-800 text-white">
               <SelectItem value="all">All Status</SelectItem>
               <SelectItem value="inquiry">Inquiry</SelectItem>
               <SelectItem value="proposal">Proposal</SelectItem>
@@ -256,7 +256,7 @@ export default function AdminProjects() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <Card className="bg-zinc-900 border-white/10 border-2 hover:border-white/20 transition-colors">
+              <Card className="bg-gray-900 border-gray-800 border-2 hover:border-gray-700 transition-colors">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
                     <CardTitle className="text-white font-mono text-lg">{project.title}</CardTitle>
@@ -264,7 +264,7 @@ export default function AdminProjects() {
                       {getStatusText(project.status)}
                     </Badge>
                   </div>
-                  <p className="text-gray-400 font-mono text-sm">Client: {project.clientId}</p>
+                  <p className="text-gray-500 font-mono text-sm">Client: {project.clientId}</p>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-300 font-mono text-sm mb-4 line-clamp-3">
@@ -290,7 +290,7 @@ export default function AdminProjects() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex-1 bg-transparent border-blue-500 text-blue-400 hover:bg-blue-500/10 font-mono text-xs"
+                      className="flex-1 bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono text-xs"
                       onClick={() => setEditingProject(project)}
                     >
                       <Edit className="w-3 h-3 mr-1" />
@@ -299,7 +299,7 @@ export default function AdminProjects() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="bg-transparent border-green-500 text-green-400 hover:bg-green-500/10 font-mono text-xs"
+                      className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono text-xs"
                       onClick={() => window.location.href = `/project/${project.id}`}
                     >
                       View
