@@ -229,7 +229,7 @@ const Contact = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
             viewport={{ once: true }}
-            className="text-center"
+            className="text-center mb-32"
           >
             <p className="text-gray-500 font-mono text-sm uppercase tracking-widest mb-8">Follow Our Journey</p>
             <div className="flex justify-center space-x-8">
