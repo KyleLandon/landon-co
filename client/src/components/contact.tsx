@@ -193,7 +193,7 @@ const Contact = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
             className="max-w-4xl mx-auto mb-20"
-            id="project-submission"
+            id="project-form"
           >
             <div className="bg-zinc-900 border border-gray-800 shadow-2xl rounded-lg p-8">
               <div className="text-center mb-8">
