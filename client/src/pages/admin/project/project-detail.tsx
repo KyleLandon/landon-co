@@ -38,6 +38,9 @@ export default function AdminProjectDetail() {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
 
+  // Debug log to confirm new component is loading
+  console.log("NEW AdminProjectDetail component loaded for project ID:", id);
+
   const { data: project, isLoading: projectLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${id}`],
     enabled: !!id,
