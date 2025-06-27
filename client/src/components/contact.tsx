@@ -413,7 +413,7 @@ const Contact = () => {
           </motion.div>
 
           {/* Contact Methods Grid */}
-          <div className="relative">
+          <div className="relative border-t border-zinc-800">
             {/* Pinstripe Background */}
             <div className="absolute inset-0 z-0 opacity-10">
               <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
