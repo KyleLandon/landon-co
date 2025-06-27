@@ -300,7 +300,7 @@ export default function AdminProjects() {
                       size="sm"
                       variant="outline"
                       className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono text-xs"
-                      onClick={() => window.location.href = `/project/${project.id}`}
+                      onClick={() => window.location.href = `/admin/projects/${project.id}`}
                     >
                       View
                     </Button>
