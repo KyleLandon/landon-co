@@ -5,7 +5,7 @@ import About from "@/components/about";
 import Gallery from "@/components/gallery";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
-import whiteLogo from "@/assets/logo-white.svg";
+import whiteLogo from "@/assets/logo-white.png";
 
 export default function Home() {
   useEffect(() => {

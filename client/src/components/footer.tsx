@@ -1,5 +1,5 @@
 import { Mail, Phone, MessageCircle, Instagram, Twitter, Briefcase } from "lucide-react";
-import whiteLogo from "@/assets/logo-white.svg";
+import whiteLogo from "@/assets/logo-white.png";
 
 const Footer = () => {
   return (

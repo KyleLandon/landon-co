@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User, LogOut, Settings, MessageCircle } from "lucide-react";
 import { useScroll } from "@/hooks/use-scroll";
 import { useAuth } from "@/hooks/useAuth";
-import whiteLogo from "@/assets/logo-white.svg";
+import whiteLogo from "@/assets/logo-white.png";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
