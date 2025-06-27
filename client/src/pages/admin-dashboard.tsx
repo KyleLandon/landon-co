@@ -161,7 +161,7 @@ export default function AdminDashboard() {
     }
   };
 
-  if (projectsLoading || contactsLoading || submissionsLoading) {
+  if (projectsLoading || contactsLoading || submissionsLoading || usersLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
@@ -522,9 +522,179 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </motion.div>
+
+            {/* User Management Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 }}
+            >
+              <Card className="bg-black border-white/10 border-2">
+                <CardHeader className="border-b border-white/10 pb-4">
+                  <CardTitle className="text-white font-mono text-xl">User Management</CardTitle>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="border-b border-white/10">
+                          <th className="text-left py-3 px-4 text-white font-mono">ID</th>
+                          <th className="text-left py-3 px-4 text-white font-mono">Email</th>
+                          <th className="text-left py-3 px-4 text-white font-mono">Name</th>
+                          <th className="text-left py-3 px-4 text-white font-mono">Created</th>
+                          <th className="text-left py-3 px-4 text-white font-mono">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {users.map((user: any) => (
+                          <tr key={user.id} className="border-b border-white/5 hover:bg-white/5">
+                            <td className="py-3 px-4 text-gray-300 font-mono text-sm">{user.id}</td>
+                            <td className="py-3 px-4 text-gray-300 font-mono text-sm">{user.email}</td>
+                            <td className="py-3 px-4 text-gray-300 font-mono text-sm">
+                              {user.firstName} {user.lastName}
+                            </td>
+                            <td className="py-3 px-4 text-gray-300 font-mono text-sm">
+                              {user.createdAt ? new Date(user.createdAt).toLocaleDateString() : 'N/A'}
+                            </td>
+                            <td className="py-3 px-4">
+                              <div className="flex gap-2">
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="bg-transparent border-blue-500 text-blue-400 hover:bg-blue-500/10 font-mono text-xs"
+                                  onClick={() => setEditingUser(user)}
+                                >
+                                  Edit
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="bg-transparent border-red-500 text-red-400 hover:bg-red-500/10 font-mono text-xs"
+                                  onClick={() => setUserToDelete(user)}
+                                >
+                                  Delete
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    
+                    {users.length === 0 && (
+                      <div className="text-center py-8">
+                        <p className="text-gray-400 font-mono">No users found</p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </div>
       </div>
+
+      {/* Edit User Dialog */}
+      {editingUser && (
+        <Dialog open={!!editingUser} onOpenChange={() => setEditingUser(null)}>
+          <DialogContent className="bg-black border-white/20 text-white max-w-md">
+            <DialogHeader>
+              <DialogTitle className="font-mono text-xl">Edit User</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.currentTarget);
+              updateUserMutation.mutate({
+                userId: editingUser.id,
+                updates: {
+                  email: formData.get("email"),
+                  firstName: formData.get("firstName"),
+                  lastName: formData.get("lastName"),
+                }
+              });
+            }} className="space-y-4">
+              <div>
+                <label className="text-sm font-mono text-gray-300 block mb-2">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  defaultValue={editingUser.email}
+                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                  required
+                />
+              </div>
+              <div>
+                <label className="text-sm font-mono text-gray-300 block mb-2">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  defaultValue={editingUser.firstName || ''}
+                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-mono text-gray-300 block mb-2">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  defaultValue={editingUser.lastName || ''}
+                  className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                />
+              </div>
+              <div className="flex gap-3 pt-4">
+                <Button
+                  type="submit"
+                  disabled={updateUserMutation.isPending}
+                  className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                >
+                  {updateUserMutation.isPending ? "Updating..." : "Update User"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setEditingUser(null)}
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Delete User Confirmation Dialog */}
+      {userToDelete && (
+        <Dialog open={!!userToDelete} onOpenChange={() => setUserToDelete(null)}>
+          <DialogContent className="bg-black border-white/20 text-white max-w-md">
+            <DialogHeader>
+              <DialogTitle className="font-mono text-xl">Delete User</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              <p className="text-gray-300 font-mono mb-4">
+                Are you sure you want to delete user "{userToDelete.email}"? This action cannot be undone.
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  onClick={() => deleteUserMutation.mutate(userToDelete.id)}
+                  disabled={deleteUserMutation.isPending}
+                  className="flex-1 bg-red-600 text-white hover:bg-red-700 font-mono"
+                >
+                  {deleteUserMutation.isPending ? "Deleting..." : "Delete User"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setUserToDelete(null)}
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
 
       <Footer />
     </div>
