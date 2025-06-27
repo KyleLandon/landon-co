@@ -162,6 +162,14 @@ Changelog:
   - Reordered page layout: Hero → Gallery → About → Contact → Footer
   - Updated About section with professional description and skills showcase
   - Applied consistent styling with monospace fonts and grid background
+- December 27, 2025. Performance optimization based on PageSpeed Insights
+  - Optimized images with proper sizing, lazy loading, and next-gen format URLs
+  - Added resource preloading for critical fonts and hero logo
+  - Enhanced image alt text for better accessibility and SEO
+  - Implemented DNS prefetching for external domains
+  - Added viewport meta tag and theme color for mobile optimization
+  - Layered font imports to reduce render-blocking resources
+  - Added comprehensive meta tags for better SEO and social sharing
 ```
 
 ## User Preferences

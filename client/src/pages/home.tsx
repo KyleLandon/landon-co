@@ -5,6 +5,7 @@ import About from "@/components/about";
 import Gallery from "@/components/gallery";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
+import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
 
 export default function Home() {
   useEffect(() => {
@@ -17,13 +18,20 @@ export default function Home() {
     preloadFont.as = "style";
     document.head.appendChild(preloadFont);
     
+    // Preload critical hero logo
+    const preloadLogo = document.createElement("link");
+    preloadLogo.rel = "preload";
+    preloadLogo.href = whiteLogo;
+    preloadLogo.as = "image";
+    document.head.appendChild(preloadLogo);
+    
     // Ensure viewport is properly set
-    let viewport = document.querySelector('meta[name="viewport"]');
+    let viewport = document.querySelector('meta[name="viewport"]') as HTMLMetaElement | null;
     if (!viewport) {
-      viewport = document.createElement("meta");
-      viewport.name = "viewport";
-      viewport.content = "width=device-width, initial-scale=1.0";
-      document.head.appendChild(viewport);
+      const newViewport = document.createElement("meta");
+      newViewport.name = "viewport";
+      newViewport.content = "width=device-width, initial-scale=1.0";
+      document.head.appendChild(newViewport);
     }
     
     const metaDescription = document.createElement("meta");
@@ -40,6 +48,23 @@ export default function Home() {
     ogDescription.setAttribute("property", "og:description");
     ogDescription.content = "Professional web design and development services for local businesses. Creating modern, responsive websites that drive results.";
     document.head.appendChild(ogDescription);
+
+    // Add theme color for mobile browsers
+    const themeColor = document.createElement("meta");
+    themeColor.name = "theme-color";
+    themeColor.content = "#000000";
+    document.head.appendChild(themeColor);
+
+    // Add DNS prefetch for external domains
+    const dnsPrefetch = document.createElement("link");
+    dnsPrefetch.rel = "dns-prefetch";
+    dnsPrefetch.href = "//fonts.googleapis.com";
+    document.head.appendChild(dnsPrefetch);
+
+    const dnsPrefetch2 = document.createElement("link");
+    dnsPrefetch2.rel = "dns-prefetch";
+    dnsPrefetch2.href = "//images.unsplash.com";
+    document.head.appendChild(dnsPrefetch2);
 
     return () => {
       document.head.removeChild(metaDescription);
