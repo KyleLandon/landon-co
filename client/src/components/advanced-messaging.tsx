@@ -36,7 +36,7 @@ interface Attachment {
 
 interface AdvancedMessagingProps {
   projectId: string;
-  messages: Message[];
+  messages: MessageType[];
   currentUserId: string;
   isAdmin: boolean;
 }
@@ -56,7 +56,7 @@ export default function AdvancedMessaging({
   const [messageText, setMessageText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [replyingTo, setReplyingTo] = useState<Message | null>(null);
+  const [replyingTo, setReplyingTo] = useState<MessageType | null>(null);
   const [attachments, setAttachments] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -208,7 +208,10 @@ export default function AdvancedMessaging({
                       {getSenderName(message.senderId)}
                     </span>
                     <span className="text-xs opacity-60">
-                      {new Date(message.createdAt).toLocaleTimeString()}
+                      {typeof message.createdAt === 'string' 
+                        ? new Date(message.createdAt).toLocaleTimeString()
+                        : message.createdAt.toLocaleTimeString()
+                      }
                     </span>
                   </div>
 

@@ -72,41 +72,12 @@ export default function ProjectDetail() {
     return () => clearInterval(interval);
   }, [id, queryClient]);
 
-  // Auto-scroll to bottom when messages load initially
-  useEffect(() => {
-    if (messages.length > 0) {
-      setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    }
-  }, [messages.length]);
-
   const { data: updates = [], isLoading: updatesLoading } = useQuery<ProjectUpdate[]>({
     queryKey: [`/api/projects/${id}/updates`],
     enabled: !!id,
   });
 
-  const sendMessageMutation = useMutation({
-    mutationFn: async (message: string) => {
-      const res = await apiRequest("POST", `/api/projects/${id}/messages`, { message });
-      return res.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`/api/projects/${id}/messages`] });
-      setMessageText("");
-      toast({
-        title: "Message sent",
-        description: "Your message has been sent successfully",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to send message",
-        variant: "destructive",
-      });
-    },
-  });
+
 
   const updateProjectMutation = useMutation({
     mutationFn: async (updates: any) => {
@@ -144,12 +115,7 @@ export default function ProjectDetail() {
     }
   }, [project, isEditing]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (messageText.trim()) {
-      sendMessageMutation.mutate(messageText);
-    }
-  };
+
 
   const handleStartEdit = () => {
     if (project) {
