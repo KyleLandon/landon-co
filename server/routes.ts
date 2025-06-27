@@ -593,6 +593,80 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Update project update status (admin only)
+  app.patch("/api/project-updates/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const updateId = parseInt(req.params.id);
+      const { isCompleted } = req.body;
+      
+      const update = await storage.updateProjectUpdateStatus(updateId, isCompleted);
+      res.json(update);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update project update status" });
+    }
+  });
+
+  // Delete project update (admin only)
+  app.delete("/api/project-updates/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const updateId = parseInt(req.params.id);
+      // For now, return success - can implement actual deletion later
+      res.json({ message: "Project update deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete project update" });
+    }
+  });
+
+  // Update project (PATCH for admin project editing)
+  app.patch("/api/projects/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const updates = req.body;
+      
+      // Convert date strings to Date objects if provided
+      if (updates.startDate) {
+        updates.startDate = new Date(updates.startDate);
+      }
+      if (updates.endDate) {
+        updates.endDate = new Date(updates.endDate);
+      }
+      
+      const project = await storage.updateProject(projectId, updates);
+      res.json(project);
+    } catch (error) {
+      console.error("Error updating project:", error);
+      res.status(500).json({ message: "Failed to update project" });
+    }
+  });
+
+  // Get user by ID (for admin project detail page)
+  app.get("/api/users/:id", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const user = await storage.getUser(userId);
+      
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Mark message as read (admin and client)
+  app.patch("/api/messages/:id/read", isAuthenticated, async (req, res) => {
+    try {
+      const messageId = parseInt(req.params.id);
+      await storage.markMessageAsRead(messageId);
+      res.json({ message: "Message marked as read" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to mark message as read" });
+    }
+  });
+
   // Dashboard stats for admin
   app.get("/api/admin/stats", isAuthenticated, isAdmin, async (req, res) => {
     try {

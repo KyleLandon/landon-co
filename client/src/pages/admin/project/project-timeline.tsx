@@ -119,8 +119,20 @@ export default function AdminProjectTimeline() {
     addUpdate.mutate(newUpdate);
   };
 
+  // Define timeline item types
+  type TimelineItem = {
+    id: number;
+    title: string;
+    description: string;
+    date: Date;
+    type: string;
+    status: string;
+    updateId?: number;
+    isCompleted?: boolean;
+  };
+
   // Combine project milestones with updates for timeline
-  const timelineItems = [
+  const timelineItems: TimelineItem[] = [
     {
       id: 1,
       title: "Project Started",
@@ -322,13 +334,13 @@ export default function AdminProjectTimeline() {
                             <span className="text-gray-400 font-mono text-sm">
                               {item.date.toLocaleDateString()}
                             </span>
-                            {item.type === "update" && (
+                            {item.type === "update" && 'updateId' in item && (
                               <div className="flex space-x-1">
                                 <Button
                                   size="sm"
                                   variant="outline"
                                   onClick={() => toggleUpdateStatus.mutate({ 
-                                    updateId: item.updateId!, 
+                                    updateId: item.updateId, 
                                     isCompleted: !item.isCompleted 
                                   })}
                                   className="border-gray-600 text-gray-300 hover:bg-gray-700 font-mono p-1"
@@ -338,7 +350,7 @@ export default function AdminProjectTimeline() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => deleteUpdate.mutate(item.updateId!)}
+                                  onClick={() => deleteUpdate.mutate(item.updateId)}
                                   className="border-red-600 text-red-400 hover:bg-red-900 font-mono p-1"
                                 >
                                   <Trash2 className="w-3 h-3" />
