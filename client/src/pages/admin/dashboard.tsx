@@ -95,7 +95,7 @@ export default function AdminDashboard() {
               transition={{ delay: index * 0.1 }}
             >
               <Link href={stat.href}>
-                <Card className="bg-zinc-900 border-white/10 border-2 hover:border-white/20 transition-colors cursor-pointer">
+                <Card className="bg-gray-900 border-gray-800 hover:border-gray-700 transition-colors cursor-pointer">
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>

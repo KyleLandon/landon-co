@@ -383,7 +383,7 @@ export default function ProjectDetail() {
             transition={{ delay: 0.1 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
           >
-            <Card className="bg-black border-white/20">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <CardTitle className="font-mono text-white flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
@@ -412,7 +412,7 @@ export default function ProjectDetail() {
               </CardContent>
             </Card>
 
-            <Card className="bg-black border-white/20">
+            <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
                 <CardTitle className="font-mono text-white flex items-center">
                   <MessageCircle className="w-4 h-4 mr-2" />
@@ -428,7 +428,7 @@ export default function ProjectDetail() {
             </Card>
 
             {project.budget && (
-              <Card className="bg-black border-white/20">
+              <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
                   <CardTitle className="font-mono text-white">Budget</CardTitle>
                 </CardHeader>

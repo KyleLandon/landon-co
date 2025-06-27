@@ -32,19 +32,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const isActive = (path: string) => location === path;
 
   return (
-    <div className="min-h-screen bg-black text-white flex">
+    <div className="min-h-screen bg-gray-950 text-white flex">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          className="fixed inset-0 bg-gray-900/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar - Always visible on desktop */}
-      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:bg-zinc-900 lg:border-r lg:border-white/10">
+      <div className="hidden lg:flex lg:flex-col lg:w-80 lg:bg-gray-900 lg:border-r lg:border-gray-800">
         {/* Header */}
-        <div className="p-6 border-b border-white/10">
+        <div className="p-6 border-b border-gray-800">
           <h1 className="text-xl font-mono font-bold text-white">Admin Dashboard</h1>
           <p className="text-sm font-mono text-gray-400 mt-2">
             Welcome, {user?.firstName || user?.email?.split('@')[0]}
@@ -60,8 +60,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                   variant="ghost"
                   className={`w-full justify-start font-mono text-left ${
                     isActive(item.path)
-                      ? "bg-white text-black hover:bg-gray-200"
-                      : "text-gray-300 hover:bg-white/10 hover:text-white"
+                      ? "bg-gray-800 text-white hover:bg-gray-700"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
                   }`}
                 >
                   <item.icon className="w-4 h-4 mr-3" />
@@ -73,10 +73,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-white/10">
+        <div className="p-4 border-t border-gray-800">
           <Button
             variant="ghost"
-            className="w-full justify-start font-mono text-gray-300 hover:bg-red-900/20 hover:text-red-400"
+            className="w-full justify-start font-mono text-gray-400 hover:bg-red-900/20 hover:text-red-400"
             onClick={() => window.location.href = "/api/logout"}
           >
             <LogOut className="w-4 h-4 mr-3" />
@@ -87,17 +87,17 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* Mobile Sidebar */}
       {sidebarOpen && (
-        <div className="fixed left-0 top-0 h-full w-80 bg-zinc-900 border-r border-white/10 z-50 lg:hidden">
+        <div className="fixed left-0 top-0 h-full w-80 bg-gray-900 border-r border-gray-800 z-50 lg:hidden">
           <div className="flex flex-col h-full">
             {/* Header */}
-            <div className="p-6 border-b border-white/10">
+            <div className="p-6 border-b border-gray-800">
               <div className="flex items-center justify-between">
                 <h1 className="text-xl font-mono font-bold text-white">Admin Dashboard</h1>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setSidebarOpen(false)}
-                  className="text-white hover:bg-white/10"
+                  className="text-white hover:bg-gray-800"
                 >
                   <X className="w-4 h-4" />
                 </Button>
@@ -116,8 +116,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
                       variant="ghost"
                       className={`w-full justify-start font-mono text-left ${
                         isActive(item.path)
-                          ? "bg-white text-black hover:bg-gray-200"
-                          : "text-gray-300 hover:bg-white/10 hover:text-white"
+                          ? "bg-gray-800 text-white hover:bg-gray-700"
+                          : "text-gray-400 hover:bg-gray-800 hover:text-white"
                       }`}
                       onClick={() => setSidebarOpen(false)}
                     >
@@ -130,10 +130,10 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </nav>
 
             {/* Footer */}
-            <div className="p-4 border-t border-white/10">
+            <div className="p-4 border-t border-gray-800">
               <Button
                 variant="ghost"
-                className="w-full justify-start font-mono text-gray-300 hover:bg-red-900/20 hover:text-red-400"
+                className="w-full justify-start font-mono text-gray-400 hover:bg-red-900/20 hover:text-red-400"
                 onClick={() => window.location.href = "/api/logout"}
               >
                 <LogOut className="w-4 h-4 mr-3" />
@@ -147,13 +147,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       {/* Main content */}
       <div className="flex-1 lg:flex lg:flex-col">
         {/* Top bar - Mobile only */}
-        <div className="bg-zinc-900 border-b border-white/10 px-6 py-4 lg:hidden">
+        <div className="bg-gray-900 border-b border-gray-800 px-6 py-4 lg:hidden">
           <div className="flex items-center justify-between">
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setSidebarOpen(true)}
-              className="text-white hover:bg-white/10"
+              className="text-white hover:bg-gray-800"
             >
               <Menu className="w-4 h-4" />
             </Button>
@@ -163,7 +163,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
 
         {/* Top bar - Desktop only */}
-        <div className="hidden lg:block bg-zinc-900 border-b border-white/10 px-6 py-4">
+        <div className="hidden lg:block bg-gray-900 border-b border-gray-800 px-6 py-4">
           <div className="flex items-center justify-end">
             <NotificationBell />
           </div>
