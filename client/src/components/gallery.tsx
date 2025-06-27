@@ -112,27 +112,29 @@ const Gallery = () => {
       {/* Website Preview Modal */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
         <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] bg-zinc-900 border-white/20 p-0">
-          <DialogHeader className="border-b border-white/10 p-4 flex-shrink-0">
-            <DialogTitle className="text-white font-mono text-xl uppercase tracking-wider">
-              {selectedProject?.title}
-            </DialogTitle>
-            <DialogDescription className="text-gray-400 font-mono">
-              Live website preview - Click "Open in New Tab" for full functionality
-            </DialogDescription>
-            <div className="flex items-center gap-4 mt-2">
+          <DialogHeader className="border-b border-white/10 px-4 py-2 flex-shrink-0">
+            <div className="flex items-center justify-between">
+              <div>
+                <DialogTitle className="text-white font-mono text-lg uppercase tracking-wider">
+                  {selectedProject?.title}
+                </DialogTitle>
+                <DialogDescription className="text-gray-400 font-mono text-xs">
+                  Live website preview
+                </DialogDescription>
+              </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="bg-transparent border-white/30 text-white hover:bg-white/10"
                 onClick={() => selectedProject?.url && window.open(selectedProject.url, '_blank')}
               >
-                <ExternalLink size={16} className="mr-2" />
+                <ExternalLink size={14} className="mr-1" />
                 Open in New Tab
               </Button>
             </div>
           </DialogHeader>
           {selectedProject && (
-            <div className="flex-1 bg-white overflow-hidden" style={{ height: 'calc(95vh - 120px)' }}>
+            <div className="flex-1 bg-white overflow-hidden" style={{ height: 'calc(95vh - 80px)' }}>
               <iframe
                 src={selectedProject.url}
                 className="w-full h-full border-0"
