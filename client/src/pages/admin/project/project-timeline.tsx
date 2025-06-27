@@ -334,14 +334,14 @@ export default function AdminProjectTimeline() {
                             <span className="text-gray-400 font-mono text-sm">
                               {item.date.toLocaleDateString()}
                             </span>
-                            {item.type === "update" && 'updateId' in item && (
+                            {item.type === "update" && item.updateId !== undefined && (
                               <div className="flex space-x-1">
                                 <Button
                                   size="sm"
                                   variant="outline"
                                   onClick={() => toggleUpdateStatus.mutate({ 
-                                    updateId: item.updateId, 
-                                    isCompleted: !item.isCompleted 
+                                    updateId: item.updateId as number, 
+                                    isCompleted: !(item.isCompleted || false) 
                                   })}
                                   className="border-gray-600 text-gray-300 hover:bg-gray-700 font-mono p-1"
                                 >
@@ -350,7 +350,7 @@ export default function AdminProjectTimeline() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  onClick={() => deleteUpdate.mutate(item.updateId)}
+                                  onClick={() => deleteUpdate.mutate(item.updateId as number)}
                                   className="border-red-600 text-red-400 hover:bg-red-900 font-mono p-1"
                                 >
                                   <Trash2 className="w-3 h-3" />

@@ -70,10 +70,40 @@ export default function AdminProjectMessages() {
     sendMessage.mutate({ message: newMessage.trim() });
   };
 
-  // Auto-scroll to bottom when new messages arrive
+  // Notification sound function
+  const playMessageSound = () => {
+    try {
+      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+
+      oscillator.frequency.setValueAtTime(600, audioContext.currentTime);
+      oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.1);
+      gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + 0.2);
+    } catch (error) {
+      console.log('Audio not available or blocked by browser');
+    }
+  };
+
+  // Track previous message count for new message detection
+  const [previousMessageCount, setPreviousMessageCount] = useState(0);
+
+  // Auto-scroll to bottom when new messages arrive and play sound
   useEffect(() => {
+    if (messages && messages.length > previousMessageCount && previousMessageCount > 0) {
+      // New message(s) arrived, play notification sound
+      playMessageSound();
+    }
+    setPreviousMessageCount(messages?.length || 0);
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, [messages, previousMessageCount]);
 
   // Mark unread messages as read when viewed
   useEffect(() => {
