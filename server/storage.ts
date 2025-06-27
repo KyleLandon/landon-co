@@ -5,6 +5,7 @@ import {
   messages,
   projectUpdates,
   projectSubmissions,
+  projectFiles,
   type User,
   type UpsertUser,
   type Contact,
@@ -17,6 +18,8 @@ import {
   type InsertProjectUpdate,
   type ProjectSubmission,
   type InsertProjectSubmission,
+  type ProjectFile,
+  type InsertProjectFile,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and } from "drizzle-orm";
@@ -61,6 +64,13 @@ export interface IStorage {
   getRecentMessages(limit: number): Promise<any[]>;
   getRecentContacts(limit: number): Promise<Contact[]>;
   getRecentProjectSubmissions(limit: number): Promise<ProjectSubmission[]>;
+  
+  // File operations
+  createProjectFile(file: InsertProjectFile): Promise<ProjectFile>;
+  getProjectFiles(projectId: number): Promise<ProjectFile[]>;
+  getProjectFile(fileId: number): Promise<ProjectFile | undefined>;
+  deleteProjectFile(fileId: number): Promise<void>;
+  updateProjectFileVisibility(fileId: number, isPublic: boolean): Promise<ProjectFile>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -278,6 +288,44 @@ export class DatabaseStorage implements IStorage {
       .limit(limit);
     
     return result;
+  }
+
+  // File operations
+  async createProjectFile(insertFile: InsertProjectFile): Promise<ProjectFile> {
+    const [file] = await db
+      .insert(projectFiles)
+      .values(insertFile)
+      .returning();
+    return file;
+  }
+
+  async getProjectFiles(projectId: number): Promise<ProjectFile[]> {
+    return await db
+      .select()
+      .from(projectFiles)
+      .where(eq(projectFiles.projectId, projectId))
+      .orderBy(desc(projectFiles.createdAt));
+  }
+
+  async getProjectFile(fileId: number): Promise<ProjectFile | undefined> {
+    const [file] = await db
+      .select()
+      .from(projectFiles)
+      .where(eq(projectFiles.id, fileId));
+    return file;
+  }
+
+  async deleteProjectFile(fileId: number): Promise<void> {
+    await db.delete(projectFiles).where(eq(projectFiles.id, fileId));
+  }
+
+  async updateProjectFileVisibility(fileId: number, isPublic: boolean): Promise<ProjectFile> {
+    const [file] = await db
+      .update(projectFiles)
+      .set({ isPublic })
+      .where(eq(projectFiles.id, fileId))
+      .returning();
+    return file;
   }
 }
 

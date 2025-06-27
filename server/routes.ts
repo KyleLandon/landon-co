@@ -4,10 +4,11 @@ import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail } from "./email";
-import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema } from "@shared/schema";
+import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema, insertProjectFileSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import express from "express";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -664,6 +665,136 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Message marked as read" });
     } catch (error) {
       res.status(500).json({ message: "Failed to mark message as read" });
+    }
+  });
+
+  // File upload routes
+  app.post("/api/projects/:id/files", isAuthenticated, upload.single('file'), async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const userId = req.user?.claims?.sub;
+      
+      if (!req.file) {
+        return res.status(400).json({ message: "No file uploaded" });
+      }
+
+      const fileData = {
+        projectId,
+        uploadedBy: userId,
+        fileName: req.file.filename,
+        originalName: req.file.originalname,
+        fileSize: req.file.size,
+        mimeType: req.file.mimetype,
+        filePath: req.file.path,
+        fileCategory: req.body.category || "general",
+        description: req.body.description || "",
+        isPublic: req.body.isPublic === "true",
+      };
+
+      const validatedData = insertProjectFileSchema.parse(fileData);
+      const file = await storage.createProjectFile(validatedData);
+      
+      res.json(file);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid file data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to upload file" });
+      }
+    }
+  });
+
+  // Get project files
+  app.get("/api/projects/:id/files", isAuthenticated, async (req, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const userId = req.user?.claims?.sub;
+      const userRole = req.user?.claims?.role;
+      
+      let files = await storage.getProjectFiles(projectId);
+      
+      // Filter files based on user role and visibility
+      if (userRole !== "admin") {
+        files = files.filter(file => file.isPublic || file.uploadedBy === userId);
+      }
+      
+      res.json(files);
+    } catch (error) {
+      console.error("Error fetching files:", error);
+      res.status(500).json({ message: "Failed to fetch files" });
+    }
+  });
+
+  // Download file
+  app.get("/api/files/:id/download", isAuthenticated, async (req, res) => {
+    try {
+      const fileId = parseInt(req.params.id);
+      const userId = req.user?.claims?.sub;
+      const userRole = req.user?.claims?.role;
+      
+      const file = await storage.getProjectFile(fileId);
+      
+      if (!file) {
+        return res.status(404).json({ message: "File not found" });
+      }
+      
+      // Check file access permissions
+      if (userRole !== "admin" && !file.isPublic && file.uploadedBy !== userId) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      res.download(file.filePath, file.originalName);
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      res.status(500).json({ message: "Failed to download file" });
+    }
+  });
+
+  // Delete file (admin or uploader only)
+  app.delete("/api/files/:id", isAuthenticated, async (req, res) => {
+    try {
+      const fileId = parseInt(req.params.id);
+      const userId = req.user?.claims?.sub;
+      const userRole = req.user?.claims?.role;
+      
+      const file = await storage.getProjectFile(fileId);
+      
+      if (!file) {
+        return res.status(404).json({ message: "File not found" });
+      }
+      
+      // Check delete permissions (admin or uploader)
+      if (userRole !== "admin" && file.uploadedBy !== userId) {
+        return res.status(403).json({ message: "Access denied" });
+      }
+      
+      // Delete file from filesystem
+      try {
+        await fs.promises.unlink(file.filePath);
+      } catch (fsError) {
+        console.log("File already deleted from filesystem");
+      }
+      
+      await storage.deleteProjectFile(fileId);
+      res.json({ message: "File deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      res.status(500).json({ message: "Failed to delete file" });
+    }
+  });
+
+  // Update file visibility (admin only)
+  app.patch("/api/files/:id/visibility", isAuthenticated, isAdmin, async (req, res) => {
+    try {
+      const fileId = parseInt(req.params.id);
+      const { isPublic } = req.body;
+      
+      const file = await storage.updateProjectFileVisibility(fileId, isPublic);
+      res.json(file);
+    } catch (error) {
+      console.error("Error updating file visibility:", error);
+      res.status(500).json({ message: "Failed to update file visibility" });
     }
   });
 
