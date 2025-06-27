@@ -330,34 +330,53 @@ const Contact = () => {
                         </FormItem>
                       )}
                     />
-                    <div>
-                      <label className="block text-white font-mono text-sm mb-2 flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        Timeline *
-                      </label>
-                      <Select>
-                        <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
-                          <SelectValue placeholder="Select timeline" />
-                        </SelectTrigger>
-                        <SelectContent className="bg-zinc-900 border-gray-700">
-                          <SelectItem value="asap" className="font-mono text-white hover:text-black">ASAP (Rush)</SelectItem>
-                          <SelectItem value="1-2weeks" className="font-mono text-white hover:text-black">1-2 weeks</SelectItem>
-                          <SelectItem value="1month" className="font-mono text-white hover:text-black">1 month</SelectItem>
-                          <SelectItem value="2-3months" className="font-mono text-white hover:text-black">2-3 months</SelectItem>
-                          <SelectItem value="3-6months" className="font-mono text-white hover:text-black">3-6 months</SelectItem>
-                          <SelectItem value="6months+" className="font-mono text-white hover:text-black">6+ months</SelectItem>
-                          <SelectItem value="flexible" className="font-mono text-white hover:text-black">Flexible</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-white font-mono text-sm mb-2">Project Description *</label>
-                    <Textarea 
-                      placeholder="Describe your project in detail. What are your goals, target audience, specific features needed, etc."
-                      className="bg-zinc-800 border-gray-700 text-white font-mono min-h-[120px]"
+                    <FormField
+                      control={projectForm.control}
+                      name="timeline"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white font-mono flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            Timeline *
+                          </FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger className="bg-zinc-800 border-gray-700 text-white font-mono">
+                                <SelectValue placeholder="Select timeline" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent className="bg-zinc-900 border-gray-700">
+                              <SelectItem value="asap" className="font-mono text-white hover:text-black">ASAP (Rush)</SelectItem>
+                              <SelectItem value="1-2weeks" className="font-mono text-white hover:text-black">1-2 weeks</SelectItem>
+                              <SelectItem value="1month" className="font-mono text-white hover:text-black">1 month</SelectItem>
+                              <SelectItem value="2-3months" className="font-mono text-white hover:text-black">2-3 months</SelectItem>
+                              <SelectItem value="3-6months" className="font-mono text-white hover:text-black">3-6 months</SelectItem>
+                              <SelectItem value="6months+" className="font-mono text-white hover:text-black">6+ months</SelectItem>
+                              <SelectItem value="flexible" className="font-mono text-white hover:text-black">Flexible</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
                   </div>
+                  <FormField
+                    control={projectForm.control}
+                    name="description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-white font-mono">Project Description *</FormLabel>
+                        <FormControl>
+                          <Textarea 
+                            placeholder="Describe your project in detail. What are your goals, target audience, specific features needed, etc."
+                            className="bg-zinc-800 border-gray-700 text-white font-mono min-h-[120px]"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
 
                 <Button 

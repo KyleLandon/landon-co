@@ -3,7 +3,6 @@ import Navigation from "@/components/navigation";
 import Hero from "@/components/hero";
 import About from "@/components/about";
 import Gallery from "@/components/gallery";
-import ProjectSubmissionForm from "@/components/project-submission-form";
 import Contact from "@/components/contact";
 import Footer from "@/components/footer";
 import whiteLogo from "@assets/super_white_transparent_1750910829574.png";
@@ -81,7 +80,6 @@ export default function Home() {
         <Hero />
         <Gallery />
         <About />
-        <ProjectSubmissionForm />
         <Contact />
       </main>
       <Footer />
