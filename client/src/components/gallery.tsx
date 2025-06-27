@@ -1,15 +1,21 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { ExternalLink, X } from "lucide-react";
 import willWorkImage from "@assets/image_1750913419157.png";
 import comicMysteryImage from "@assets/comic_mystery_boxes.png";
 
 const Gallery = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [selectedProject, setSelectedProject] = useState<{
+    title: string;
+    url: string;
+  } | null>(null);
 
   const projects = [
     {
@@ -17,30 +23,14 @@ const Gallery = () => {
       alt: "Will Work Construction website",
       title: "WILL WORK CONSTRUCTION",
       category: "CONSTRUCTION",
+      url: "https://willworkconstruction.com/home",
     },
     {
       src: comicMysteryImage,
       alt: "Comic Mystery Boxes e-commerce website featuring curated comic book mystery boxes",
       title: "COMIC MYSTERY BOXES",
       category: "E-COMMERCE",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=600&h=400&fit=crop&auto=format&q=75",
-      alt: "Restaurant website design featuring elegant dining establishment",
-      title: "BELLA VISTA",
-      category: "RESTAURANT",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=600&fit=crop",
-      alt: "Tech startup website",
-      title: "FITCORE STUDIO",
-      category: "FITNESS",
-    },
-    {
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
-      alt: "Legal firm website",
-      title: "STERLING LEGAL",
-      category: "CORPORATE",
+      url: "https://comic-mysteries.com",
     },
   ];
 
@@ -63,10 +53,14 @@ const Gallery = () => {
           {projects.map((project, index) => (
             <motion.div
               key={index}
-              className="group relative overflow-hidden rounded-none border-2 border-white/20"
+              className="group relative overflow-hidden rounded-none border-2 border-white/20 cursor-pointer"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
+              onClick={() => setSelectedProject({
+                title: project.title,
+                url: project.url
+              })}
             >
               <div className="aspect-[4/3] overflow-hidden">
                 <img
@@ -90,6 +84,10 @@ const Gallery = () => {
                   {project.title}
                 </h3>
                 <p className="text-sm text-gray-300 font-mono tracking-widest uppercase">{project.category}</p>
+                <div className="mt-4 flex items-center gap-2 text-white">
+                  <ExternalLink size={16} />
+                  <span className="text-xs font-mono uppercase tracking-wider">Preview Website</span>
+                </div>
               </div>
             </motion.div>
           ))}
@@ -110,6 +108,38 @@ const Gallery = () => {
           </Link>
         </motion.div>
       </div>
+
+      {/* Website Preview Modal */}
+      <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
+        <DialogContent className="max-w-6xl h-[80vh] bg-zinc-900 border-white/20">
+          <DialogHeader className="border-b border-white/10 pb-4">
+            <DialogTitle className="text-white font-mono text-xl uppercase tracking-wider">
+              {selectedProject?.title}
+            </DialogTitle>
+            <div className="flex items-center gap-4 mt-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-transparent border-white/30 text-white hover:bg-white/10"
+                onClick={() => selectedProject?.url && window.open(selectedProject.url, '_blank')}
+              >
+                <ExternalLink size={16} className="mr-2" />
+                Open in New Tab
+              </Button>
+            </div>
+          </DialogHeader>
+          {selectedProject && (
+            <div className="flex-1 bg-white rounded overflow-hidden">
+              <iframe
+                src={selectedProject.url}
+                className="w-full h-full border-0"
+                title={`Preview of ${selectedProject.title}`}
+                loading="lazy"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

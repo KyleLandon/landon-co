@@ -24,59 +24,9 @@ const projects = [
     description: "E-commerce platform for curated comic book mystery boxes with modern design and seamless shopping experience",
     image: comicMysteryImage,
     tags: ["React", "E-commerce", "Comic Books", "Mystery Boxes"],
-    demoUrl: "#",
+    demoUrl: "https://comic-mysteries.com",
     githubUrl: "#",
     category: "Web Development"
-  },
-  {
-    id: 2,
-    title: "Brand Identity System",
-    description: "Complete brand redesign with logo, guidelines, and digital assets",
-    image: "/api/placeholder/600/400",
-    tags: ["Branding", "Logo Design", "Style Guide"],
-    demoUrl: "#",
-    githubUrl: "#",
-    category: "Branding"
-  },
-  {
-    id: 3,
-    title: "Restaurant Management System",
-    description: "Full-stack application for restaurant operations and customer management",
-    image: "/api/placeholder/600/400",
-    tags: ["React", "Express", "PostgreSQL", "Real-time"],
-    demoUrl: "#",
-    githubUrl: "#",
-    category: "Web Development"
-  },
-  {
-    id: 4,
-    title: "Digital Marketing Campaign",
-    description: "Comprehensive digital marketing strategy with automation tools",
-    image: "/api/placeholder/600/400",
-    tags: ["Marketing", "Automation", "Analytics"],
-    demoUrl: "#",
-    githubUrl: "#",
-    category: "Digital Marketing"
-  },
-  {
-    id: 5,
-    title: "Mobile App UI/UX",
-    description: "Clean and intuitive mobile application design for fintech startup",
-    image: "/api/placeholder/600/400",
-    tags: ["UI/UX", "Mobile", "Figma", "Prototyping"],
-    demoUrl: "#",
-    githubUrl: "#",
-    category: "Design"
-  },
-  {
-    id: 6,
-    title: "Business Process Automation",
-    description: "Custom automation solutions to streamline business operations",
-    image: "/api/placeholder/600/400",
-    tags: ["Automation", "Python", "APIs", "Workflow"],
-    demoUrl: "#",
-    githubUrl: "#",
-    category: "Automation"
   }
 ];
 
