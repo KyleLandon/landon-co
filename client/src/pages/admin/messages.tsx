@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { useToast } from "@/hooks/use-toast";
 import { Search, Filter, Mail, Phone, MessageSquare, Calendar, Eye, CheckCircle, ArrowRight } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
-import AdminLayout from "@/pages/admin-layout";
+import AdminLayout from "./admin-layout";
 
 export default function AdminMessages() {
   const { toast } = useToast();

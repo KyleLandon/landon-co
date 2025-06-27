@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FolderOpen, Users, MessageSquare, Clock, DollarSign, TrendingUp, Activity } from "lucide-react";
 import { Link } from "wouter";
-import AdminLayout from "./admin-layout";
+import AdminLayout from "../admin-layout";
 
 export default function AdminDashboard() {
   // Fetch dashboard stats
