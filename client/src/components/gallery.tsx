@@ -4,7 +4,7 @@ import { useInView } from "framer-motion";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { ExternalLink, X } from "lucide-react";
 import willWorkImage from "@assets/image_1750913419157.png";
 import comicMysteryImage from "@assets/comic_mystery_boxes.png";
@@ -111,11 +111,14 @@ const Gallery = () => {
 
       {/* Website Preview Modal */}
       <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
-        <DialogContent className="max-w-6xl h-[80vh] bg-zinc-900 border-white/20">
-          <DialogHeader className="border-b border-white/10 pb-4">
+        <DialogContent className="max-w-[95vw] w-[95vw] h-[95vh] bg-zinc-900 border-white/20 p-0">
+          <DialogHeader className="border-b border-white/10 p-4 flex-shrink-0">
             <DialogTitle className="text-white font-mono text-xl uppercase tracking-wider">
               {selectedProject?.title}
             </DialogTitle>
+            <DialogDescription className="text-gray-400 font-mono">
+              Live website preview - Click "Open in New Tab" for full functionality
+            </DialogDescription>
             <div className="flex items-center gap-4 mt-2">
               <Button
                 variant="outline"
@@ -129,12 +132,13 @@ const Gallery = () => {
             </div>
           </DialogHeader>
           {selectedProject && (
-            <div className="flex-1 bg-white rounded overflow-hidden">
+            <div className="flex-1 bg-white overflow-hidden" style={{ height: 'calc(95vh - 120px)' }}>
               <iframe
                 src={selectedProject.url}
                 className="w-full h-full border-0"
                 title={`Preview of ${selectedProject.title}`}
                 loading="lazy"
+                style={{ minHeight: '100%' }}
               />
             </div>
           )}
