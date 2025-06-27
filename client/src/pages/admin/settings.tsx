@@ -85,7 +85,7 @@ export default function AdminSettings() {
           </Card>
 
           {/* Project Settings */}
-          <Card className="bg-zinc-900 border-white/10 border-2">
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <Shield className="w-5 h-5 mr-2" />
@@ -134,7 +134,7 @@ export default function AdminSettings() {
           </Card>
 
           {/* System Statistics */}
-          <Card className="bg-zinc-900 border-white/10 border-2">
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <Database className="w-5 h-5 mr-2" />
@@ -172,7 +172,7 @@ export default function AdminSettings() {
           </Card>
 
           {/* API Keys & Integrations */}
-          <Card className="bg-zinc-900 border-white/10 border-2">
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <Key className="w-5 h-5 mr-2" />
@@ -232,7 +232,7 @@ export default function AdminSettings() {
         </div>
 
         {/* Recent Activity */}
-        <Card className="bg-zinc-900 border-white/10 border-2">
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
             <CardTitle className="text-white font-mono">Recent System Activity</CardTitle>
           </CardHeader>
