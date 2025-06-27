@@ -244,6 +244,12 @@ Changelog:
   - Integrated file icons based on MIME types and formatted file size display
   - Files stored in uploads directory with secure access control and download endpoints
   - Added API endpoints: POST /api/projects/:id/files, GET /api/projects/:id/files, DELETE /api/files/:id
+- December 27, 2025. Brand logo asset replacement with authentic grunge-style signature logos
+  - Replaced placeholder SVG logos with actual "LANDON & CO." grunge signature artwork
+  - Updated all logo references throughout the site: navigation, hero, footer, contact, and project layouts
+  - White logo (logo-white.png) for dark backgrounds, black logo (logo-black.png) for light backgrounds
+  - Maintained consistent branding across all user interfaces and admin panels
+  - Authentic grunge aesthetic now properly represented throughout the entire application
 ```
 
 ## User Preferences
