@@ -125,7 +125,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         });
       } else {
         // User not authenticated - store as submission for review
-        const submission = await storage.createProjectSubmission(projectSubmissionData);
+        console.log("Creating project submission for unauthenticated user");
+        
+        // Validate the submission data
+        const validatedSubmissionData = insertProjectSubmissionSchema.parse(projectSubmissionData);
+        console.log("Validated submission data:", validatedSubmissionData);
+        
+        const submission = await storage.createProjectSubmission(validatedSubmissionData);
+        console.log("Project submission created successfully:", submission.id);
 
         res.json({
           success: true,
