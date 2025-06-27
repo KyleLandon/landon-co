@@ -20,17 +20,17 @@ import type { Project, Message, ProjectUpdate } from "@shared/schema";
 export default function ProjectOverview() {
   const { id } = useParams();
 
-  const { data: project, isLoading } = useQuery({
+  const { data: project, isLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${id}`],
     enabled: !!id,
   });
 
-  const { data: messages } = useQuery({
+  const { data: messages } = useQuery<Message[]>({
     queryKey: [`/api/projects/${id}/messages`],
     enabled: !!id,
   });
 
-  const { data: updates } = useQuery({
+  const { data: updates } = useQuery<ProjectUpdate[]>({
     queryKey: [`/api/projects/${id}/updates`],
     enabled: !!id,
   });
@@ -114,16 +114,16 @@ export default function ProjectOverview() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white font-mono mb-2">
-              {project.title}
+              {project?.title || "Loading..."}
             </h1>
             <p className="text-gray-400 font-mono mb-4">
-              {project.description}
+              {project?.description || "Loading project description..."}
             </p>
             <div className="flex items-center space-x-4">
-              <Badge className={`${getStatusColor(project.status)} text-white font-mono`}>
-                {getStatusText(project.status)}
+              <Badge className={`${getStatusColor(project?.status)} text-white font-mono`}>
+                {getStatusText(project?.status)}
               </Badge>
-              {project.startDate && (
+              {project?.startDate && (
                 <div className="flex items-center text-gray-400 font-mono text-sm">
                   <Calendar className="w-4 h-4 mr-1" />
                   Started {new Date(project.startDate).toLocaleDateString()}
@@ -193,7 +193,7 @@ export default function ProjectOverview() {
                     <div key={message.id} className="p-3 bg-gray-800 rounded-lg">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm text-gray-400 font-mono">
-                          {message.senderId === project.clientId ? "You" : "Admin"}
+                          {message.senderId === project?.clientId ? "You" : "Admin"}
                         </span>
                         <span className="text-xs text-gray-500 font-mono">
                           {new Date(message.createdAt).toLocaleDateString()}
