@@ -24,6 +24,8 @@ export default function AdminDashboard() {
   const [newProjectOpen, setNewProjectOpen] = useState(false);
   const [filterStatus, setFilterStatus] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState("");
+  const [editingUser, setEditingUser] = useState<any>(null);
+  const [userToDelete, setUserToDelete] = useState<any>(null);
   
   // Fetch all data
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
@@ -36,6 +38,10 @@ export default function AdminDashboard() {
 
   const { data: projectSubmissions = [], isLoading: submissionsLoading } = useQuery<any[]>({
     queryKey: ["/api/admin/project-submissions"],
+  });
+
+  const { data: users = [], isLoading: usersLoading } = useQuery<any[]>({
+    queryKey: ["/api/admin/users"],
   });
 
   // Create project mutation
@@ -56,6 +62,51 @@ export default function AdminDashboard() {
       toast({
         title: "Error",
         description: "Failed to create project",
+        variant: "destructive",
+      });
+    },
+  });
+
+  // User management mutations
+  const updateUserMutation = useMutation({
+    mutationFn: async ({ userId, updates }: { userId: string; updates: any }) => {
+      const res = await apiRequest("PUT", `/api/admin/users/${userId}`, updates);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      setEditingUser(null);
+      toast({
+        title: "Success",
+        description: "User updated successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to update user",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    mutationFn: async (userId: string) => {
+      const res = await apiRequest("DELETE", `/api/admin/users/${userId}`);
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
+      setUserToDelete(null);
+      toast({
+        title: "Success",
+        description: "User deleted successfully",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to delete user",
         variant: "destructive",
       });
     },
