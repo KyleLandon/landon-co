@@ -230,10 +230,10 @@ export default function AdminDashboard() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent className="bg-zinc-900 border-gray-700">
-                          <SelectItem value="inquiry" className="font-mono">Initial Inquiry</SelectItem>
-                          <SelectItem value="proposal" className="font-mono">Proposal</SelectItem>
-                          <SelectItem value="active" className="font-mono">Active</SelectItem>
-                          <SelectItem value="completed" className="font-mono">Completed</SelectItem>
+                          <SelectItem value="inquiry" className="font-mono text-white hover:text-black">Initial Inquiry</SelectItem>
+                          <SelectItem value="proposal" className="font-mono text-white hover:text-black">Proposal</SelectItem>
+                          <SelectItem value="active" className="font-mono text-white hover:text-black">Active</SelectItem>
+                          <SelectItem value="completed" className="font-mono text-white hover:text-black">Completed</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
