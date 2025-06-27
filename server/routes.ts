@@ -132,6 +132,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get specific project details
+  app.get("/api/projects/:id", isAuthenticated, async (req: any, res) => {
+    try {
+      const projectId = parseInt(req.params.id);
+      const userId = req.user.claims.sub;
+      
+      const project = await storage.getProject(projectId);
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+
+      const user = await storage.getUser(userId);
+      if (project.clientId !== userId && user?.role !== "admin") {
+        return res.status(403).json({ message: "Access denied" });
+      }
+
+      res.json(project);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to retrieve project" });
+    }
+  });
+
   // Project routes - Messages
   app.get("/api/projects/:id/messages", isAuthenticated, async (req: any, res) => {
     try {

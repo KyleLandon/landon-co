@@ -342,6 +342,7 @@ const Contact = () => {
                       <Input
                         placeholder="(555) 123-4567"
                         {...field}
+                        value={field.value || ""}
                         className="bg-black border-2 border-white/30 rounded-none font-mono"
                       />
                     </FormControl>

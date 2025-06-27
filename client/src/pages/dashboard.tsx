@@ -11,7 +11,7 @@ import Footer from "@/components/footer";
 export default function Dashboard() {
   const { user } = useAuth();
   
-  const { data: projects, isLoading } = useQuery({
+  const { data: projects = [], isLoading } = useQuery({
     queryKey: ["/api/my-projects"],
   });
 
