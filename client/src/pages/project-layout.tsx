@@ -1,152 +1,184 @@
-import { useState } from "react";
-import { Link, useParams, useLocation } from "wouter";
-import { motion } from "framer-motion";
-import { 
-  MessageCircle, 
-  FileText, 
-  TrendingUp, 
-  Calendar,
-  CreditCard,
-  Settings,
-  Home,
-  User,
-  ChevronLeft,
-  Menu,
-  X
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ReactNode } from "react";
+import { useParams, Link, useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
+import { 
+  LayoutDashboard, 
+  MessageCircle, 
+  Clock, 
+  Bookmark, 
+  Receipt, 
+  Folder,
+  Settings,
+  ArrowLeft
+} from "lucide-react";
+import logoPath from "@assets/black_transparent_1750909506258.png";
 
 interface ProjectLayoutProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function ProjectLayout({ children }: ProjectLayoutProps) {
   const { id } = useParams();
   const [location] = useLocation();
   const { user } = useAuth();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { data: project } = useQuery({
+    queryKey: [`/api/projects/${id}`],
+    enabled: !!id,
+  });
 
   const navigation = [
-    { name: "Overview", href: `/projects/${id}`, icon: Home },
-    { name: "Messages", href: `/projects/${id}/messages`, icon: MessageCircle },
-    { name: "Timeline", href: `/projects/${id}/timeline`, icon: Calendar },
-    { name: "Updates", href: `/projects/${id}/updates`, icon: TrendingUp },
-    { name: "Invoices", href: `/projects/${id}/invoices`, icon: CreditCard },
-    { name: "Files", href: `/projects/${id}/files`, icon: FileText },
-    { name: "Settings", href: `/projects/${id}/settings`, icon: Settings },
-  ];
-
-  const isActive = (href: string) => {
-    if (href === `/projects/${id}`) {
-      return location === href;
+    {
+      name: "Overview",
+      href: `/projects/${id}`,
+      icon: LayoutDashboard,
+      current: location === `/projects/${id}`
+    },
+    {
+      name: "Messages",
+      href: `/projects/${id}/messages`,
+      icon: MessageCircle,
+      current: location === `/projects/${id}/messages`
+    },
+    {
+      name: "Timeline",
+      href: `/projects/${id}/timeline`,
+      icon: Clock,
+      current: location === `/projects/${id}/timeline`
+    },
+    {
+      name: "Updates",
+      href: `/projects/${id}/updates`,
+      icon: Bookmark,
+      current: location === `/projects/${id}/updates`
+    },
+    {
+      name: "Invoices",
+      href: `/projects/${id}/invoices`,
+      icon: Receipt,
+      current: location === `/projects/${id}/invoices`
+    },
+    {
+      name: "Files",
+      href: `/projects/${id}/files`,
+      icon: Folder,
+      current: location === `/projects/${id}/files`
+    },
+    {
+      name: "Settings",
+      href: `/projects/${id}/settings`,
+      icon: Settings,
+      current: location === `/projects/${id}/settings`
     }
-    return location.startsWith(href);
-  };
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Top Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/10">
-        <div className="flex items-center justify-between h-16 px-6">
-          {/* Mobile menu button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="lg:hidden text-white hover:bg-white/10"
-          >
-            {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
-
-          {/* Logo */}
-          <div className="flex items-center">
-            <img 
-              src="/attached_assets/white_transparent_1750909506258.png" 
-              alt="Landon & Co." 
-              className="h-8 w-auto object-contain"
-            />
-          </div>
-
-          {/* User Menu */}
-          <div className="flex items-center space-x-4">
-            <Link href="/" className="text-white hover:text-gray-300 font-mono text-sm flex items-center">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              Back to Home
-            </Link>
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-black" />
-            </div>
-          </div>
+      {/* Mobile header */}
+      <div className="lg:hidden bg-gray-900 border-b border-gray-800 p-4">
+        <div className="flex items-center justify-between">
+          <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Dashboard
+          </Link>
+          <img src={logoPath} alt="Landon & Co." className="h-8" />
         </div>
-      </nav>
+        <div className="mt-4">
+          <h1 className="text-lg font-bold text-white font-mono truncate">
+            {(project as any)?.title || "Project"}
+          </h1>
+        </div>
+      </div>
 
-      <div className="flex pt-16">
-        {/* Sidebar */}
-        <div className={`
-          fixed inset-y-0 left-0 z-40 w-64 transform transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static lg:inset-0
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
-        `}>
-          <div className="flex flex-col h-full bg-black border-r border-white/10 pt-16 lg:pt-0">
-            <div className="flex-1 flex flex-col min-h-0 py-6">
-              <nav className="flex-1 px-4 space-y-2">
-                {navigation.map((item) => {
-                  const Icon = item.icon;
-                  const active = isActive(item.href);
-                  
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`
-                        group flex items-center px-3 py-2 text-sm font-mono rounded-md transition-colors
-                        ${active 
-                          ? 'bg-white text-black' 
-                          : 'text-gray-300 hover:bg-white/10 hover:text-white'
-                        }
-                      `}
-                      onClick={() => setIsSidebarOpen(false)}
-                    >
-                      <Icon className={`
-                        mr-3 flex-shrink-0 h-5 w-5 transition-colors
-                        ${active ? 'text-black' : 'text-gray-400 group-hover:text-white'}
-                      `} />
-                      {item.name}
-                    </Link>
-                  );
-                })}
-              </nav>
+      <div className="flex">
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-gray-900 border-r border-gray-800">
+          {/* Logo */}
+          <div className="flex items-center px-6 py-4 border-b border-gray-800">
+            <Link href="/dashboard">
+              <img src={logoPath} alt="Landon & Co." className="h-8" />
+            </Link>
+          </div>
 
-              {/* Project Info */}
-              <div className="px-4 py-4 border-t border-white/10">
-                <div className="text-xs text-gray-400 mb-1 font-mono">Project #{id}</div>
-                <div className="text-sm text-white font-mono">Web Development</div>
+          {/* Project info */}
+          <div className="px-6 py-4 border-b border-gray-800">
+            <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono text-sm mb-2">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Dashboard
+            </Link>
+            <h1 className="text-lg font-bold text-white font-mono">
+              {(project as any)?.title || "Project"}
+            </h1>
+            <p className="text-sm text-gray-400 font-mono mt-1">
+              Project #{id}
+            </p>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 px-4 py-4 space-y-1">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`
+                  group flex items-center px-3 py-2 text-sm font-mono rounded-md transition-colors
+                  ${item.current 
+                    ? 'bg-gray-800 text-white' 
+                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
+                  }
+                `}
+              >
+                <item.icon className="mr-3 h-5 w-5" />
+                {item.name}
+              </Link>
+            ))}
+          </nav>
+
+          {/* User info */}
+          <div className="px-6 py-4 border-t border-gray-800">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
+                  <span className="text-sm font-mono text-white">
+                    {user?.firstName?.charAt(0) || user?.email?.charAt(0) || "U"}
+                  </span>
+                </div>
+              </div>
+              <div className="ml-3 min-w-0">
+                <p className="text-sm font-mono text-white truncate">
+                  {user?.firstName || user?.email || "User"}
+                </p>
+                <p className="text-xs font-mono text-gray-400">Client</p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Overlay for mobile */}
-        {isSidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
-
-        {/* Main Content */}
-        <div className="flex-1 lg:ml-64">
-          <main className="flex-1">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="p-6"
-            >
-              {children}
-            </motion.div>
+        {/* Main content */}
+        <div className="lg:pl-64 flex-1">
+          <main className="p-6">
+            {children}
           </main>
+        </div>
+      </div>
+
+      {/* Mobile bottom navigation */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800">
+        <div className="flex justify-around py-2">
+          {navigation.slice(0, 5).map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={`
+                flex flex-col items-center py-2 px-3 text-xs font-mono
+                ${item.current ? 'text-white' : 'text-gray-400'}
+              `}
+            >
+              <item.icon className="h-5 w-5 mb-1" />
+              {item.name}
+            </Link>
+          ))}
         </div>
       </div>
     </div>

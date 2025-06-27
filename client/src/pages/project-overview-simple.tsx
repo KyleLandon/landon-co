@@ -4,19 +4,15 @@ import { motion } from "framer-motion";
 import { 
   Calendar, 
   DollarSign, 
-  Clock, 
+  MessageCircle, 
   CheckCircle, 
-  AlertCircle,
-  TrendingUp,
-  MessageCircle,
-  FileText
+  TrendingUp
 } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import ProjectLayout from "./project-layout";
 
-export default function ProjectOverview() {
+export default function ProjectOverviewSimple() {
   const { id } = useParams();
 
   const { data: project, isLoading } = useQuery({
@@ -74,33 +70,32 @@ export default function ProjectOverview() {
     }
   };
 
-  // Calculate project progress (example calculation)
+  const messageCount = Array.isArray(messages) ? messages.length : 0;
+  const updateCount = Array.isArray(updates) ? updates.length : 0;
   const completedUpdates = Array.isArray(updates) ? updates.filter((update: any) => update.isCompleted).length : 0;
-  const totalUpdates = Array.isArray(updates) ? updates.length : 0;
-  const progress = totalUpdates > 0 ? (completedUpdates / totalUpdates) * 100 : 0;
 
   const stats = [
     {
       title: "Total Budget",
-      value: project?.budget ? `$${parseInt(project.budget).toLocaleString()}` : "TBD",
+      value: (project as any)?.budget ? `$${parseInt((project as any).budget).toLocaleString()}` : "TBD",
       icon: DollarSign,
       color: "text-green-400"
     },
     {
       title: "Messages",
-      value: Array.isArray(messages) ? messages.length : 0,
+      value: messageCount,
       icon: MessageCircle,
       color: "text-blue-400"
     },
     {
       title: "Updates",
-      value: `${completedUpdates}/${totalUpdates}`,
+      value: `${completedUpdates}/${updateCount}`,
       icon: CheckCircle,
       color: "text-yellow-400"
     },
     {
       title: "Progress",
-      value: `${Math.round(progress)}%`,
+      value: updateCount > 0 ? `${Math.round((completedUpdates / updateCount) * 100)}%` : "0%",
       icon: TrendingUp,
       color: "text-purple-400"
     }
@@ -113,19 +108,19 @@ export default function ProjectOverview() {
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-3xl font-bold text-white font-mono mb-2">
-              {project.title}
+              {(project as any)?.title || "Project"}
             </h1>
             <p className="text-gray-400 font-mono mb-4">
-              {project.description}
+              {(project as any)?.description || "Project description"}
             </p>
             <div className="flex items-center space-x-4">
-              <Badge className={`${getStatusColor(project.status)} text-white font-mono`}>
-                {getStatusText(project.status)}
+              <Badge className={`${getStatusColor((project as any)?.status || "proposal")} text-white font-mono`}>
+                {getStatusText((project as any)?.status || "proposal")}
               </Badge>
-              {project.startDate && (
+              {(project as any)?.startDate && (
                 <div className="flex items-center text-gray-400 font-mono text-sm">
                   <Calendar className="w-4 h-4 mr-1" />
-                  Started {new Date(project.startDate).toLocaleDateString()}
+                  Started {new Date((project as any).startDate).toLocaleDateString()}
                 </div>
               )}
             </div>
@@ -156,25 +151,6 @@ export default function ProjectOverview() {
           ))}
         </div>
 
-        {/* Project Progress */}
-        <Card className="bg-gray-900 border-gray-800">
-          <CardHeader>
-            <CardTitle className="text-white font-mono">Project Progress</CardTitle>
-            <CardDescription className="text-gray-400 font-mono">
-              Overall completion status
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between text-sm font-mono">
-                <span className="text-gray-400">Completion</span>
-                <span className="text-white">{Math.round(progress)}%</span>
-              </div>
-              <Progress value={progress} className="h-2" />
-            </div>
-          </CardContent>
-        </Card>
-
         {/* Recent Activity */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Recent Messages */}
@@ -186,13 +162,13 @@ export default function ProjectOverview() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {messages && messages.length > 0 ? (
+              {messageCount > 0 ? (
                 <div className="space-y-3">
-                  {messages.slice(-3).map((message: any) => (
+                  {Array.isArray(messages) && messages.slice(-3).map((message: any) => (
                     <div key={message.id} className="p-3 bg-gray-800 rounded-lg">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm text-gray-400 font-mono">
-                          {message.senderId === project.clientId ? "You" : "Admin"}
+                          {message.senderId === (project as any)?.clientId ? "You" : "Admin"}
                         </span>
                         <span className="text-xs text-gray-500 font-mono">
                           {new Date(message.createdAt).toLocaleDateString()}
@@ -212,72 +188,42 @@ export default function ProjectOverview() {
             </CardContent>
           </Card>
 
-          {/* Recent Updates */}
+          {/* Project Info */}
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
               <CardTitle className="text-white font-mono flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2" />
-                Recent Updates
+                Project Details
               </CardTitle>
             </CardHeader>
             <CardContent>
-              {updates && updates.length > 0 ? (
-                <div className="space-y-3">
-                  {updates.slice(-3).map((update: any) => (
-                    <div key={update.id} className="p-3 bg-gray-800 rounded-lg">
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm text-white font-mono font-bold">
-                          {update.title}
-                        </span>
-                        {update.isCompleted ? (
-                          <CheckCircle className="w-4 h-4 text-green-400" />
-                        ) : (
-                          <Clock className="w-4 h-4 text-yellow-400" />
-                        )}
-                      </div>
-                      <p className="text-gray-400 font-mono text-sm line-clamp-2">
-                        {update.description}
-                      </p>
-                    </div>
-                  ))}
+              <div className="space-y-4">
+                <div>
+                  <div className="text-sm text-gray-400 font-mono mb-1">Status</div>
+                  <div className="text-white font-mono">
+                    {getStatusText((project as any)?.status || "proposal")}
+                  </div>
                 </div>
-              ) : (
-                <p className="text-gray-400 font-mono text-center py-4">
-                  No updates yet
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Timeline Preview */}
-        {(project.startDate || project.endDate) && (
-          <Card className="bg-gray-900 border-gray-800">
-            <CardHeader>
-              <CardTitle className="text-white font-mono">Project Timeline</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center space-x-8">
-                {project.startDate && (
-                  <div className="text-center">
-                    <div className="text-gray-400 font-mono text-sm mb-1">Start Date</div>
+                {(project as any)?.startDate && (
+                  <div>
+                    <div className="text-sm text-gray-400 font-mono mb-1">Start Date</div>
                     <div className="text-white font-mono">
-                      {new Date(project.startDate).toLocaleDateString()}
+                      {new Date((project as any).startDate).toLocaleDateString()}
                     </div>
                   </div>
                 )}
-                {project.endDate && (
-                  <div className="text-center">
-                    <div className="text-gray-400 font-mono text-sm mb-1">End Date</div>
+                {(project as any)?.endDate && (
+                  <div>
+                    <div className="text-sm text-gray-400 font-mono mb-1">Expected Completion</div>
                     <div className="text-white font-mono">
-                      {new Date(project.endDate).toLocaleDateString()}
+                      {new Date((project as any).endDate).toLocaleDateString()}
                     </div>
                   </div>
                 )}
               </div>
             </CardContent>
           </Card>
-        )}
+        </div>
       </div>
     </ProjectLayout>
   );
