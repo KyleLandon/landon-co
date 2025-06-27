@@ -250,7 +250,7 @@ export default function AdminDashboard() {
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit" disabled={createProjectMutation.isPending}>
+                    <Button type="submit" disabled={createProjectMutation.isPending} className="bg-white text-black hover:bg-gray-200 font-mono">
                       {createProjectMutation.isPending ? "Creating..." : "Create Project"}
                     </Button>
                   </DialogFooter>
