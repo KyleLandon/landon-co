@@ -62,7 +62,7 @@ function FilesTab({ projectId }: { projectId: string }) {
                 <div className="flex items-center space-x-3">
                   <FileText className="w-5 h-5 text-gray-400" />
                   <div>
-                    <h4 className="font-mono text-white">{file.name}</h4>
+                    <h4 className="font-mono text-white">{file.originalName}</h4>
                     <p className="text-sm text-gray-400 font-mono">{file.description || "No description"}</p>
                   </div>
                 </div>
@@ -170,7 +170,7 @@ function InvoicesTab({ projectId }: { projectId: string }) {
                   <div>
                     <h4 className="font-mono text-white">Invoice #{invoice.invoiceNumber}</h4>
                     <p className="text-sm text-gray-400 font-mono">
-                      ${invoice.total} - {invoice.status}
+                      ${invoice.totalAmount} - {invoice.status}
                     </p>
                   </div>
                 </div>

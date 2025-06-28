@@ -319,6 +319,14 @@ Changelog:
   - Messages now scroll within fixed container instead of pushing page content down
   - Improved dashboard layout stability with consistent messaging window sizing
   - Fixed CardContent overflow settings to ensure proper container boundaries
+- December 28, 2025. Unified dashboard tab system to replace old multi-page navigation
+  - Replaced external navigation buttons with integrated tab system within unified dashboard
+  - Created inline Files, Contracts, and Invoices components maintaining modern UX design
+  - Added tab switching with visual indicators (active tab gets white background)
+  - Users remain in unified dashboard instead of being redirected to legacy pages
+  - Tab system includes: Messages (default), Files, Contracts, and Invoices
+  - Each tab displays relevant project data with consistent dark theme styling
+  - Eliminated need to navigate away from main dashboard for project management tasks
 ```
 
 ## User Preferences
