@@ -333,6 +333,12 @@ Changelog:
   - Added max-height (500px) constraints to all admin messaging containers
   - Ensured consistent messaging behavior between client and admin interfaces
   - All messaging windows now maintain fixed sizes with internal scrolling
+- December 28, 2025. Eliminated automatic window scrolling when receiving messages
+  - Fixed messaging interfaces to prevent automatic page scrolling when new messages arrive
+  - Modified auto-scroll behavior to only trigger when user sends their own messages
+  - Changed scroll behavior from 'smooth' with default block to 'smooth' with 'nearest' block positioning
+  - Applied fixes to both AppleMessaging and AdvancedMessaging components
+  - Window position now remains stable when receiving messages from other users
 ```
 
 ## User Preferences

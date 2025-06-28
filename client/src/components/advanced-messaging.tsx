@@ -111,10 +111,16 @@ export default function AdvancedMessaging({
     message.message.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Auto-scroll to bottom
+  // Auto-scroll to bottom only when user sends a message (not when receiving)
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+    // Only scroll when user sends their own message
+    if (messages && messages.length > 0) {
+      const latestMessage = messages[messages.length - 1];
+      if (latestMessage.senderId === currentUserId) {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }, [messages, currentUserId]);
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
@@ -143,7 +149,6 @@ export default function AdvancedMessaging({
       }
     }
     setPreviousMessageCount(messages?.length || 0);
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, previousMessageCount, currentUserId]);
 
   const getSenderName = (senderId: string) => {
