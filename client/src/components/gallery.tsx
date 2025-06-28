@@ -8,6 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { ExternalLink, X } from "lucide-react";
 import willWorkImage from "@/assets/willwork-project.png";
 import comicMysteryImage from "@/assets/comic-project.png";
+import ThreePortfolioCard from "./three-portfolio-card";
 
 const Gallery = () => {
   const ref = useRef(null);
@@ -91,6 +92,65 @@ const Gallery = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* 3D Interactive Portfolio Cards */}
+        <motion.h3
+          className="text-3xl font-bold text-white font-mono tracking-wider text-center mt-20 mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          style={{
+            textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+            filter: "contrast(1.2)",
+          }}
+        >
+          INTERACTIVE 3D SHOWCASE
+        </motion.h3>
+        
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <ThreePortfolioCard
+              title="WEB DEVELOPMENT"
+              description="Modern websites built with cutting-edge technology and responsive design"
+              onClick={() => setSelectedProject({
+                title: "WEB DEVELOPMENT SHOWCASE",
+                url: "https://willworkconstruction.com/"
+              })}
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 1.0 }}
+          >
+            <ThreePortfolioCard
+              title="E-COMMERCE"
+              description="Full-featured online stores with payment integration and inventory management"
+              onClick={() => setSelectedProject({
+                title: "E-COMMERCE SOLUTIONS",
+                url: "https://comic-mysteries.com"
+              })}
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.8, delay: 1.2 }}
+            className="sm:col-span-2 lg:col-span-1"
+          >
+            <ThreePortfolioCard
+              title="BRANDING & DESIGN"
+              description="Complete brand identity packages including logos, colors, and visual systems"
+              onClick={() => window.open('/projects', '_blank')}
+            />
+          </motion.div>
         </div>
         
         {/* View All Projects Button */}
