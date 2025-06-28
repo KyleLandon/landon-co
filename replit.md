@@ -327,6 +327,12 @@ Changelog:
   - Tab system includes: Messages (default), Files, Contracts, and Invoices
   - Each tab displays relevant project data with consistent dark theme styling
   - Eliminated need to navigate away from main dashboard for project management tasks
+- December 28, 2025. Fixed admin messaging height constraints across all interfaces
+  - Applied messaging window height constraints to admin unified dashboard
+  - Fixed admin project messaging pages with proper overflow handling
+  - Added max-height (500px) constraints to all admin messaging containers
+  - Ensured consistent messaging behavior between client and admin interfaces
+  - All messaging windows now maintain fixed sizes with internal scrolling
 ```
 
 ## User Preferences

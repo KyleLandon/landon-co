@@ -95,8 +95,8 @@ export default function AdminProjectMessages() {
               </CardDescription>
             </CardHeader>
             
-            <CardContent className="p-0 h-full">
-              <div className="h-full">
+            <CardContent className="p-0 h-full overflow-hidden">
+              <div className="h-full max-h-[500px]">
                 <AppleMessaging
                   projectId={id}
                   messages={(messages || []).map(msg => ({

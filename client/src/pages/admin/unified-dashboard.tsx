@@ -384,8 +384,8 @@ export default function UnifiedAdminDashboard() {
                         Project Communication
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="flex-1 p-0">
-                      <div className="h-full">
+                    <CardContent className="flex-1 p-0 overflow-hidden">
+                      <div className="h-full max-h-[500px]">
                         <AppleMessaging
                           projectId={selectedProject.id.toString()}
                           messages={(messages || []).map(msg => ({
