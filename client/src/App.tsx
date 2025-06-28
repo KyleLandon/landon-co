@@ -10,7 +10,9 @@ import { LoadingPage } from "@/components/ui/loading-spinner";
 import Home from "@/pages/home";
 import Projects from "@/pages/projects";
 import Dashboard from "@/pages/client/dashboard/dashboard";
+import UnifiedDashboard from "@/pages/client/unified-dashboard";
 import AdminDashboard from "@/pages/admin/dashboard/dashboard";
+import UnifiedAdminDashboard from "@/pages/admin/unified-dashboard";
 import AdminProjects from "@/pages/admin/projects";
 import AdminClients from "@/pages/admin/clients";
 import AdminMessages from "@/pages/admin/messages";
@@ -47,7 +49,8 @@ function Router() {
       {/* Protected client routes */}
       {isAuthenticated && (
         <>
-          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/dashboard" component={UnifiedDashboard} />
+          <Route path="/dashboard/legacy" component={Dashboard} />
           <Route path="/project/:id" component={ProjectDetail} />
           <Route path="/projects/:id" component={ProjectOverviewSimple} />
           <Route path="/projects/:id/messages" component={ProjectMessages} />
@@ -63,7 +66,8 @@ function Router() {
       {/* Admin-only routes */}
       {isAuthenticated && isAdmin && (
         <>
-          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin" component={UnifiedAdminDashboard} />
+          <Route path="/admin/legacy" component={AdminDashboard} />
           <Route path="/admin/projects" component={AdminProjects} />
           <Route path="/admin/clients" component={AdminClients} />
           <Route path="/admin/messages" component={AdminMessages} />
