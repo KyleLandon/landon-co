@@ -272,6 +272,17 @@ Changelog:
   - Maintained consistent dark theme (gray-950/900/800) and monospace fonts throughout
   - Fixed all TypeScript errors and improved null safety handling for dates
   - Fixed admin dashboard routing: "View" button now correctly links to /admin/projects/:id instead of /project/:id
+- December 27, 2025. Messaging auto-refresh fix and notification system improvements
+  - Fixed client messaging refresh issue: added 3-second auto-refresh to client messaging pages
+  - Updated client messaging to use Apple-style messaging interface with clean white/gray bubbles
+  - Fixed notification system routing: notifications now navigate to correct admin routes
+    * Message notifications → /admin/projects/{id}/messages
+    * Project requests → /admin/messages  
+    * Other notifications → /admin/projects/{id}
+  - Enhanced notification count system with red badge showing unread count on bell icon
+  - Added automatic read status tracking: clicking notifications marks them as read
+  - Improved notification visual indicators: blue dot for unread notifications, "Mark all read" button
+  - Real-time messaging now works seamlessly between admin and client without manual refresh
 - December 27, 2025. Comprehensive contracts and invoices system implementation
   - Added contracts and invoices database tables with full relational schema
   - Created complete admin contract management system with WYSIWYG editor and digital signature tracking

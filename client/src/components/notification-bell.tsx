@@ -141,8 +141,15 @@ export function NotificationBell() {
   };
 
   const handleNotificationClick = (notification: Notification) => {
-    if (notification.projectId) {
-      window.location.href = `/project/${notification.projectId}`;
+    // Mark as read when clicked
+    markAsRead(notification.id);
+    
+    if (notification.type === 'message' && notification.projectId) {
+      window.location.href = `/admin/projects/${notification.projectId}/messages`;
+    } else if (notification.type === 'project_request') {
+      window.location.href = '/admin/messages';
+    } else if (notification.projectId) {
+      window.location.href = `/admin/projects/${notification.projectId}`;
     } else {
       window.location.href = '/admin/messages';
     }
@@ -152,6 +159,14 @@ export function NotificationBell() {
   const markAllAsRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   };
+
+  const markAsRead = (notificationId: string) => {
+    setNotifications(prev => prev.map(n => 
+      n.id === notificationId ? { ...n, read: true } : n
+    ));
+  };
+
+  const unreadNotificationCount = notifications.filter(n => !n.read).length;
 
   return (
     <div className="relative">
@@ -163,11 +178,11 @@ export function NotificationBell() {
         className="relative text-white hover:bg-gray-800"
       >
         <Bell className="w-5 h-5" />
-        {unreadCount > 0 && (
+        {unreadNotificationCount > 0 && (
           <Badge 
             className="absolute -top-1 -right-1 bg-red-500 text-white text-xs min-w-[20px] h-5 flex items-center justify-center p-1"
           >
-            {unreadCount > 99 ? '99+' : unreadCount}
+            {unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}
           </Badge>
         )}
       </Button>
