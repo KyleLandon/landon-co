@@ -459,17 +459,11 @@ export default function UnifiedAdminDashboard() {
                         <Input
                           type="date"
                           defaultValue={selectedProject.endDate ? 
-                            (typeof selectedProject.endDate === 'string' ? 
-                              selectedProject.endDate : 
-                              selectedProject.endDate.toISOString().split('T')[0]
-                            ) : ""}
+                            selectedProject.endDate.toString().split('T')[0] : ""}
                           className="bg-transparent border-gray-700 text-white font-mono"
                           onBlur={(e) => {
                             const currentValue = selectedProject.endDate ? 
-                              (typeof selectedProject.endDate === 'string' ? 
-                                selectedProject.endDate : 
-                                selectedProject.endDate.toISOString().split('T')[0]
-                              ) : "";
+                              selectedProject.endDate.toString().split('T')[0] : "";
                             if (e.target.value !== currentValue) {
                               updateProjectMutation.mutate({
                                 projectId: selectedProject.id,

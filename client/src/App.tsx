@@ -80,6 +80,24 @@ function Router() {
           <Route path="/admin/projects/:id/invoices" component={AdminProjectInvoices} />
         </>
       )}
+
+      {/* Redirect unauthenticated users trying to access protected routes */}
+      {!isAuthenticated && (
+        <>
+          <Route path="/dashboard">
+            {() => {
+              window.location.href = "/api/login";
+              return <LoadingPage message="Redirecting to login..." />;
+            }}
+          </Route>
+          <Route path="/admin">
+            {() => {
+              window.location.href = "/api/login";
+              return <LoadingPage message="Redirecting to login..." />;
+            }}
+          </Route>
+        </>
+      )}
       
       <Route component={NotFound} />
     </Switch>
