@@ -295,6 +295,16 @@ Changelog:
   - Database schema includes: contracts (title, content, terms, signatures), invoices (items, totals, payment status)
   - Contract workflow: draft → sent → signed → completed with full audit trail
   - Invoice workflow: draft → sent → paid with overdue detection and payment processing
+- December 27, 2025. Unified dashboard UX optimization and authentication improvements
+  - Created UnifiedDashboard component for clients with single-page project management and real-time messaging
+  - Built UnifiedAdminDashboard with consolidated project management, inline editing, and integrated communication
+  - Eliminated multi-page navigation complexity - everything accessible from main dashboard views
+  - Added automatic authentication redirect system to prevent 404 errors on protected routes
+  - Fixed authentication strategy hostname resolution for proper Replit auth integration
+  - Enhanced auth hook with automatic login redirects for expired sessions
+  - Unified dashboards available at /dashboard (client) and /admin (admin) with legacy versions at /dashboard/legacy and /admin/legacy
+  - Real-time messaging integrated directly into dashboard views with Apple-style interface
+  - Quick project switching, inline status updates, and streamlined file/contract/invoice access
 ```
 
 ## User Preferences

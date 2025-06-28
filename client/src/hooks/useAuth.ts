@@ -20,8 +20,17 @@ export function useAuth() {
           credentials: "include",
         });
 
-        // If 401, return null instead of throwing error
+        // If 401, return null and redirect to login if on protected route
         if (res.status === 401) {
+          const path = window.location.pathname;
+          const isProtectedRoute = path.startsWith('/dashboard') || 
+                                  path.startsWith('/admin') || 
+                                  path.startsWith('/project') ||
+                                  path.match(/^\/projects\/\d+/);
+          
+          if (isProtectedRoute) {
+            window.location.href = "/api/login";
+          }
           return null;
         }
 

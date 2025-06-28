@@ -96,10 +96,36 @@ function Router() {
               return <LoadingPage message="Redirecting to login..." />;
             }}
           </Route>
+          <Route path="/projects/:id">
+            {() => {
+              window.location.href = "/api/login";
+              return <LoadingPage message="Redirecting to login..." />;
+            }}
+          </Route>
+          <Route path="/project/:id">
+            {() => {
+              window.location.href = "/api/login";
+              return <LoadingPage message="Redirecting to login..." />;
+            }}
+          </Route>
+          {/* Catch-all for other routes - check if they're protected */}
+          <Route>
+            {() => {
+              const path = window.location.pathname;
+              // Check if this looks like a protected route
+              if (path.includes('admin') || path.includes('dashboard') || path.includes('project')) {
+                window.location.href = "/api/login";
+                return <LoadingPage message="Redirecting to login..." />;
+              }
+              // Otherwise show 404
+              return <NotFound />;
+            }}
+          </Route>
         </>
       )}
       
-      <Route component={NotFound} />
+      {/* Authenticated users get 404 for unknown routes */}
+      {isAuthenticated && <Route component={NotFound} />}
     </Switch>
   );
 }
