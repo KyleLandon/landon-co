@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
@@ -40,6 +40,19 @@ export default function UnifiedAdminDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [activeTab, setActiveTab] = useState("overview");
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (statusDropdownOpen) {
+        setStatusDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [statusDropdownOpen]);
 
   // Fetch all admin data
   const { data: projects = [] } = useQuery<Project[]>({
@@ -258,7 +271,14 @@ export default function UnifiedAdminDashboard() {
                       <h4 className="font-mono font-bold text-white text-sm truncate">
                         {project.title}
                       </h4>
-                      <Badge className={`${getStatusColor(project.status)} text-white text-xs`}>
+                      <Badge 
+                        className={`${getStatusColor(project.status)} text-white text-xs cursor-pointer hover:opacity-80 transition-opacity`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProjectId(project.id.toString());
+                          setStatusDropdownOpen(!statusDropdownOpen);
+                        }}
+                      >
                         {getStatusText(project.status)}
                       </Badge>
                     </div>
@@ -305,9 +325,40 @@ export default function UnifiedAdminDashboard() {
                         <CardTitle className="font-mono text-lg text-white">
                           {selectedProject.title}
                         </CardTitle>
-                        <Badge className={`${getStatusColor(selectedProject.status)} text-white`}>
-                          {getStatusText(selectedProject.status)}
-                        </Badge>
+                        <div className="relative">
+                          <Badge 
+                            className={`${getStatusColor(selectedProject.status)} text-white cursor-pointer hover:opacity-80 transition-opacity`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setStatusDropdownOpen(!statusDropdownOpen);
+                            }}
+                          >
+                            {getStatusText(selectedProject.status)}
+                          </Badge>
+                          
+                          {statusDropdownOpen && (
+                            <div className="absolute right-0 top-full mt-1 bg-gray-800 border border-gray-600 rounded-lg shadow-lg z-50 min-w-[120px]">
+                              {['inquiry', 'proposal', 'active', 'pending', 'completed'].map((status) => (
+                                <button
+                                  key={status}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    updateProjectMutation.mutate({ 
+                                      projectId: selectedProject.id, 
+                                      updates: { status } 
+                                    });
+                                    setStatusDropdownOpen(false);
+                                  }}
+                                  className={`w-full text-left px-3 py-2 text-sm font-mono hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                                    selectedProject.status === status ? 'bg-gray-700 text-white' : 'text-gray-300'
+                                  }`}
+                                >
+                                  {getStatusText(status)}
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
@@ -346,32 +397,7 @@ export default function UnifiedAdminDashboard() {
                         )}
                       </div>
                       
-                      <div className="flex gap-2">
-                        <Button
-                          onClick={() => window.location.href = `/admin/projects/${selectedProject.id}/files`}
-                          variant="outline"
-                          size="sm"
-                          className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
-                        >
-                          View Files
-                        </Button>
-                        <Button
-                          onClick={() => window.location.href = `/admin/projects/${selectedProject.id}/contracts`}
-                          variant="outline"
-                          size="sm"
-                          className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
-                        >
-                          Contracts
-                        </Button>
-                        <Button
-                          onClick={() => window.location.href = `/admin/projects/${selectedProject.id}/invoices`}
-                          variant="outline"
-                          size="sm"
-                          className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
-                        >
-                          Invoices
-                        </Button>
-                      </div>
+
                     </CardContent>
                   </Card>
                 </TabsContent>

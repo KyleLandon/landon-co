@@ -339,6 +339,13 @@ Changelog:
   - Changed scroll behavior from 'smooth' with default block to 'smooth' with 'nearest' block positioning
   - Applied fixes to both AppleMessaging and AdvancedMessaging components
   - Window position now remains stable when receiving messages from other users
+- December 28, 2025. Simplified admin project interaction and status management
+  - Removed View, Edit, and external navigation buttons from admin unified dashboard
+  - Made entire project cards clickable to open/select projects
+  - Added clickable status badges with dropdown menu for instant status updates
+  - Status dropdown includes all project states: inquiry, proposal, active, pending, completed
+  - Click-outside handler closes status dropdown for better UX
+  - Streamlined admin workflow by eliminating unnecessary button interactions
 ```
 
 ## User Preferences
