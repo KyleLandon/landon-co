@@ -29,7 +29,168 @@ import Navigation from "@/components/navigation";
 import Footer from "@/components/footer";
 import AppleMessaging from "@/components/apple-messaging";
 import ProjectRequestDialog from "@/components/project-request-dialog";
-import type { Project, Message } from "@shared/schema";
+import type { Project, Message, ProjectFile, Contract, Invoice } from "@shared/schema";
+
+// Files Tab Component
+function FilesTab({ projectId }: { projectId: string }) {
+  const { data: files = [], isLoading } = useQuery<ProjectFile[]>({
+    queryKey: [`/api/projects/${projectId}/files`],
+    enabled: !!projectId,
+  });
+
+  if (isLoading) {
+    return <div className="text-center text-gray-400 font-mono py-8">Loading files...</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-mono text-white">Project Files</h3>
+        <span className="text-sm text-gray-400 font-mono">{files.length} files</span>
+      </div>
+      
+      {files.length === 0 ? (
+        <div className="text-center py-12">
+          <FileText className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 font-mono">No files uploaded yet</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {files.map((file) => (
+            <div key={file.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <FileText className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <h4 className="font-mono text-white">{file.name}</h4>
+                    <p className="text-sm text-gray-400 font-mono">{file.description || "No description"}</p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => window.open(`/api/files/${file.id}/download`, '_blank')}
+                  variant="outline"
+                  size="sm"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                >
+                  <Download className="w-4 h-4 mr-1" />
+                  Download
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Contracts Tab Component
+function ContractsTab({ projectId }: { projectId: string }) {
+  const { data: contracts = [], isLoading } = useQuery<Contract[]>({
+    queryKey: [`/api/projects/${projectId}/contracts`],
+    enabled: !!projectId,
+  });
+
+  if (isLoading) {
+    return <div className="text-center text-gray-400 font-mono py-8">Loading contracts...</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-mono text-white">Project Contracts</h3>
+        <span className="text-sm text-gray-400 font-mono">{contracts.length} contracts</span>
+      </div>
+      
+      {contracts.length === 0 ? (
+        <div className="text-center py-12">
+          <FileText className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 font-mono">No contracts available</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {contracts.map((contract) => (
+            <div key={contract.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <FileText className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <h4 className="font-mono text-white">{contract.title}</h4>
+                    <p className="text-sm text-gray-400 font-mono">Status: {contract.status}</p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => window.open(`/projects/${projectId}/contracts/${contract.id}`, '_blank')}
+                  variant="outline"
+                  size="sm"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                >
+                  <Eye className="w-4 h-4 mr-1" />
+                  View
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Invoices Tab Component
+function InvoicesTab({ projectId }: { projectId: string }) {
+  const { data: invoices = [], isLoading } = useQuery<Invoice[]>({
+    queryKey: [`/api/projects/${projectId}/invoices`],
+    enabled: !!projectId,
+  });
+
+  if (isLoading) {
+    return <div className="text-center text-gray-400 font-mono py-8">Loading invoices...</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-mono text-white">Project Invoices</h3>
+        <span className="text-sm text-gray-400 font-mono">{invoices.length} invoices</span>
+      </div>
+      
+      {invoices.length === 0 ? (
+        <div className="text-center py-12">
+          <DollarSign className="w-16 h-16 text-gray-500 mx-auto mb-4" />
+          <p className="text-gray-400 font-mono">No invoices available</p>
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {invoices.map((invoice) => (
+            <div key={invoice.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <DollarSign className="w-5 h-5 text-gray-400" />
+                  <div>
+                    <h4 className="font-mono text-white">Invoice #{invoice.invoiceNumber}</h4>
+                    <p className="text-sm text-gray-400 font-mono">
+                      ${invoice.total} - {invoice.status}
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => window.open(`/projects/${projectId}/invoices/${invoice.id}`, '_blank')}
+                  variant="outline"
+                  size="sm"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                >
+                  <Eye className="w-4 h-4 mr-1" />
+                  View
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function UnifiedDashboard() {
   const { user } = useAuth();
@@ -37,6 +198,7 @@ export default function UnifiedDashboard() {
   const queryClient = useQueryClient();
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState("");
+  const [activeTab, setActiveTab] = useState<'communication' | 'files' | 'contracts' | 'invoices'>('communication');
 
   // Fetch user's projects
   const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
@@ -282,30 +444,55 @@ export default function UnifiedDashboard() {
 
                       <div className="pt-2 space-y-2">
                         <Button
-                          onClick={() => window.location.href = `/projects/${activeProject.id}/files`}
-                          variant="outline"
-                          className="w-full bg-transparent border-zinc-700 text-white hover:bg-zinc-800 font-mono justify-start"
+                          onClick={() => setActiveTab('files')}
+                          variant={activeTab === 'files' ? 'default' : 'outline'}
+                          className={`w-full font-mono justify-start ${
+                            activeTab === 'files' 
+                              ? 'bg-white text-black hover:bg-gray-200' 
+                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                          }`}
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           View Files
                         </Button>
                         
                         <Button
-                          onClick={() => window.location.href = `/projects/${activeProject.id}/contracts`}
-                          variant="outline"
-                          className="w-full bg-transparent border-zinc-700 text-white hover:bg-zinc-800 font-mono justify-start"
+                          onClick={() => setActiveTab('contracts')}
+                          variant={activeTab === 'contracts' ? 'default' : 'outline'}
+                          className={`w-full font-mono justify-start ${
+                            activeTab === 'contracts' 
+                              ? 'bg-white text-black hover:bg-gray-200' 
+                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                          }`}
                         >
                           <FileText className="w-4 h-4 mr-2" />
                           Contracts
                         </Button>
                         
                         <Button
-                          onClick={() => window.location.href = `/projects/${activeProject.id}/invoices`}
-                          variant="outline"
-                          className="w-full bg-transparent border-zinc-700 text-white hover:bg-zinc-800 font-mono justify-start"
+                          onClick={() => setActiveTab('invoices')}
+                          variant={activeTab === 'invoices' ? 'default' : 'outline'}
+                          className={`w-full font-mono justify-start ${
+                            activeTab === 'invoices' 
+                              ? 'bg-white text-black hover:bg-gray-200' 
+                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                          }`}
                         >
                           <DollarSign className="w-4 h-4 mr-2" />
                           Invoices
+                        </Button>
+                        
+                        <Button
+                          onClick={() => setActiveTab('communication')}
+                          variant={activeTab === 'communication' ? 'default' : 'outline'}
+                          className={`w-full font-mono justify-start ${
+                            activeTab === 'communication' 
+                              ? 'bg-white text-black hover:bg-gray-200' 
+                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                          }`}
+                        >
+                          <MessageCircle className="w-4 h-4 mr-2" />
+                          Messages
                         </Button>
                       </div>
                     </CardContent>
@@ -325,29 +512,53 @@ export default function UnifiedDashboard() {
                     <CardHeader>
                       <div className="flex items-center justify-between">
                         <CardTitle className="font-mono text-lg text-white flex items-center">
-                          <MessageCircle className="w-5 h-5 mr-2" />
-                          Project Communication
+                          {activeTab === 'communication' && <><MessageCircle className="w-5 h-5 mr-2" />Project Communication</>}
+                          {activeTab === 'files' && <><FileText className="w-5 h-5 mr-2" />Project Files</>}
+                          {activeTab === 'contracts' && <><FileText className="w-5 h-5 mr-2" />Contracts</>}
+                          {activeTab === 'invoices' && <><DollarSign className="w-5 h-5 mr-2" />Invoices</>}
                         </CardTitle>
-                        <Badge variant="outline" className="font-mono">
-                          {messages.length} messages
-                        </Badge>
+                        {activeTab === 'communication' && (
+                          <Badge variant="outline" className="font-mono">
+                            {messages.length} messages
+                          </Badge>
+                        )}
                       </div>
                     </CardHeader>
                     
                     <CardContent className="flex-1 p-0 overflow-hidden">
                       <div className="h-full max-h-[500px]">
-                        <AppleMessaging
-                          projectId={activeProject.id.toString()}
-                          messages={(messages || []).map(msg => ({
-                            id: msg.id,
-                            senderId: msg.senderId,
-                            message: msg.message,
-                            createdAt: msg.createdAt || new Date(),
-                            replyTo: msg.replyTo || undefined
-                          }))}
-                          currentUserId={user?.id || ""}
-                          isAdmin={false}
-                        />
+                        {activeTab === 'communication' && (
+                          <AppleMessaging
+                            projectId={activeProject.id.toString()}
+                            messages={(messages || []).map(msg => ({
+                              id: msg.id,
+                              senderId: msg.senderId,
+                              message: msg.message,
+                              createdAt: msg.createdAt || new Date(),
+                              replyTo: msg.replyTo || undefined
+                            }))}
+                            currentUserId={user?.id || ""}
+                            isAdmin={false}
+                          />
+                        )}
+                        
+                        {activeTab === 'files' && (
+                          <div className="h-full p-6 overflow-y-auto">
+                            <FilesTab projectId={activeProject.id.toString()} />
+                          </div>
+                        )}
+                        
+                        {activeTab === 'contracts' && (
+                          <div className="h-full p-6 overflow-y-auto">
+                            <ContractsTab projectId={activeProject.id.toString()} />
+                          </div>
+                        )}
+                        
+                        {activeTab === 'invoices' && (
+                          <div className="h-full p-6 overflow-y-auto">
+                            <InvoicesTab projectId={activeProject.id.toString()} />
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
