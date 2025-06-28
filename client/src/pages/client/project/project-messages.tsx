@@ -1,22 +1,10 @@
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
-import AdvancedMessaging from "@/components/advanced-messaging";
+import AppleMessaging from "@/components/apple-messaging";
 import ProjectLayout from "./project-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { Message } from "@shared/schema";
-
-// Convert database message format to component format
-const convertMessages = (messages: Message[]) => {
-  return messages.map(msg => ({
-    id: msg.id,
-    senderId: msg.senderId,
-    message: msg.message,
-    createdAt: msg.createdAt || new Date(),
-    attachments: msg.attachments ? JSON.parse(msg.attachments) : undefined,
-    replyTo: msg.replyTo || undefined
-  }));
-};
 
 export default function ProjectMessages() {
   const { id } = useParams();
@@ -25,6 +13,7 @@ export default function ProjectMessages() {
   const { data: messages, isLoading } = useQuery<Message[]>({
     queryKey: [`/api/projects/${id}/messages`],
     enabled: !!id,
+    refetchInterval: 3000, // Auto-refresh every 3 seconds
   });
 
   if (isLoading) {
@@ -46,11 +35,17 @@ export default function ProjectMessages() {
           </CardHeader>
           <CardContent className="p-0 h-full">
             <div className="h-full">
-              <AdvancedMessaging
+              <AppleMessaging
                 projectId={id || ""}
-                messages={convertMessages(messages || [])}
+                messages={(messages || []).map(msg => ({
+                  id: msg.id,
+                  senderId: msg.senderId,
+                  message: msg.message,
+                  createdAt: msg.createdAt || new Date(),
+                  replyTo: msg.replyTo || undefined
+                }))}
                 currentUserId={user?.id || ""}
-                isAdmin={user?.role === "admin"}
+                isAdmin={false}
               />
             </div>
           </CardContent>
