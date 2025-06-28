@@ -167,9 +167,9 @@ export default function AppleMessaging({
   const isFromCurrentUser = (senderId: string) => senderId === currentUserId;
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white max-h-full">
       {/* Messages Container */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+      <div className="flex-1 overflow-y-auto p-4 space-y-2 min-h-0">
         <AnimatePresence>
           {messages.map((message, index) => {
             const isOwn = isFromCurrentUser(message.senderId);

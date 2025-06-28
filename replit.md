@@ -305,6 +305,20 @@ Changelog:
   - Unified dashboards available at /dashboard (client) and /admin (admin) with legacy versions at /dashboard/legacy and /admin/legacy
   - Real-time messaging integrated directly into dashboard views with Apple-style interface
   - Quick project switching, inline status updates, and streamlined file/contract/invoice access
+- December 28, 2025. Automatic project selection and intelligent caching system
+  - Implemented auto-selection of newest project when client dashboard loads
+  - Added localStorage caching to remember last selected project across sessions
+  - Client dashboard now automatically opens most recent project or restores cached selection
+  - Newest project selection logic: chooses project with highest ID (most recently created)
+  - Seamless user experience: no manual clicking required to access project on dashboard load
+  - Cache fallback system: if cached project no longer exists, automatically selects newest available project
+- December 28, 2025. Fixed messaging window height constraints and scrolling behavior
+  - Resolved messaging container expanding vertically and overlapping other dashboard content
+  - Added max-height constraints (500px) to messaging window with internal scrolling
+  - Enhanced AppleMessaging component with proper overflow handling and min-height constraints
+  - Messages now scroll within fixed container instead of pushing page content down
+  - Improved dashboard layout stability with consistent messaging window sizing
+  - Fixed CardContent overflow settings to ensure proper container boundaries
 ```
 
 ## User Preferences

@@ -44,6 +44,34 @@ export default function UnifiedDashboard() {
     refetchInterval: 5000, // Auto-refresh every 5 seconds
   });
 
+  // Auto-select project on load: use cached selection or newest project
+  useEffect(() => {
+    if (projects.length > 0 && !selectedProjectId) {
+      // Try to restore cached selection
+      const cachedProjectId = localStorage.getItem('selectedProjectId');
+      const cachedProjectExists = cachedProjectId && projects.some(p => p.id.toString() === cachedProjectId);
+      
+      if (cachedProjectExists) {
+        setSelectedProjectId(cachedProjectId);
+      } else {
+        // Select the newest project (highest ID or most recent createdAt)
+        const newestProject = projects.reduce((newest, current) => {
+          if (!newest) return current;
+          // Compare by ID (assuming higher ID = newer) or createdAt if available
+          return current.id > newest.id ? current : newest;
+        });
+        setSelectedProjectId(newestProject.id.toString());
+      }
+    }
+  }, [projects, selectedProjectId]);
+
+  // Cache selected project in localStorage
+  useEffect(() => {
+    if (selectedProjectId) {
+      localStorage.setItem('selectedProjectId', selectedProjectId);
+    }
+  }, [selectedProjectId]);
+
   // Fetch messages for selected project
   const { data: messages = [] } = useQuery<Message[]>({
     queryKey: [`/api/projects/${selectedProjectId}/messages`],
@@ -306,8 +334,8 @@ export default function UnifiedDashboard() {
                       </div>
                     </CardHeader>
                     
-                    <CardContent className="flex-1 p-0">
-                      <div className="h-full">
+                    <CardContent className="flex-1 p-0 overflow-hidden">
+                      <div className="h-full max-h-[500px]">
                         <AppleMessaging
                           projectId={activeProject.id.toString()}
                           messages={(messages || []).map(msg => ({
