@@ -2,17 +2,17 @@ import { ReactNode } from "react";
 import { useParams, Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
-import { 
-  LayoutDashboard, 
-  MessageCircle, 
-  Clock, 
-  Bookmark, 
-  Receipt, 
+import {
+  LayoutDashboard,
+  MessageCircle,
+  Clock,
+  Bookmark,
+  Receipt,
   Folder,
   Settings,
-  ArrowLeft
+  ArrowLeft,
 } from "lucide-react";
-import logoPath from "@/assets/logo-black.webp";
+import logoPath from "@/assets/logo-white.webp";
 
 interface ProjectLayoutProps {
   children: ReactNode;
@@ -29,153 +29,110 @@ export default function ProjectLayout({ children }: ProjectLayoutProps) {
   });
 
   const navigation = [
-    {
-      name: "Overview",
-      href: `/projects/${id}`,
-      icon: LayoutDashboard,
-      current: location === `/projects/${id}`
-    },
-    {
-      name: "Messages",
-      href: `/projects/${id}/messages`,
-      icon: MessageCircle,
-      current: location === `/projects/${id}/messages`
-    },
-    {
-      name: "Timeline",
-      href: `/projects/${id}/timeline`,
-      icon: Clock,
-      current: location === `/projects/${id}/timeline`
-    },
-    {
-      name: "Updates",
-      href: `/projects/${id}/updates`,
-      icon: Bookmark,
-      current: location === `/projects/${id}/updates`
-    },
-    {
-      name: "Invoices",
-      href: `/projects/${id}/invoices`,
-      icon: Receipt,
-      current: location === `/projects/${id}/invoices`
-    },
-    {
-      name: "Files",
-      href: `/projects/${id}/files`,
-      icon: Folder,
-      current: location === `/projects/${id}/files`
-    },
-    {
-      name: "Settings",
-      href: `/projects/${id}/settings`,
-      icon: Settings,
-      current: location === `/projects/${id}/settings`
-    }
-  ];
+    { name: "Overview", href: `/projects/${id}`, icon: LayoutDashboard },
+    { name: "Messages", href: `/projects/${id}/messages`, icon: MessageCircle },
+    { name: "Timeline", href: `/projects/${id}/timeline`, icon: Clock },
+    { name: "Updates", href: `/projects/${id}/updates`, icon: Bookmark },
+    { name: "Invoices", href: `/projects/${id}/invoices`, icon: Receipt },
+    { name: "Files", href: `/projects/${id}/files`, icon: Folder },
+    { name: "Settings", href: `/projects/${id}/settings`, icon: Settings },
+  ].map((item) => ({ ...item, current: location === item.href }));
+
+  const projectTitle = (project as any)?.title || "Project";
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Mobile header */}
-      <div className="lg:hidden bg-gray-900 border-b border-gray-800 p-4">
+      <div className="lg:hidden bg-zinc-950/80 backdrop-blur-md border-b border-white/10 p-4 sticky top-0 z-30">
         <div className="flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono">
+          <Link
+            href="/dashboard"
+            className="inline-flex items-center text-sm text-white/60 hover:text-white transition-colors"
+          >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Dashboard
+            Dashboard
           </Link>
-          <img src={logoPath} alt="Landon & Co." className="h-8" />
+          <img src={logoPath} alt="Landon & Co." className="h-7" />
         </div>
-        <div className="mt-4">
-          <h1 className="text-lg font-bold text-white font-mono truncate">
-            {(project as any)?.title || "Project"}
+        <div className="mt-3">
+          <p className="eyebrow text-white/50 mb-1">Project #{id}</p>
+          <h1 className="text-base font-semibold text-white truncate">
+            {projectTitle}
           </h1>
         </div>
       </div>
 
       <div className="flex">
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 bg-gray-900 border-r border-gray-800">
-          {/* Logo */}
-          <div className="flex items-center px-6 py-4 border-b border-gray-800">
-            <Link href="/dashboard">
-              <img src={logoPath} alt="Landon & Co." className="h-8" />
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:flex lg:flex-col lg:w-72 lg:fixed lg:inset-y-0 bg-zinc-950 border-r border-white/10">
+          <div className="flex items-center px-6 py-5 border-b border-white/10">
+            <Link href="/dashboard" className="flex items-center">
+              <img src={logoPath} alt="Landon & Co." className="h-7" />
             </Link>
           </div>
 
-          {/* Project info */}
-          <div className="px-6 py-4 border-b border-gray-800">
-            <Link href="/dashboard" className="flex items-center text-gray-400 hover:text-white font-mono text-sm mb-2">
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Dashboard
+          <div className="px-6 py-5 border-b border-white/10">
+            <Link
+              href="/dashboard"
+              className="inline-flex items-center text-xs text-white/50 hover:text-white transition-colors mb-3"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
+              Back to dashboard
             </Link>
-            <h1 className="text-lg font-bold text-white font-mono">
-              {(project as any)?.title || "Project"}
-            </h1>
-            <p className="text-sm text-gray-400 font-mono mt-1">
-              Project #{id}
-            </p>
+            <p className="eyebrow text-white/50 mb-1">Project #{id}</p>
+            <h1 className="text-lg font-semibold text-white">{projectTitle}</h1>
           </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 px-4 py-4 space-y-1">
+          <nav className="flex-1 px-3 py-4 space-y-1">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className={`
-                  group flex items-center px-3 py-2 text-sm font-mono rounded-md transition-colors
-                  ${item.current 
-                    ? 'bg-gray-800 text-white' 
-                    : 'text-gray-400 hover:text-white hover:bg-gray-800'
-                  }
-                `}
+                className={`group flex items-center gap-3 px-3 py-2.5 text-sm rounded-xl transition-colors ${
+                  item.current
+                    ? "bg-white/10 text-white"
+                    : "text-white/60 hover:text-white hover:bg-white/5"
+                }`}
               >
-                <item.icon className="mr-3 h-5 w-5" />
+                <item.icon className="h-4 w-4" />
                 {item.name}
               </Link>
             ))}
           </nav>
 
-          {/* User info */}
-          <div className="px-6 py-4 border-t border-gray-800">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-mono text-white">
-                    {user?.firstName?.charAt(0) || user?.email?.charAt(0) || "U"}
-                  </span>
-                </div>
+          <div className="px-4 py-4 border-t border-white/10">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-sm font-medium">
+                {user?.firstName?.charAt(0) || user?.email?.charAt(0) || "U"}
               </div>
-              <div className="ml-3 min-w-0">
-                <p className="text-sm font-mono text-white truncate">
+              <div className="min-w-0">
+                <p className="text-sm text-white truncate">
                   {user?.firstName || user?.email || "User"}
                 </p>
-                <p className="text-xs font-mono text-gray-400">Client</p>
+                <p className="text-xs text-white/50">Client</p>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
 
-        {/* Main content */}
-        <div className="lg:pl-64 flex-1">
-          <main className="p-6">
-            {children}
-          </main>
+        {/* Main */}
+        <div className="lg:pl-72 flex-1 min-w-0">
+          <main className="p-4 sm:p-6 lg:p-8 pb-24 lg:pb-8">{children}</main>
         </div>
       </div>
 
-      {/* Mobile bottom navigation */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800">
+      {/* Mobile bottom nav */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-zinc-950/90 backdrop-blur-md border-t border-white/10 z-30">
         <div className="flex justify-around py-2">
           {navigation.slice(0, 5).map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className={`
-                flex flex-col items-center py-2 px-3 text-xs font-mono
-                ${item.current ? 'text-white' : 'text-gray-400'}
-              `}
+              className={`flex flex-col items-center py-1.5 px-3 text-[10px] transition-colors ${
+                item.current ? "text-white" : "text-white/50 hover:text-white"
+              }`}
             >
-              <item.icon className="h-5 w-5 mb-1" />
+              <item.icon className="h-5 w-5 mb-0.5" />
               {item.name}
             </Link>
           ))}

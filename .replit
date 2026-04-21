@@ -40,3 +40,4 @@ outputType = "webview"
 
 [agent]
 integrations = ["google-mail:1.0.0"]
+expertMode = true
