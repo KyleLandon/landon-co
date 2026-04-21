@@ -1,14 +1,10 @@
-import sgMail from '@sendgrid/mail';
+// Sends transactional emails via the Gmail integration (proxied through Replit Connectors).
+// No API keys required — auth is handled by the connector.
+import { ReplitConnectors } from "@replit/connectors-sdk";
 
-const apiKey = process.env.SENDGRID_API_KEY;
-if (apiKey) {
-  sgMail.setApiKey(apiKey);
-} else {
-  console.warn("SENDGRID_API_KEY is not set — email notifications will be disabled.");
-}
+const connectors = new ReplitConnectors();
 
-const ADMIN_EMAIL = 'kyle@landonco.co';
-const FROM_EMAIL = 'kylelandon@gmail.com';
+const ADMIN_EMAIL = "kyle@landonco.co";
 
 interface ContactFormData {
   name: string;
@@ -34,14 +30,135 @@ interface SubmissionEmailData {
   additionalNotes?: string | null;
 }
 
-export async function sendContactEmail(formData: ContactFormData): Promise<boolean> {
-  if (!apiKey) {
-    console.warn('Email not sent: SENDGRID_API_KEY is not configured');
+function escapeHtml(input: string): string {
+  return String(input)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function toBase64Url(input: string): string {
+  return Buffer.from(input, "utf-8")
+    .toString("base64")
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/, "");
+}
+
+function toBase64(input: string): string {
+  return Buffer.from(input, "utf-8").toString("base64");
+}
+
+// Strip CRLF and other control chars to prevent header injection.
+function sanitizeHeaderValue(value: string): string {
+  return String(value).replace(/[\r\n\t]+/g, " ").trim();
+}
+
+// Allow only http/https URLs for use in email href attributes.
+function safeUrl(url: string | null | undefined): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url.trim());
+    if (parsed.protocol === "http:" || parsed.protocol === "https:") {
+      return parsed.toString();
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function buildRawMessage({
+  to,
+  subject,
+  text,
+  html,
+  replyTo,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  replyTo?: string;
+}): string {
+  // RFC 2822 multipart/alternative message. Gmail's `from` is automatically
+  // set to the connected account, so we omit the From header.
+  const boundary = `landonco-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
+  const subjectEncoded = `=?UTF-8?B?${Buffer.from(subject, "utf-8").toString("base64")}?=`;
+
+  const safeTo = sanitizeHeaderValue(to);
+  const safeReplyTo = replyTo ? sanitizeHeaderValue(replyTo) : null;
+
+  const headers = [
+    `To: ${safeTo}`,
+    safeReplyTo ? `Reply-To: ${safeReplyTo}` : null,
+    `Subject: ${subjectEncoded}`,
+    "MIME-Version: 1.0",
+    `Content-Type: multipart/alternative; boundary="${boundary}"`,
+  ]
+    .filter(Boolean)
+    .join("\r\n");
+
+  // Use base64 transfer encoding for both parts so UTF-8 content (emoji,
+  // accents, etc.) is conveyed safely.
+  const body = [
+    `--${boundary}`,
+    'Content-Type: text/plain; charset="UTF-8"',
+    "Content-Transfer-Encoding: base64",
+    "",
+    toBase64(text),
+    "",
+    `--${boundary}`,
+    'Content-Type: text/html; charset="UTF-8"',
+    "Content-Transfer-Encoding: base64",
+    "",
+    toBase64(html),
+    "",
+    `--${boundary}--`,
+    "",
+  ].join("\r\n");
+
+  return `${headers}\r\n\r\n${body}`;
+}
+
+async function sendViaGmail(opts: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+  replyTo?: string;
+}): Promise<boolean> {
+  try {
+    const raw = toBase64Url(buildRawMessage(opts));
+
+    const response = await connectors.proxy(
+      "google-mail",
+      "/gmail/v1/users/me/messages/send",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ raw }),
+      },
+    );
+
+    if (!response.ok) {
+      const errorBody = await response.text();
+      console.error("Gmail send error:", response.status, errorBody);
+      return false;
+    }
+
+    console.log(`Email sent via Gmail to ${opts.to}: ${opts.subject}`);
+    return true;
+  } catch (error) {
+    console.error("Gmail send exception:", error);
     return false;
   }
+}
 
-  try {
-    const emailContent = `
+export async function sendContactEmail(formData: ContactFormData): Promise<boolean> {
+  const text = `
 New Contact Form Submission - Landon & Co.
 
 Contact Details:
@@ -59,34 +176,40 @@ ${formData.message}
 
 ---
 Submitted via landonco.co contact form
-    `.trim();
+  `.trim();
 
-    const msg = {
-      to: ADMIN_EMAIL,
-      from: FROM_EMAIL,
-      subject: `New Contact Form - ${formData.name}`,
-      text: emailContent,
-      html: emailContent.replace(/\n/g, '<br>').replace(/•/g, '&bull;'),
-      replyTo: formData.email,
-    };
+  const html = `
+<div style="font-family:sans-serif;max-width:600px;margin:auto;padding:24px;background:#f9f9f9;border-radius:8px">
+  <h2 style="color:#111;margin-bottom:4px">📬 New Contact Form Submission</h2>
+  <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px">Contact Details</h4>
+  <table style="width:100%;border-collapse:collapse">
+    <tr><td style="padding:4px 0;color:#666;width:140px">Name</td><td style="padding:4px 0;color:#111"><strong>${escapeHtml(formData.name)}</strong></td></tr>
+    <tr><td style="padding:4px 0;color:#666">Email</td><td style="padding:4px 0;color:#111"><a href="mailto:${escapeHtml(formData.email)}">${escapeHtml(formData.email)}</a></td></tr>
+    <tr><td style="padding:4px 0;color:#666">Phone</td><td style="padding:4px 0;color:#111">${escapeHtml(formData.phone || "—")}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Preferred Contact</td><td style="padding:4px 0;color:#111">${escapeHtml(formData.preferredContact || "—")}</td></tr>
+  </table>
+  <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px;margin-top:20px">Project Information</h4>
+  <table style="width:100%;border-collapse:collapse">
+    <tr><td style="padding:4px 0;color:#666;width:140px">Project Type</td><td style="padding:4px 0;color:#111">${escapeHtml(formData.project || "—")}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Budget</td><td style="padding:4px 0;color:#111">${escapeHtml(formData.budget || "—")}</td></tr>
+  </table>
+  <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px;margin-top:20px">Message</h4>
+  <p style="color:#333;white-space:pre-wrap">${escapeHtml(formData.message)}</p>
+  <p style="margin-top:24px;font-size:12px;color:#999">Submitted via landonco.co contact form</p>
+</div>
+  `.trim();
 
-    await sgMail.send(msg);
-    console.log('Contact form email sent successfully');
-    return true;
-  } catch (error) {
-    console.error('SendGrid email error:', error);
-    return false;
-  }
+  return sendViaGmail({
+    to: ADMIN_EMAIL,
+    subject: `New Contact Form - ${formData.name}`,
+    text,
+    html,
+    replyTo: formData.email,
+  });
 }
 
 export async function sendSubmissionEmail(data: SubmissionEmailData): Promise<boolean> {
-  if (!apiKey) {
-    console.warn('Submission email not sent: SENDGRID_API_KEY is not configured');
-    return false;
-  }
-
-  try {
-    const text = `
+  const text = `
 New Project Submission - Landon & Co.
 
 Project: ${data.projectTitle}
@@ -94,70 +217,64 @@ Project: ${data.projectTitle}
 Client Details:
 • Name: ${data.name}
 • Email: ${data.email}
-• Phone: ${data.phone || 'Not provided'}
-• Company: ${data.companyName || 'Not provided'}
+• Phone: ${data.phone || "Not provided"}
+• Company: ${data.companyName || "Not provided"}
 
 Project Details:
 • Type: ${data.projectType}
 • Budget: ${data.budget}
 • Timeline: ${data.timeline}
-• Website: ${data.website || 'Not provided'}
+• Website: ${data.website || "Not provided"}
 
 Description:
 ${data.description}
-${data.additionalNotes ? `\nAdditional Notes:\n${data.additionalNotes}` : ''}
+${data.additionalNotes ? `\nAdditional Notes:\n${data.additionalNotes}` : ""}
 
 ---
 Submitted via landonco.co
-    `.trim();
+  `.trim();
 
-    const html = `
+  const html = `
 <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:24px;background:#f9f9f9;border-radius:8px">
   <h2 style="color:#111;margin-bottom:4px">🚀 New Project Submission</h2>
-  <h3 style="color:#444;margin-top:0">${data.projectTitle}</h3>
+  <h3 style="color:#444;margin-top:0">${escapeHtml(data.projectTitle)}</h3>
 
   <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px">Client Details</h4>
   <table style="width:100%;border-collapse:collapse">
-    <tr><td style="padding:4px 0;color:#666;width:130px">Name</td><td style="padding:4px 0;color:#111"><strong>${data.name}</strong></td></tr>
-    <tr><td style="padding:4px 0;color:#666">Email</td><td style="padding:4px 0;color:#111"><a href="mailto:${data.email}">${data.email}</a></td></tr>
-    <tr><td style="padding:4px 0;color:#666">Phone</td><td style="padding:4px 0;color:#111">${data.phone || 'Not provided'}</td></tr>
-    <tr><td style="padding:4px 0;color:#666">Company</td><td style="padding:4px 0;color:#111">${data.companyName || 'Not provided'}</td></tr>
+    <tr><td style="padding:4px 0;color:#666;width:130px">Name</td><td style="padding:4px 0;color:#111"><strong>${escapeHtml(data.name)}</strong></td></tr>
+    <tr><td style="padding:4px 0;color:#666">Email</td><td style="padding:4px 0;color:#111"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td></tr>
+    <tr><td style="padding:4px 0;color:#666">Phone</td><td style="padding:4px 0;color:#111">${escapeHtml(data.phone || "Not provided")}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Company</td><td style="padding:4px 0;color:#111">${escapeHtml(data.companyName || "Not provided")}</td></tr>
   </table>
 
   <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px;margin-top:20px">Project Details</h4>
   <table style="width:100%;border-collapse:collapse">
-    <tr><td style="padding:4px 0;color:#666;width:130px">Type</td><td style="padding:4px 0;color:#111">${data.projectType}</td></tr>
-    <tr><td style="padding:4px 0;color:#666">Budget</td><td style="padding:4px 0;color:#111">${data.budget}</td></tr>
-    <tr><td style="padding:4px 0;color:#666">Timeline</td><td style="padding:4px 0;color:#111">${data.timeline}</td></tr>
-    <tr><td style="padding:4px 0;color:#666">Website</td><td style="padding:4px 0;color:#111">${data.website ? `<a href="${data.website}">${data.website}</a>` : 'Not provided'}</td></tr>
+    <tr><td style="padding:4px 0;color:#666;width:130px">Type</td><td style="padding:4px 0;color:#111">${escapeHtml(data.projectType)}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Budget</td><td style="padding:4px 0;color:#111">${escapeHtml(data.budget)}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Timeline</td><td style="padding:4px 0;color:#111">${escapeHtml(data.timeline)}</td></tr>
+    <tr><td style="padding:4px 0;color:#666">Website</td><td style="padding:4px 0;color:#111">${(() => {
+      const safe = safeUrl(data.website ?? null);
+      return safe ? `<a href="${escapeHtml(safe)}">${escapeHtml(safe)}</a>` : "Not provided";
+    })()}</td></tr>
   </table>
 
   <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px;margin-top:20px">Description</h4>
-  <p style="color:#333;white-space:pre-wrap">${data.description}</p>
+  <p style="color:#333;white-space:pre-wrap">${escapeHtml(data.description)}</p>
 
   ${data.additionalNotes ? `
   <h4 style="color:#555;border-bottom:1px solid #ddd;padding-bottom:6px;margin-top:20px">Additional Notes</h4>
-  <p style="color:#333;white-space:pre-wrap">${data.additionalNotes}</p>
-  ` : ''}
+  <p style="color:#333;white-space:pre-wrap">${escapeHtml(data.additionalNotes)}</p>
+  ` : ""}
 
   <p style="margin-top:24px;font-size:12px;color:#999">Submitted via landonco.co</p>
 </div>
-    `.trim();
+  `.trim();
 
-    const msg = {
-      to: ADMIN_EMAIL,
-      from: FROM_EMAIL,
-      subject: `New Project Submission: ${data.projectTitle} — ${data.name}`,
-      text,
-      html,
-      replyTo: data.email,
-    };
-
-    await sgMail.send(msg);
-    console.log('Submission email sent successfully');
-    return true;
-  } catch (error) {
-    console.error('Submission email error:', error);
-    return false;
-  }
+  return sendViaGmail({
+    to: ADMIN_EMAIL,
+    subject: `New Project Submission: ${data.projectTitle} — ${data.name}`,
+    text,
+    html,
+    replyTo: data.email,
+  });
 }
