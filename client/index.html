@@ -48,6 +48,26 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     />
 
+    <!-- Google tag (gtag.js) — production domains only -->
+    <script>
+      (function () {
+        var h = location.hostname;
+        var isProd =
+          h === "landonco.co" ||
+          h === "www.landonco.co" ||
+          /\.replit\.app$/.test(h);
+        if (!isProd) return;
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "https://www.googletagmanager.com/gtag/js?id=G-TBXZCLRL5C";
+        document.head.appendChild(s);
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () { window.dataLayer.push(arguments); };
+        window.gtag("js", new Date());
+        window.gtag("config", "G-TBXZCLRL5C", { anonymize_ip: true });
+      })();
+    </script>
+
     <!-- LocalBusiness / ProfessionalService structured data -->
     <script type="application/ld+json">
     {
