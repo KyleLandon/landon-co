@@ -1,8 +1,6 @@
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
-import whiteLogo from "@/assets/logo-white.png";
-import ThreeHeroBackground from "./three-hero-background";
-import ThreeInteractiveOrb from "./three-interactive-orb";
+import whiteLogo from "@/assets/logo-white.webp";
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -71,22 +69,8 @@ const Hero = () => {
 
   return (
     <div className="relative h-screen w-full overflow-hidden" id="home">
-      <canvas ref={canvasRef} className="absolute inset-0 h-full w-full bg-black" />
-      
-      {/* 3D Background Elements */}
-      <ThreeHeroBackground className="absolute inset-0 z-5" />
-      
-      {/* Interactive 3D Orbs */}
-      <div className="absolute top-20 left-20 w-32 h-32 z-5">
-        <ThreeInteractiveOrb size={0.8} color={0x00ff88} intensity={1.2} rotationSpeed={0.005} />
-      </div>
-      <div className="absolute bottom-32 right-32 w-24 h-24 z-5">
-        <ThreeInteractiveOrb size={0.6} color={0x0088ff} intensity={0.8} rotationSpeed={-0.008} />
-      </div>
-      <div className="absolute top-1/2 left-10 w-20 h-20 z-5">
-        <ThreeInteractiveOrb size={0.5} color={0xff0088} intensity={1.0} rotationSpeed={0.01} />
-      </div>
-      
+      <canvas ref={canvasRef} aria-hidden="true" className="absolute inset-0 h-full w-full bg-black" />
+
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center">
         <motion.div
           className="mb-8"
@@ -112,14 +96,6 @@ const Hero = () => {
         >
           WEB DESIGN • BRANDING • DIGITAL EXPERIENCES • BUSINESS OPTIMIZATION • AUTOMATION
         </motion.p>
-        <motion.div
-          className="mt-8 text-sm text-gray-500 font-mono uppercase tracking-[0.2em]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 1 }}
-        >
-          EST. 2020
-        </motion.div>
       </div>
     </div>
   );

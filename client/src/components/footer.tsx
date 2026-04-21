@@ -1,5 +1,5 @@
-import { Mail, Phone, MessageCircle, Instagram, Twitter, Briefcase } from "lucide-react";
-import whiteLogo from "@/assets/logo-white.png";
+import { Mail, Phone, MessageCircle, Instagram, Twitter } from "lucide-react";
+import whiteLogo from "@/assets/logo-white.webp";
 
 const Footer = () => {
   return (
@@ -34,14 +34,6 @@ const Footer = () => {
                 className="w-10 h-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center hover:bg-white hover:border-white transition-all duration-300 group"
               >
                 <Twitter className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
-              </a>
-              <a
-                href="https://indeed.com/cmp/landon-and-co"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center hover:bg-white hover:border-white transition-all duration-300 group"
-              >
-                <Briefcase className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
               </a>
             </div>
           </div>
@@ -92,19 +84,19 @@ const Footer = () => {
             </p>
             <div className="flex space-x-8">
               <a
-                href="#about"
+                href="/#about"
                 className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
               >
                 About
               </a>
               <a
-                href="#gallery"
+                href="/#gallery"
                 className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
               >
                 Projects
               </a>
               <a
-                href="#contact"
+                href="/#contact"
                 className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
               >
                 Contact

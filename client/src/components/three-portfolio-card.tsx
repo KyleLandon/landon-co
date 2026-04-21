@@ -224,6 +224,7 @@ export default function ThreePortfolioCard({
     <div className={`relative ${className}`}>
       <div 
         ref={containerRef} 
+        aria-hidden="true"
         className="w-full h-64 cursor-pointer"
         style={{ zIndex: 1 }}
       />

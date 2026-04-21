@@ -12,7 +12,7 @@ import {
   Settings,
   ArrowLeft
 } from "lucide-react";
-import logoPath from "@/assets/logo-black.png";
+import logoPath from "@/assets/logo-black.webp";
 
 interface ProjectLayoutProps {
   children: ReactNode;

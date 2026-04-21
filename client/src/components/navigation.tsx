@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, User, LogOut, Settings, MessageCircle } from "lucide-react";
+import { Menu, X, User, LogOut, Settings } from "lucide-react";
 import { useScroll } from "@/hooks/use-scroll";
 import { useAuth } from "@/hooks/useAuth";
-import whiteLogo from "@/assets/logo-white.png";
+import whiteLogo from "@/assets/logo-white.webp";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,19 +11,27 @@ const Navigation = () => {
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const { isAuthenticated, user, isAdmin } = useAuth();
-  
+  const navRef = useRef<HTMLElement>(null);
+
   // Check if we're on a dashboard page
   const isDashboardPage = window.location.pathname.includes('/dashboard') || window.location.pathname.includes('/admin');
+  const isHomePage = window.location.pathname === '/';
 
   useEffect(() => {
     setIsScrolled(scrollY > 50);
   }, [scrollY]);
 
   const scrollToSection = (sectionId: string) => {
+    // If we're not on the home page, navigate there with the hash
+    if (!isHomePage) {
+      window.location.href = `/#${sectionId}`;
+      return;
+    }
+
     const element = document.getElementById(sectionId);
     if (element) {
-      const navHeight = 100; // Account for navigation bar height
-      const elementPosition = element.offsetTop - navHeight;
+      const navHeight = navRef.current?.offsetHeight ?? 80;
+      const elementPosition = element.getBoundingClientRect().top + window.scrollY - navHeight;
       window.scrollTo({
         top: elementPosition,
         behavior: "smooth"
@@ -39,6 +47,7 @@ const Navigation = () => {
 
   return (
     <motion.nav
+      ref={navRef}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.8, ease: [0.23, 1, 0.32, 1] }}
@@ -51,19 +60,21 @@ const Navigation = () => {
       <div className="container-custom py-6">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <motion.div
+          <motion.button
+            type="button"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="cursor-pointer group"
+            className="cursor-pointer group focus:outline-none focus-visible:ring-2 focus-visible:ring-white rounded"
             onClick={() => window.location.href = "/"}
+            aria-label="Landon & Co. — Home"
           >
             <img
               src={whiteLogo}
               alt="Landon & Co."
               className="h-10 w-auto object-contain group-hover:scale-105 transition-transform duration-300"
             />
-          </motion.div>
+          </motion.button>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-12">

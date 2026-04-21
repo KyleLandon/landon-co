@@ -59,7 +59,7 @@ export function SupportWidget() {
                 </a>
                 
                 <button
-                  onClick={() => window.location.href = "/#work-together"}
+                  onClick={() => window.location.href = "/#contact"}
                   className="flex items-center p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors group w-full text-left"
                 >
                   <MessageSquare className="w-5 h-5 text-purple-400 mr-3" />

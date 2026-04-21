@@ -18,7 +18,7 @@ import { useAuth } from "@/hooks/useAuth";
 
 // Use the existing project submission schema
 const projectSubmissionFormSchema = insertProjectSubmissionSchema;
-import whiteLogo from "@/assets/logo-white.png";
+import whiteLogo from "@/assets/logo-white.webp";
 
 const formSchema = insertContactSchema.extend({
   budget: insertContactSchema.shape.project.optional(),
