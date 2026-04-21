@@ -75,9 +75,10 @@ const About = () => {
                 custom solutions that help your business run smarter.
               </p>
               <p>
-                Kyle Landon, the founder, was raised by an entrepreneur and
-                started working in his family&rsquo;s small business at age
-                11. That experience shapes how we work with every client we
+                Kyle Landon, the founder, comes from a family of
+                entrepreneurs and small business owners and started working
+                in the family business at age 11. That experience shapes how
+                we work with every client we
                 take on.
               </p>
             </div>
