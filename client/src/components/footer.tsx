@@ -1,107 +1,119 @@
-import { Mail, Phone, MessageCircle, Instagram, Twitter } from "lucide-react";
+import { Mail, Phone, Instagram, Twitter, ArrowUpRight } from "lucide-react";
 import whiteLogo from "@/assets/logo-white.webp";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-zinc-800 bg-black py-16">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-          
-          {/* Company Info */}
-          <div className="col-span-1 md:col-span-2">
+    <footer className="border-t border-[var(--border-color)] bg-black">
+      <div className="container-custom py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10">
+          {/* Brand */}
+          <div className="md:col-span-5">
             <img
               src={whiteLogo}
-              alt="Landon & Co. Logo"
-              className="w-32 h-auto mb-6 opacity-80"
+              alt="Landon & Co."
+              className="h-9 w-auto mb-5 opacity-90"
             />
-            <p className="text-gray-400 font-mono text-sm leading-relaxed mb-6 max-w-md">
-              Transforming digital visions into reality. We build long-term partnerships 
-              with local businesses through innovative web solutions.
+            <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6 max-w-sm">
+              Web design, branding, and automation built for small businesses
+              that want to look great and run smoother.
             </p>
-            <div className="flex space-x-6">
+            <div className="flex gap-2">
               <a
                 href="https://instagram.com/landonandco"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center hover:bg-white hover:border-white transition-all duration-300 group"
+                aria-label="Instagram"
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 transition-colors"
               >
-                <Instagram className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
+                <Instagram className="w-4 h-4" />
               </a>
               <a
                 href="https://x.com/landonandco"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-zinc-800 border border-zinc-700 rounded-full flex items-center justify-center hover:bg-white hover:border-white transition-all duration-300 group"
+                aria-label="X (Twitter)"
+                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 transition-colors"
               >
-                <Twitter className="w-5 h-5 text-white group-hover:text-black transition-colors duration-300" />
+                <Twitter className="w-4 h-4" />
               </a>
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div className="col-span-1">
-            <h3 className="text-white font-mono text-lg font-bold uppercase tracking-wider mb-6">Contact</h3>
-            <div className="space-y-4">
-              <a
-                href="mailto:info@landonco.co"
-                className="flex items-center space-x-3 text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Mail className="w-4 h-4" />
-                <span className="font-mono text-sm">info@landonco.co</span>
-              </a>
-              <a
-                href="tel:+19403892685"
-                className="flex items-center space-x-3 text-gray-400 hover:text-white transition-colors duration-300"
-              >
-                <Phone className="w-4 h-4" />
-                <span className="font-mono text-sm">(940) 389-2685</span>
-              </a>
-              <div className="flex items-center space-x-3 text-gray-400">
-                <MessageCircle className="w-4 h-4" />
-                <span className="font-mono text-sm">kylelandon</span>
-              </div>
-            </div>
+          {/* Sitemap */}
+          <div className="md:col-span-3">
+            <p className="eyebrow mb-4">Sitemap</p>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a
+                  href="/#services"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Services
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#gallery"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Work
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#about"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#contact"
+                  className="text-white/70 hover:text-white transition-colors"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
           </div>
 
-          {/* Services */}
-          <div className="col-span-1">
-            <h3 className="text-white font-mono text-lg font-bold uppercase tracking-wider mb-6">Services</h3>
-            <div className="space-y-2">
-              <p className="text-gray-400 font-mono text-sm">Web Development</p>
-              <p className="text-gray-400 font-mono text-sm">Brand Design</p>
-              <p className="text-gray-400 font-mono text-sm">Digital Strategy</p>
-              <p className="text-gray-400 font-mono text-sm">E-commerce</p>
-              <p className="text-gray-400 font-mono text-sm">SEO Optimization</p>
-            </div>
+          {/* Contact */}
+          <div className="md:col-span-4">
+            <p className="eyebrow mb-4">Get in touch</p>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a
+                  href="mailto:info@landonco.co"
+                  className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors group"
+                >
+                  <Mail className="w-4 h-4" />
+                  info@landonco.co
+                  <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="tel:+19403892685"
+                  className="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors"
+                >
+                  <Phone className="w-4 h-4" />
+                  (940) 389-2685
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-zinc-800 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="text-xs text-gray-500 font-mono tracking-widest uppercase mb-4 md:mb-0">
+        <div className="border-t border-[var(--border-color)] mt-12 pt-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+            <p className="text-xs text-[var(--text-muted)]">
               © {new Date().getFullYear()} Landon & Co. All rights reserved.
             </p>
-            <div className="flex space-x-8">
-              <a
-                href="/#about"
-                className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
-              >
-                About
-              </a>
-              <a
-                href="/#gallery"
-                className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
-              >
-                Projects
-              </a>
-              <a
-                href="/#contact"
-                className="text-gray-500 hover:text-white font-mono text-xs uppercase tracking-wider transition-colors duration-300"
-              >
-                Contact
-              </a>
-            </div>
+            <p className="text-xs text-[var(--text-muted)]">
+              Built in Texas. Made for the long haul.
+            </p>
           </div>
         </div>
       </div>
