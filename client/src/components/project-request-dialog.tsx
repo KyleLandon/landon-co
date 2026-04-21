@@ -24,6 +24,8 @@ export default function ProjectRequestDialog({ children }: ProjectRequestDialogP
     budget: '',
     timeline: '',
     description: '',
+    companyName: '',
+    phoneNumber: '',
   });
   
   const { toast } = useToast();
@@ -38,7 +40,7 @@ export default function ProjectRequestDialog({ children }: ProjectRequestDialogP
       queryClient.invalidateQueries({ queryKey: ["/api/my-projects"] });
       setIsOpen(false);
       setStep('intro');
-      setFormData({ projectType: '', budget: '', timeline: '', description: '' });
+      setFormData({ projectType: '', budget: '', timeline: '', description: '', companyName: '', phoneNumber: '' });
       toast({
         title: "Project Request Sent",
         description: "Kyle will review your request and create your project soon!",
@@ -62,6 +64,8 @@ export default function ProjectRequestDialog({ children }: ProjectRequestDialogP
 Project Type: ${formData.projectType}
 Budget: ${formData.budget}
 Timeline: ${formData.timeline}
+Company: ${formData.companyName || 'N/A'}
+Phone: ${formData.phoneNumber || 'N/A'}
 
 Description:
 ${formData.description}
@@ -132,6 +136,30 @@ Please create a project for me and let me know the next steps!`
               onSubmit={handleSubmit}
               className="space-y-4"
             >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="companyName" className="text-white">Company Name</Label>
+                  <Input
+                    id="companyName"
+                    value={formData.companyName}
+                    onChange={(e) => handleInputChange('companyName', e.target.value)}
+                    placeholder="Acme Inc."
+                    className="bg-zinc-900 border-gray-700 text-white placeholder:text-gray-500"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="phoneNumber" className="text-white">Phone Number</Label>
+                  <Input
+                    id="phoneNumber"
+                    type="tel"
+                    value={formData.phoneNumber}
+                    onChange={(e) => handleInputChange('phoneNumber', e.target.value)}
+                    placeholder="(555) 123-4567"
+                    className="bg-zinc-900 border-gray-700 text-white placeholder:text-gray-500"
+                  />
+                </div>
+              </div>
+
               <div>
                 <Label htmlFor="projectType" className="text-white">Project Type</Label>
                 <Select value={formData.projectType} onValueChange={(value) => handleInputChange('projectType', value)}>
@@ -139,12 +167,12 @@ Please create a project for me and let me know the next steps!`
                     <SelectValue placeholder="Select project type" />
                   </SelectTrigger>
                   <SelectContent className="bg-zinc-900 border-gray-700 text-white">
-                    <SelectItem value="website">Website Development</SelectItem>
-                    <SelectItem value="ecommerce">E-commerce Store</SelectItem>
-                    <SelectItem value="webapp">Web Application</SelectItem>
-                    <SelectItem value="branding">Branding & Design</SelectItem>
-                    <SelectItem value="optimization">Business Optimization</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
+                    <SelectItem value="website" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Website Development</SelectItem>
+                    <SelectItem value="ecommerce" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">E-commerce Store</SelectItem>
+                    <SelectItem value="webapp" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Web Application</SelectItem>
+                    <SelectItem value="branding" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Branding & Design</SelectItem>
+                    <SelectItem value="optimization" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Business Optimization</SelectItem>
+                    <SelectItem value="other" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -156,12 +184,12 @@ Please create a project for me and let me know the next steps!`
                     <SelectValue placeholder="Select budget range" />
                   </SelectTrigger>
                   <SelectContent className="bg-zinc-900 border-gray-700 text-white">
-                    <SelectItem value="under-5k">Under $5,000</SelectItem>
-                    <SelectItem value="5k-10k">$5,000 - $10,000</SelectItem>
-                    <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-                    <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-                    <SelectItem value="50k+">$50,000+</SelectItem>
-                    <SelectItem value="discuss">Let's Discuss</SelectItem>
+                    <SelectItem value="under-5k" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Under $5,000</SelectItem>
+                    <SelectItem value="5k-10k" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">$5,000 - $10,000</SelectItem>
+                    <SelectItem value="10k-25k" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">$10,000 - $25,000</SelectItem>
+                    <SelectItem value="25k-50k" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">$25,000 - $50,000</SelectItem>
+                    <SelectItem value="50k+" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">$50,000+</SelectItem>
+                    <SelectItem value="discuss" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Let's Discuss</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -173,10 +201,10 @@ Please create a project for me and let me know the next steps!`
                     <SelectValue placeholder="Select timeline" />
                   </SelectTrigger>
                   <SelectContent className="bg-zinc-900 border-gray-700 text-white">
-                    <SelectItem value="asap">ASAP</SelectItem>
-                    <SelectItem value="1-month">Within 1 month</SelectItem>
-                    <SelectItem value="2-3-months">2-3 months</SelectItem>
-                    <SelectItem value="flexible">Flexible</SelectItem>
+                    <SelectItem value="asap" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">ASAP</SelectItem>
+                    <SelectItem value="1-month" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Within 1 month</SelectItem>
+                    <SelectItem value="2-3-months" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">2-3 months</SelectItem>
+                    <SelectItem value="flexible" className="text-white focus:bg-white focus:text-black data-[highlighted]:bg-white data-[highlighted]:text-black">Flexible</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

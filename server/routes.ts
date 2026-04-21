@@ -299,7 +299,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "User not authenticated" });
       }
 
-      const { projectType, budget, timeline, description, message } = req.body;
+      const { projectType, budget, timeline, description, message, companyName, phoneNumber } = req.body;
       
       // Create an actual project for the authenticated user
       const projectTitle = `${projectType} Project`;
@@ -324,11 +324,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ? `${req.user.claims.first_name} ${req.user.claims.last_name}`
           : req.user.claims.email?.split('@')[0] || 'User',
         email: req.user.claims.email || '',
-        phone: '',
+        phone: phoneNumber || '',
         preferredContact: 'email',
         project: projectType,
         budget: budget,
-        message: `Project created: ${projectTitle}\n\n${projectDescription}`
+        message: `Project created: ${projectTitle}${companyName ? `\nCompany: ${companyName}` : ''}${phoneNumber ? `\nPhone: ${phoneNumber}` : ''}\n\n${projectDescription}`
       };
 
       const contact = await storage.createContact(contactData);
