@@ -1,10 +1,11 @@
 import sgMail from '@sendgrid/mail';
 
-if (!process.env.SENDGRID_API_KEY) {
-  throw new Error("SENDGRID_API_KEY environment variable must be set");
+const apiKey = process.env.SENDGRID_API_KEY;
+if (apiKey) {
+  sgMail.setApiKey(apiKey);
+} else {
+  console.warn("SENDGRID_API_KEY is not set — contact form emails will be disabled.");
 }
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 interface ContactFormData {
   name: string;
@@ -17,6 +18,11 @@ interface ContactFormData {
 }
 
 export async function sendContactEmail(formData: ContactFormData): Promise<boolean> {
+  if (!apiKey) {
+    console.warn('Email not sent: SENDGRID_API_KEY is not configured');
+    return false;
+  }
+
   try {
     const emailContent = `
 New Contact Form Submission - Landon & Co.
@@ -40,11 +46,11 @@ Submitted via landonco.co contact form
 
     const msg = {
       to: 'info@landonco.co',
-      from: 'kylelandon@gmail.com', // Using verified sender email
+      from: 'kylelandon@gmail.com',
       subject: `New Contact Form - ${formData.name}`,
       text: emailContent,
       html: emailContent.replace(/\n/g, '<br>').replace(/•/g, '&bull;'),
-      replyTo: formData.email, // Allow direct reply to the form submitter
+      replyTo: formData.email,
     };
 
     await sgMail.send(msg);
