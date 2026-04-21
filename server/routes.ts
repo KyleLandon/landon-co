@@ -3,7 +3,8 @@ import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
-import { sendContactEmail } from "./email";
+import { sendContactEmail, sendSubmissionEmail } from "./email";
+import { sendDiscordSubmissionNotification } from "./discord";
 import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema, insertProjectFileSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
@@ -150,7 +151,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
         
         const project = await storage.createProject(projectData);
-        
+
+        // Fire notifications (non-blocking)
+        Promise.all([
+          sendDiscordSubmissionNotification(projectSubmissionData),
+          sendSubmissionEmail(projectSubmissionData),
+        ]).catch((err) => console.error("Notification error:", err));
+
         res.json({
           success: true,
           message: "Project created successfully! You can now track its progress in your dashboard.",
@@ -171,6 +178,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         
         const submission = await storage.createProjectSubmission(validatedSubmissionData);
         console.log("Project submission created successfully:", submission.id);
+
+        // Fire notifications (non-blocking)
+        Promise.all([
+          sendDiscordSubmissionNotification(projectSubmissionData),
+          sendSubmissionEmail(projectSubmissionData),
+        ]).catch((err) => console.error("Notification error:", err));
 
         res.json({
           success: true,
