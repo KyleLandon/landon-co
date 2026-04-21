@@ -27,15 +27,6 @@ const Footer = () => {
               >
                 <Instagram className="w-4 h-4" />
               </a>
-              <a
-                href="https://x.com/landonandco"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="X (Twitter)"
-                className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white/70 hover:text-white hover:border-white/30 transition-colors"
-              >
-                <Twitter className="w-4 h-4" />
-              </a>
             </div>
           </div>
 
@@ -129,9 +120,15 @@ const Footer = () => {
             <p className="text-xs text-[var(--text-muted)]">
               © {new Date().getFullYear()} Landon & Co. All rights reserved.
             </p>
-            <p className="text-xs text-[var(--text-muted)]">
-              Built in Texas. Made for the long haul.
-            </p>
+            <div className="flex items-center gap-5 text-xs text-[var(--text-muted)]">
+              <a href="/privacy" className="hover:text-white transition-colors">
+                Privacy
+              </a>
+              <a href="/terms" className="hover:text-white transition-colors">
+                Terms
+              </a>
+              <span>Built in Texas. Made for the long haul.</span>
+            </div>
           </div>
         </div>
       </div>

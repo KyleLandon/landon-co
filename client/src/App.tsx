@@ -26,6 +26,12 @@ const LocationPage = lazy(() =>
 const ServicePage = lazy(() =>
   import("@/pages/service").then((m) => ({ default: m.ServicePage })),
 );
+const PrivacyPage = lazy(() =>
+  import("@/pages/legal").then((m) => ({ default: m.PrivacyPage })),
+);
+const TermsPage = lazy(() =>
+  import("@/pages/legal").then((m) => ({ default: m.TermsPage })),
+);
 
 // Authenticated routes (lazy)
 const Dashboard = lazy(() => import("@/pages/client/dashboard/dashboard"));
@@ -92,6 +98,10 @@ function Router() {
       <Route path="/insights/:slug">
         {(params) => <InsightsPost slug={params.slug} />}
       </Route>
+
+      {/* Legal */}
+      <Route path="/privacy" component={PrivacyPage} />
+      <Route path="/terms" component={TermsPage} />
       
       {/* Protected client routes */}
       {isAuthenticated && (
