@@ -20,7 +20,7 @@ export default function ProjectMessages() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading messages...</div>
+          <div className="text-white/60">Loading messages...</div>
         </div>
       </ProjectLayout>
     );
@@ -31,7 +31,7 @@ export default function ProjectMessages() {
       <div className="h-full">
         <Card className="bg-gray-900 border-gray-800 h-[calc(100vh-200px)]">
           <CardHeader>
-            <CardTitle className="text-white font-mono">Messages</CardTitle>
+            <CardTitle className="text-white">Messages</CardTitle>
           </CardHeader>
           <CardContent className="p-0 h-full">
             <div className="h-full">

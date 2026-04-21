@@ -23,7 +23,7 @@ export default function ProjectTimeline() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading timeline...</div>
+          <div className="text-white/60">Loading timeline...</div>
         </div>
       </ProjectLayout>
     );
@@ -79,10 +79,10 @@ export default function ProjectTimeline() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Timeline</h1>
-            <p className="text-gray-400 font-mono mt-2">Track project milestones and progress</p>
+            <h1 className="text-3xl font-bold text-white">Project Timeline</h1>
+            <p className="text-white/60 mt-2">Track project milestones and progress</p>
           </div>
-          <Badge className={`${getStatusColor(project?.status)} text-white font-mono`}>
+          <Badge className={`${getStatusColor(project?.status)} text-white`}>
             {project?.status || "Unknown"}
           </Badge>
         </div>
@@ -90,7 +90,7 @@ export default function ProjectTimeline() {
         {/* Project Summary */}
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-white font-mono flex items-center">
+            <CardTitle className="text-white flex items-center">
               <Calendar className="w-5 h-5 mr-2" />
               Project Overview
             </CardTitle>
@@ -98,20 +98,20 @@ export default function ProjectTimeline() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
-                <div className="text-gray-400 font-mono text-sm mb-1">Start Date</div>
-                <div className="text-white font-mono">
+                <div className="text-white/60 text-sm mb-1">Start Date</div>
+                <div className="text-white">
                   {project?.startDate ? new Date(project.startDate).toLocaleDateString() : "TBD"}
                 </div>
               </div>
               <div>
-                <div className="text-gray-400 font-mono text-sm mb-1">End Date</div>
-                <div className="text-white font-mono">
+                <div className="text-white/60 text-sm mb-1">End Date</div>
+                <div className="text-white">
                   {project?.endDate ? new Date(project.endDate).toLocaleDateString() : "TBD"}
                 </div>
               </div>
               <div>
-                <div className="text-gray-400 font-mono text-sm mb-1">Duration</div>
-                <div className="text-white font-mono">
+                <div className="text-white/60 text-sm mb-1">Duration</div>
+                <div className="text-white">
                   {project?.startDate && project?.endDate 
                     ? `${Math.ceil((new Date(project.endDate).getTime() - new Date(project.startDate).getTime()) / (1000 * 60 * 60 * 24))} days`
                     : "TBD"}
@@ -124,8 +124,8 @@ export default function ProjectTimeline() {
         {/* Timeline */}
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-white font-mono">Timeline Events</CardTitle>
-            <CardDescription className="text-gray-400 font-mono">
+            <CardTitle className="text-white">Timeline Events</CardTitle>
+            <CardDescription className="text-white/60">
               Chronological view of project milestones and updates
             </CardDescription>
           </CardHeader>
@@ -155,15 +155,15 @@ export default function ProjectTimeline() {
                   {/* Event content */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-white font-mono font-semibold">{event.title}</h3>
-                      <span className="text-gray-400 font-mono text-sm">
+                      <h3 className="text-white font-semibold">{event.title}</h3>
+                      <span className="text-white/60 text-sm">
                         {event.date.toLocaleDateString()}
                       </span>
                     </div>
-                    <p className="text-gray-400 font-mono text-sm mt-1">{event.description}</p>
+                    <p className="text-white/60 text-sm mt-1">{event.description}</p>
                     <Badge 
                       variant="secondary" 
-                      className={`mt-2 text-xs font-mono ${
+                      className={`mt-2 text-xs ${
                         event.type === "milestone" ? "bg-blue-900 text-blue-300" : "bg-purple-900 text-purple-300"
                       }`}
                     >
@@ -177,7 +177,7 @@ export default function ProjectTimeline() {
             {timelineEvents.length === 0 && (
               <div className="text-center py-12">
                 <Calendar className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 font-mono">No timeline events yet</p>
+                <p className="text-white/60">No timeline events yet</p>
               </div>
             )}
           </CardContent>

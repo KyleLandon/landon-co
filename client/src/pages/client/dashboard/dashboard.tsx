@@ -126,14 +126,14 @@ export default function Dashboard() {
               </AlertDescription>
             </Alert>
             <div className="flex space-x-3">
-              <Button onClick={() => refetchAuth()} className="flex-1 bg-white text-black font-mono">
+              <Button onClick={() => refetchAuth()} className="flex-1 bg-white text-black">
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Retry
               </Button>
               <Button 
                 onClick={() => window.location.href = "/api/login"}
                 variant="outline" 
-                className="flex-1 border-gray-600 text-white font-mono"
+                className="flex-1 border-gray-600 text-white"
               >
                 Sign In Again
               </Button>
@@ -165,14 +165,14 @@ export default function Dashboard() {
                     </AlertDescription>
                   </Alert>
                   <div className="flex space-x-3">
-                    <Button onClick={() => refetch()} className="flex-1 bg-white text-black font-mono">
+                    <Button onClick={() => refetch()} className="flex-1 bg-white text-black">
                       <RefreshCw className="w-4 h-4 mr-2" />
                       Try Again
                     </Button>
                     <Button 
                       onClick={() => window.location.href = "/"}
                       variant="outline" 
-                      className="flex-1 border-gray-600 text-white font-mono"
+                      className="flex-1 border-gray-600 text-white"
                     >
                       Go Home
                     </Button>
@@ -202,10 +202,10 @@ export default function Dashboard() {
           >
             <div className="flex justify-between items-start mb-8">
               <div>
-                <h1 className="text-4xl md:text-5xl font-mono font-bold mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">
                   Welcome back, {user?.firstName || "Client"}
                 </h1>
-                <p className="text-gray-400 font-mono text-lg">
+                <p className="text-white/60 text-lg">
                   Track your projects and communicate with the team
                 </p>
               </div>
@@ -213,13 +213,13 @@ export default function Dashboard() {
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2 bg-zinc-900 px-4 py-2 rounded-lg">
                   <User className="w-4 h-4" />
-                  <span className="font-mono text-sm">{user?.email}</span>
+                  <span className="text-sm">{user?.email}</span>
                 </div>
                 <Button
                   onClick={() => window.location.href = "/api/logout"}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-zinc-700 text-white hover:bg-zinc-800"
+                  className="bg-transparent border-white/10 text-white hover:bg-white/5"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
@@ -235,15 +235,15 @@ export default function Dashboard() {
             transition={{ delay: 0.2 }}
           >
             {projects.length === 0 ? (
-              <Card className="bg-zinc-900 border-zinc-800 text-center py-12">
+              <Card className="bg-white/5 border-white/10 text-center py-12">
                 <CardContent className="pt-6">
                   <MessageCircle className="w-16 h-16 text-white mx-auto mb-4" />
-                  <h3 className="text-xl font-mono font-bold mb-2 text-white">No Projects Yet</h3>
-                  <p className="text-white font-mono mb-6">
+                  <h3 className="text-xl font-bold mb-2 text-white">No Projects Yet</h3>
+                  <p className="text-white mb-6">
                     When you start working with us, your projects will appear here.
                   </p>
                   <ProjectRequestDialog>
-                    <Button className="bg-white text-black hover:bg-gray-200 font-mono">
+                    <Button className="bg-white text-black hover:bg-gray-200">
                       Start a Project
                     </Button>
                   </ProjectRequestDialog>
@@ -258,17 +258,17 @@ export default function Dashboard() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 * index }}
                   >
-                    <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer h-full">
+                    <Card className="bg-white/5 border-white/10 hover:border-white/10 transition-colors cursor-pointer h-full">
                       <CardHeader>
                         <div className="flex justify-between items-start mb-2">
-                          <CardTitle className="font-mono text-lg">{project.title}</CardTitle>
+                          <CardTitle className="text-lg">{project.title}</CardTitle>
                           <Badge 
-                            className={`${getStatusColor(project.status)} text-white font-mono text-xs`}
+                            className={`${getStatusColor(project.status)} text-white text-xs`}
                           >
                             {getStatusText(project.status)}
                           </Badge>
                         </div>
-                        <CardDescription className="font-mono text-white">
+                        <CardDescription className="text-white">
                           {project.description}
                         </CardDescription>
                       </CardHeader>
@@ -278,7 +278,7 @@ export default function Dashboard() {
                           {project.budget && (
                             <div className="flex items-center space-x-2">
                               <DollarSign className="w-4 h-4 text-green-500" />
-                              <span className="font-mono text-sm text-green-500">
+                              <span className="text-sm text-green-500">
                                 ${parseFloat(project.budget).toLocaleString()}
                               </span>
                             </div>
@@ -287,7 +287,7 @@ export default function Dashboard() {
                           {project.startDate && (
                             <div className="flex items-center space-x-2">
                               <Clock className="w-4 h-4 text-blue-500" />
-                              <span className="font-mono text-sm text-white">
+                              <span className="text-sm text-white">
                                 Started {new Date(project.startDate).toLocaleDateString()}
                               </span>
                             </div>
@@ -295,7 +295,7 @@ export default function Dashboard() {
                           
                           <Button
                             onClick={() => window.location.href = `/projects/${project.id}`}
-                            className="w-full bg-white text-black hover:bg-gray-200 font-mono mt-4"
+                            className="w-full bg-white text-black hover:bg-gray-200 mt-4"
                           >
                             <MessageCircle className="w-4 h-4 mr-2" />
                             View Details
@@ -316,20 +316,20 @@ export default function Dashboard() {
             transition={{ delay: 0.4 }}
             className="mt-12"
           >
-            <h2 className="text-2xl font-mono font-bold mb-6">Quick Actions</h2>
+            <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <ProjectRequestDialog>
-                <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                <Card className="bg-white/5 border-white/10 hover:border-white/10 transition-colors cursor-pointer">
                   <CardContent className="p-6 text-center">
                     <MessageCircle className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-                    <h3 className="font-mono font-bold mb-2 text-white">New Project</h3>
-                    <p className="text-white font-mono text-sm">Start a new project with us</p>
+                    <h3 className="font-bold mb-2 text-white">New Project</h3>
+                    <p className="text-white text-sm">Start a new project with us</p>
                   </CardContent>
                 </Card>
               </ProjectRequestDialog>
               
               <Card 
-                className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer"
+                className="bg-white/5 border-white/10 hover:border-white/10 transition-colors cursor-pointer"
                 onClick={() => {
                   if (projects.length > 0) {
                     window.location.href = `/project/${projects[0].id}`;
@@ -344,24 +344,24 @@ export default function Dashboard() {
               >
                 <CardContent className="p-6 text-center">
                   <CheckCircle className="w-8 h-8 text-green-500 mx-auto mb-3" />
-                  <h3 className="font-mono font-bold mb-2 text-white">View Progress</h3>
-                  <p className="text-white font-mono text-sm">Check project milestones</p>
+                  <h3 className="font-bold mb-2 text-white">View Progress</h3>
+                  <p className="text-white text-sm">Check project milestones</p>
                 </CardContent>
               </Card>
               
               <Dialog open={profileOpen} onOpenChange={setProfileOpen}>
                 <DialogTrigger asChild>
-                  <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                  <Card className="bg-white/5 border-white/10 hover:border-white/10 transition-colors cursor-pointer">
                     <CardContent className="p-6 text-center">
                       <User className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-                      <h3 className="font-mono font-bold mb-2 text-white">Profile</h3>
-                      <p className="text-white font-mono text-sm">Update your information</p>
+                      <h3 className="font-bold mb-2 text-white">Profile</h3>
+                      <p className="text-white text-sm">Update your information</p>
                     </CardContent>
                   </Card>
                 </DialogTrigger>
                 <DialogContent className="bg-black border-white/20 text-white max-w-md">
                   <DialogHeader>
-                    <DialogTitle className="font-mono text-xl">Edit Profile</DialogTitle>
+                    <DialogTitle className="text-xl">Edit Profile</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={(e) => {
                     e.preventDefault();
@@ -373,30 +373,30 @@ export default function Dashboard() {
                     });
                   }} className="space-y-4">
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">First Name</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">First Name</Label>
                       <Input
                         type="text"
                         name="firstName"
                         defaultValue={user?.firstName || ''}
-                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white focus:border-white/40 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">Last Name</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">Last Name</Label>
                       <Input
                         type="text"
                         name="lastName"
                         defaultValue={user?.lastName || ''}
-                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white focus:border-white/40 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">Email</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">Email</Label>
                       <Input
                         type="email"
                         name="email"
                         defaultValue={user?.email || ''}
-                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white focus:border-white/40 focus:outline-none"
                         required
                       />
                     </div>
@@ -404,7 +404,7 @@ export default function Dashboard() {
                       <Button
                         type="submit"
                         disabled={updateProfileMutation.isPending}
-                        className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                        className="flex-1 bg-white text-black hover:bg-gray-200"
                       >
                         {updateProfileMutation.isPending ? "Updating..." : "Update Profile"}
                       </Button>
@@ -412,7 +412,7 @@ export default function Dashboard() {
                         type="button"
                         variant="outline"
                         onClick={() => setProfileOpen(false)}
-                        className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                        className="bg-transparent border-white/20 text-white hover:bg-white/10"
                       >
                         Cancel
                       </Button>
@@ -423,17 +423,17 @@ export default function Dashboard() {
               
               <Dialog open={supportOpen} onOpenChange={setSupportOpen}>
                 <DialogTrigger asChild>
-                  <Card className="bg-zinc-900 border-zinc-800 hover:border-zinc-700 transition-colors cursor-pointer">
+                  <Card className="bg-white/5 border-white/10 hover:border-white/10 transition-colors cursor-pointer">
                     <CardContent className="p-6 text-center">
                       <HelpCircle className="w-8 h-8 text-yellow-500 mx-auto mb-3" />
-                      <h3 className="font-mono font-bold mb-2 text-white">Support</h3>
-                      <p className="text-white font-mono text-sm">Get help or ask questions</p>
+                      <h3 className="font-bold mb-2 text-white">Support</h3>
+                      <p className="text-white text-sm">Get help or ask questions</p>
                     </CardContent>
                   </Card>
                 </DialogTrigger>
                 <DialogContent className="bg-black border-white/20 text-white max-w-md">
                   <DialogHeader>
-                    <DialogTitle className="font-mono text-xl">Contact Support</DialogTitle>
+                    <DialogTitle className="text-xl">Contact Support</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={(e) => {
                     e.preventDefault();
@@ -445,20 +445,20 @@ export default function Dashboard() {
                     });
                   }} className="space-y-4">
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">Subject</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">Subject</Label>
                       <Input
                         type="text"
                         name="subject"
                         placeholder="Brief description of your issue"
-                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white focus:border-white/40 focus:outline-none"
                         required
                       />
                     </div>
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">Priority</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">Priority</Label>
                       <select
                         name="priority"
-                        className="w-full p-3 bg-black border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none"
+                        className="w-full p-3 bg-black border border-white/20 rounded text-white focus:border-white/40 focus:outline-none"
                       >
                         <option value="low">Low - General question</option>
                         <option value="medium">Medium - Project related</option>
@@ -466,11 +466,11 @@ export default function Dashboard() {
                       </select>
                     </div>
                     <div>
-                      <Label className="text-sm font-mono text-gray-300 block mb-2">Message</Label>
+                      <Label className="text-sm text-gray-300 block mb-2">Message</Label>
                       <Textarea
                         name="message"
                         placeholder="Describe your issue or question in detail..."
-                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white font-mono focus:border-white/40 focus:outline-none min-h-[120px]"
+                        className="w-full p-3 bg-transparent border border-white/20 rounded text-white focus:border-white/40 focus:outline-none min-h-[120px]"
                         required
                       />
                     </div>
@@ -478,7 +478,7 @@ export default function Dashboard() {
                       <Button
                         type="submit"
                         disabled={supportMutation.isPending}
-                        className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                        className="flex-1 bg-white text-black hover:bg-gray-200"
                       >
                         {supportMutation.isPending ? "Sending..." : "Send Support Request"}
                       </Button>
@@ -486,20 +486,20 @@ export default function Dashboard() {
                         type="button"
                         variant="outline"
                         onClick={() => setSupportOpen(false)}
-                        className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                        className="bg-transparent border-white/20 text-white hover:bg-white/10"
                       >
                         Cancel
                       </Button>
                     </div>
                   </form>
                   <div className="mt-4 pt-4 border-t border-white/10">
-                    <p className="text-sm font-mono text-gray-400 mb-2">Or contact us directly:</p>
+                    <p className="text-sm text-white/60 mb-2">Or contact us directly:</p>
                     <div className="space-y-1">
-                      <p className="text-sm font-mono text-gray-300">
+                      <p className="text-sm text-gray-300">
                         <Mail className="w-4 h-4 inline mr-2" />
                         info@landonco.co
                       </p>
-                      <p className="text-sm font-mono text-gray-300">
+                      <p className="text-sm text-gray-300">
                         <Phone className="w-4 h-4 inline mr-2" />
                         (940) 389-2685
                       </p>

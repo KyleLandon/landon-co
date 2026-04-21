@@ -119,7 +119,7 @@ export default function AdminMessages() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400 font-mono">Loading messages...</p>
+            <p className="text-white/60">Loading messages...</p>
           </div>
         </div>
       </AdminLayout>
@@ -132,17 +132,17 @@ export default function AdminMessages() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-mono font-bold text-white">Messages</h1>
-            <p className="text-gray-400 font-mono mt-1">Contact forms and project submissions</p>
+            <h1 className="text-3xl font-bold text-white">Messages</h1>
+            <p className="text-white/60 mt-1">Contact forms and project submissions</p>
           </div>
-          <div className="flex gap-4 text-white font-mono text-sm">
+          <div className="flex gap-4 text-white text-sm">
             <div className="text-center">
               <div className="text-2xl font-bold">{contacts.length}</div>
-              <div className="text-gray-400">Contacts</div>
+              <div className="text-white/60">Contacts</div>
             </div>
             <div className="text-center">
               <div className="text-2xl font-bold">{submissions.length}</div>
-              <div className="text-gray-400">Submissions</div>
+              <div className="text-white/60">Submissions</div>
             </div>
           </div>
         </div>
@@ -150,16 +150,16 @@ export default function AdminMessages() {
         {/* Filters */}
         <div className="flex gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-4 h-4" />
             <Input
               placeholder="Search messages..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-transparent border-white/20 text-white font-mono focus:border-white/40"
+              className="pl-10 bg-transparent border-white/20 text-white focus:border-white/40"
             />
           </div>
           <Select value={filterType} onValueChange={setFilterType}>
-            <SelectTrigger className="w-48 bg-transparent border-white/20 text-white font-mono">
+            <SelectTrigger className="w-48 bg-transparent border-white/20 text-white">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue />
             </SelectTrigger>
@@ -194,16 +194,16 @@ export default function AdminMessages() {
                           )}
                         </div>
                         <div>
-                          <h3 className="text-white font-mono font-bold">{message.title}</h3>
-                          <p className="text-gray-400 font-mono text-sm">From: {message.name} ({message.email})</p>
+                          <h3 className="text-white font-bold">{message.title}</h3>
+                          <p className="text-white/60 text-sm">From: {message.name} ({message.email})</p>
                         </div>
                       </div>
                       
-                      <p className="text-gray-300 font-mono text-sm mb-3 line-clamp-2">
+                      <p className="text-gray-300 text-sm mb-3 line-clamp-2">
                         {message.message || message.description}
                       </p>
                       
-                      <div className="flex items-center gap-4 text-xs font-mono">
+                      <div className="flex items-center gap-4 text-xs">
                         <div className="flex items-center text-blue-400">
                           <Calendar className="w-3 h-3 mr-1" />
                           {new Date(message.date).toLocaleDateString()}
@@ -223,13 +223,13 @@ export default function AdminMessages() {
                     </div>
                     
                     <div className="flex items-center gap-3">
-                      <Badge className={`${getStatusColor(message.status)} text-white font-mono text-xs`}>
+                      <Badge className={`${getStatusColor(message.status)} text-white text-xs`}>
                         {getStatusText(message.status)}
                       </Badge>
                       <Button
                         size="sm"
                         variant="outline"
-                        className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                        className="bg-transparent border-white/20 text-white hover:bg-white/10"
                       >
                         <Eye className="w-3 h-3 mr-1" />
                         View
@@ -245,8 +245,8 @@ export default function AdminMessages() {
         {filteredMessages.length === 0 && (
           <div className="text-center py-12">
             <MessageSquare className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-mono text-white mb-2">No Messages Found</h3>
-            <p className="text-gray-400 font-mono">
+            <h3 className="text-xl text-white mb-2">No Messages Found</h3>
+            <p className="text-white/60">
               {searchTerm || filterType !== "all" ? "Try adjusting your filters" : "No messages received yet"}
             </p>
           </div>
@@ -258,7 +258,7 @@ export default function AdminMessages() {
         <Dialog open={!!selectedMessage} onOpenChange={() => setSelectedMessage(null)}>
           <DialogContent className="bg-black border-white/20 text-white max-w-2xl">
             <DialogHeader>
-              <DialogTitle className="font-mono text-xl flex items-center">
+              <DialogTitle className="text-xl flex items-center">
                 {selectedMessage.type === 'contact' ? (
                   <Mail className="w-5 h-5 mr-2" />
                 ) : (
@@ -271,24 +271,24 @@ export default function AdminMessages() {
             <div className="space-y-6">
               {/* Contact Info */}
               <div className="border-b border-white/10 pb-4">
-                <h3 className="font-mono font-bold text-white mb-3">Contact Information</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm font-mono">
+                <h3 className="font-bold text-white mb-3">Contact Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-400">Name:</span>
+                    <span className="text-white/60">Name:</span>
                     <p className="text-white">{selectedMessage.name}</p>
                   </div>
                   <div>
-                    <span className="text-gray-400">Email:</span>
+                    <span className="text-white/60">Email:</span>
                     <p className="text-white">{selectedMessage.email}</p>
                   </div>
                   {selectedMessage.phone && (
                     <div>
-                      <span className="text-gray-400">Phone:</span>
+                      <span className="text-white/60">Phone:</span>
                       <p className="text-white">{selectedMessage.phone}</p>
                     </div>
                   )}
                   <div>
-                    <span className="text-gray-400">Date:</span>
+                    <span className="text-white/60">Date:</span>
                     <p className="text-white">{new Date(selectedMessage.date).toLocaleString()}</p>
                   </div>
                 </div>
@@ -297,23 +297,23 @@ export default function AdminMessages() {
               {/* Project Details */}
               {selectedMessage.type === 'submission' && (
                 <div className="border-b border-white/10 pb-4">
-                  <h3 className="font-mono font-bold text-white mb-3">Project Details</h3>
-                  <div className="grid grid-cols-2 gap-4 text-sm font-mono">
+                  <h3 className="font-bold text-white mb-3">Project Details</h3>
+                  <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <span className="text-gray-400">Project Type:</span>
+                      <span className="text-white/60">Project Type:</span>
                       <p className="text-white">{selectedMessage.projectType}</p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Budget:</span>
+                      <span className="text-white/60">Budget:</span>
                       <p className="text-white">{selectedMessage.budget || 'Not specified'}</p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Timeline:</span>
+                      <span className="text-white/60">Timeline:</span>
                       <p className="text-white">{selectedMessage.timeline || 'Not specified'}</p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Status:</span>
-                      <Badge className={`${getStatusColor(selectedMessage.status)} text-white font-mono text-xs`}>
+                      <span className="text-white/60">Status:</span>
+                      <Badge className={`${getStatusColor(selectedMessage.status)} text-white text-xs`}>
                         {getStatusText(selectedMessage.status)}
                       </Badge>
                     </div>
@@ -323,9 +323,9 @@ export default function AdminMessages() {
 
               {/* Message Content */}
               <div>
-                <h3 className="font-mono font-bold text-white mb-3">Message</h3>
+                <h3 className="font-bold text-white mb-3">Message</h3>
                 <div className="bg-zinc-800 border border-white/10 rounded p-4">
-                  <p className="text-gray-300 font-mono text-sm whitespace-pre-wrap">
+                  <p className="text-gray-300 text-sm whitespace-pre-wrap">
                     {selectedMessage.message || selectedMessage.description}
                   </p>
                 </div>
@@ -337,7 +337,7 @@ export default function AdminMessages() {
                   <Button
                     onClick={() => createProjectMutation.mutate(selectedMessage.id)}
                     disabled={createProjectMutation.isPending}
-                    className="bg-green-600 text-white hover:bg-green-700 font-mono"
+                    className="bg-green-600 text-white hover:bg-green-700"
                   >
                     {createProjectMutation.isPending ? (
                       "Creating..."
@@ -352,7 +352,7 @@ export default function AdminMessages() {
                 <Button
                   variant="outline"
                   onClick={() => window.open(`mailto:${selectedMessage.email}`, '_blank')}
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10"
                 >
                   <Mail className="w-4 h-4 mr-2" />
                   Reply via Email
@@ -360,7 +360,7 @@ export default function AdminMessages() {
                 <Button
                   variant="outline"
                   onClick={() => setSelectedMessage(null)}
-                  className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10"
                 >
                   Close
                 </Button>

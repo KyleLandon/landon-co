@@ -46,7 +46,7 @@ export default function ClientProjectInvoices() {
   if (projectLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400 font-mono">Loading project...</div>
+        <div className="text-white/60">Loading project...</div>
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function ClientProjectInvoices() {
   if (!project) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400 font-mono">Project not found</div>
+        <div className="text-white/60">Project not found</div>
       </div>
     );
   }
@@ -63,8 +63,8 @@ export default function ClientProjectInvoices() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white font-mono">Invoices</h1>
-        <p className="text-gray-400 font-mono mt-2">
+        <h1 className="text-3xl font-bold text-white">Invoices</h1>
+        <p className="text-white/60 mt-2">
           View and pay invoices for project: {project.title}
         </p>
       </div>
@@ -75,8 +75,8 @@ export default function ClientProjectInvoices() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 font-mono text-xs">Total Invoices</p>
-                <p className="text-white font-mono text-xl font-bold">{invoices.length}</p>
+                <p className="text-white/60 text-xs">Total Invoices</p>
+                <p className="text-white text-xl font-bold">{invoices.length}</p>
               </div>
               <Receipt className="w-8 h-8 text-blue-400" />
             </div>
@@ -87,8 +87,8 @@ export default function ClientProjectInvoices() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 font-mono text-xs">Paid</p>
-                <p className="text-green-400 font-mono text-xl font-bold">
+                <p className="text-white/60 text-xs">Paid</p>
+                <p className="text-green-400 text-xl font-bold">
                   {invoices.filter(inv => inv.status === "paid").length}
                 </p>
               </div>
@@ -101,8 +101,8 @@ export default function ClientProjectInvoices() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 font-mono text-xs">Pending</p>
-                <p className="text-yellow-400 font-mono text-xl font-bold">
+                <p className="text-white/60 text-xs">Pending</p>
+                <p className="text-yellow-400 text-xl font-bold">
                   {invoices.filter(inv => inv.status === "sent").length}
                 </p>
               </div>
@@ -115,8 +115,8 @@ export default function ClientProjectInvoices() {
           <CardContent className="p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-400 font-mono text-xs">Total Amount</p>
-                <p className="text-white font-mono text-xl font-bold">
+                <p className="text-white/60 text-xs">Total Amount</p>
+                <p className="text-white text-xl font-bold">
                   {formatCurrency(
                     invoices.reduce((sum, inv) => sum + parseFloat(inv.totalAmount), 0).toString()
                   )}
@@ -131,14 +131,14 @@ export default function ClientProjectInvoices() {
       {/* Invoices List */}
       {invoicesLoading ? (
         <div className="flex items-center justify-center h-32">
-          <div className="text-gray-400 font-mono">Loading invoices...</div>
+          <div className="text-white/60">Loading invoices...</div>
         </div>
       ) : invoices.length === 0 ? (
         <Card className="bg-gray-900 border-gray-800">
           <CardContent className="p-12 text-center">
             <Receipt className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-mono text-white mb-2">No Invoices Yet</h3>
-            <p className="text-gray-400 font-mono">
+            <h3 className="text-xl text-white mb-2">No Invoices Yet</h3>
+            <p className="text-white/60">
               Invoices will appear here when your project manager sends them
             </p>
           </CardContent>
@@ -150,22 +150,22 @@ export default function ClientProjectInvoices() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-white font-mono text-xl">{invoice.title}</CardTitle>
-                    <CardDescription className="text-gray-400 font-mono mt-1">
+                    <CardTitle className="text-white text-xl">{invoice.title}</CardTitle>
+                    <CardDescription className="text-white/60 mt-1">
                       Invoice #{invoice.invoiceNumber}
                     </CardDescription>
                     {invoice.description && (
-                      <CardDescription className="text-gray-400 font-mono mt-2">
+                      <CardDescription className="text-white/60 mt-2">
                         {invoice.description}
                       </CardDescription>
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <Badge className={`${getStatusColor(invoice.status)} text-white font-mono`}>
+                    <Badge className={`${getStatusColor(invoice.status)} text-white`}>
                       {invoice.status?.toUpperCase()}
                     </Badge>
                     {isOverdue(invoice) && (
-                      <Badge className="bg-red-500 text-white font-mono">
+                      <Badge className="bg-red-500 text-white">
                         OVERDUE
                       </Badge>
                     )}
@@ -174,22 +174,22 @@ export default function ClientProjectInvoices() {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                  <div className="flex items-center text-green-400 font-mono text-lg font-bold">
+                  <div className="flex items-center text-green-400 text-lg font-bold">
                     <DollarSign className="w-5 h-5 mr-2" />
                     {formatCurrency(invoice.totalAmount)}
                   </div>
-                  <div className="flex items-center text-blue-400 font-mono text-sm">
+                  <div className="flex items-center text-blue-400 text-sm">
                     <Calendar className="w-4 h-4 mr-2" />
                     Created {invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString() : "Unknown"}
                   </div>
                   {invoice.dueDate && (
-                    <div className={`flex items-center font-mono text-sm ${isOverdue(invoice) ? 'text-red-400' : 'text-orange-400'}`}>
+                    <div className={`flex items-center text-sm ${isOverdue(invoice) ? 'text-red-400' : 'text-orange-400'}`}>
                       <Clock className="w-4 h-4 mr-2" />
                       Due {new Date(invoice.dueDate).toLocaleDateString()}
                     </div>
                   )}
                   {invoice.paidAt && (
-                    <div className="flex items-center text-green-400 font-mono text-sm">
+                    <div className="flex items-center text-green-400 text-sm">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Paid {new Date(invoice.paidAt).toLocaleDateString()}
                     </div>
@@ -199,20 +199,20 @@ export default function ClientProjectInvoices() {
                 {/* Invoice Items Preview */}
                 {invoice.items && Array.isArray(invoice.items) && invoice.items.length > 0 ? (
                   <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                    <h4 className="text-white font-mono text-sm font-bold mb-3">Invoice Items:</h4>
+                    <h4 className="text-white text-sm font-bold mb-3">Invoice Items:</h4>
                     <div className="space-y-2">
                       {(invoice.items as any[]).slice(0, 3).map((item: any, index: number) => (
                         <div key={index} className="flex justify-between items-center text-sm">
-                          <span className="text-gray-300 font-mono">
+                          <span className="text-gray-300">
                             {item.description} (Qty: {item.quantity})
                           </span>
-                          <span className="text-white font-mono">
+                          <span className="text-white">
                             {formatCurrency((item.quantity * item.rate).toString())}
                           </span>
                         </div>
                       ))}
                       {(invoice.items as any[]).length > 3 && (
-                        <p className="text-gray-400 font-mono text-xs">
+                        <p className="text-white/60 text-xs">
                           ... and {(invoice.items as any[]).length - 3} more items
                         </p>
                       )}
@@ -220,18 +220,18 @@ export default function ClientProjectInvoices() {
                     
                     <div className="border-t border-gray-600 pt-3 mt-3">
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-400 font-mono">Subtotal:</span>
-                        <span className="text-white font-mono">{formatCurrency(invoice.subtotal || "0")}</span>
+                        <span className="text-white/60">Subtotal:</span>
+                        <span className="text-white">{formatCurrency(invoice.subtotal || "0")}</span>
                       </div>
                       {parseFloat(invoice.taxAmount || "0") > 0 && (
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-400 font-mono">Tax:</span>
-                          <span className="text-white font-mono">{formatCurrency(invoice.taxAmount || "0")}</span>
+                          <span className="text-white/60">Tax:</span>
+                          <span className="text-white">{formatCurrency(invoice.taxAmount || "0")}</span>
                         </div>
                       )}
                       <div className="flex justify-between text-lg font-bold border-t border-gray-600 pt-2 mt-2">
-                        <span className="text-white font-mono">Total:</span>
-                        <span className="text-green-400 font-mono">{formatCurrency(invoice.totalAmount)}</span>
+                        <span className="text-white">Total:</span>
+                        <span className="text-green-400">{formatCurrency(invoice.totalAmount)}</span>
                       </div>
                     </div>
                   </div>
@@ -240,7 +240,7 @@ export default function ClientProjectInvoices() {
                 <div className="flex gap-3">
                   <Button
                     size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download PDF
@@ -252,7 +252,7 @@ export default function ClientProjectInvoices() {
                         <Button
                           size="sm"
                           onClick={() => setPayingInvoice(invoice)}
-                          className="bg-green-600 hover:bg-green-700 text-white font-mono"
+                          className="bg-green-600 hover:bg-green-700 text-white"
                         >
                           <CreditCard className="w-4 h-4 mr-2" />
                           Pay Now
@@ -260,29 +260,29 @@ export default function ClientProjectInvoices() {
                       </DialogTrigger>
                       <DialogContent className="bg-gray-900 border-gray-700 max-w-2xl">
                         <DialogHeader>
-                          <DialogTitle className="text-white font-mono">Pay Invoice: {invoice.title}</DialogTitle>
+                          <DialogTitle className="text-white">Pay Invoice: {invoice.title}</DialogTitle>
                         </DialogHeader>
                         
                         <div className="space-y-6">
                           <div className="bg-gray-800 p-4 rounded-lg">
                             <div className="flex justify-between items-center mb-4">
-                              <h3 className="text-white font-mono text-lg">Invoice #{invoice.invoiceNumber}</h3>
-                              <span className="text-green-400 font-mono text-xl font-bold">
+                              <h3 className="text-white text-lg">Invoice #{invoice.invoiceNumber}</h3>
+                              <span className="text-green-400 text-xl font-bold">
                                 {formatCurrency(invoice.totalAmount)}
                               </span>
                             </div>
                             {invoice.dueDate && (
-                              <p className="text-gray-400 font-mono text-sm">
+                              <p className="text-white/60 text-sm">
                                 Due: {new Date(invoice.dueDate).toLocaleDateString()}
                               </p>
                             )}
                           </div>
 
                           <div className="space-y-4">
-                            <h4 className="text-white font-mono text-lg">Payment Options</h4>
+                            <h4 className="text-white text-lg">Payment Options</h4>
                             
                             <div className="grid gap-3">
-                              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono p-6 h-auto">
+                              <Button className="bg-blue-600 hover:bg-blue-700 text-white p-6 h-auto">
                                 <div className="flex items-center justify-between w-full">
                                   <div className="flex items-center">
                                     <CreditCard className="w-6 h-6 mr-3" />
@@ -297,7 +297,7 @@ export default function ClientProjectInvoices() {
 
                               <Button 
                                 variant="outline" 
-                                className="bg-transparent border-gray-600 text-white hover:bg-gray-800 font-mono p-6 h-auto"
+                                className="bg-transparent border-gray-600 text-white hover:bg-gray-800 p-6 h-auto"
                               >
                                 <div className="flex items-center justify-between w-full">
                                   <div className="flex items-center">
@@ -314,7 +314,7 @@ export default function ClientProjectInvoices() {
                           </div>
 
                           <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
-                            <p className="text-blue-800 font-mono text-sm">
+                            <p className="text-blue-800 text-sm">
                               <strong>Secure Payment:</strong> All payments are processed securely. 
                               Your payment information is encrypted and protected.
                             </p>
@@ -325,7 +325,7 @@ export default function ClientProjectInvoices() {
                               type="button"
                               variant="outline"
                               onClick={() => setPayingInvoice(null)}
-                              className="flex-1 bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                              className="flex-1 bg-transparent border-gray-700 text-white hover:bg-gray-800"
                             >
                               Cancel
                             </Button>
@@ -336,7 +336,7 @@ export default function ClientProjectInvoices() {
                   )}
 
                   {invoice.status === "paid" && (
-                    <Badge className="bg-green-500 text-white font-mono px-3 py-1">
+                    <Badge className="bg-green-500 text-white px-3 py-1">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Paid
                     </Badge>

@@ -200,14 +200,14 @@ export function NotificationBell() {
             <Card className="bg-black border-white/20 text-white shadow-2xl">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-mono">Notifications</CardTitle>
+                  <CardTitle className="text-lg">Notifications</CardTitle>
                   <div className="flex items-center gap-2">
                     {notifications.filter(n => !n.read).length > 0 && (
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={markAllAsRead}
-                        className="text-xs text-gray-400 hover:text-white font-mono"
+                        className="text-xs text-gray-400 hover:text-white"
                       >
                         Mark all read
                       </Button>
@@ -225,7 +225,7 @@ export function NotificationBell() {
               </CardHeader>
               <CardContent className="p-0 max-h-96 overflow-y-auto">
                 {notifications.length === 0 ? (
-                  <div className="p-6 text-center text-gray-400 font-mono">
+                  <div className="p-6 text-center text-gray-400">
                     <Bell className="w-8 h-8 mx-auto mb-2 opacity-50" />
                     <p>No new notifications</p>
                   </div>
@@ -249,18 +249,18 @@ export function NotificationBell() {
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <h4 className="font-mono text-sm font-medium text-white truncate">
+                              <h4 className="text-sm font-medium text-white truncate">
                                 {notification.title}
                               </h4>
-                              <span className="text-xs text-gray-400 font-mono ml-2">
+                              <span className="text-xs text-gray-400 ml-2">
                                 {getTimeAgo(notification.timestamp)}
                               </span>
                             </div>
-                            <p className="text-xs text-gray-300 font-mono mt-1 line-clamp-2">
+                            <p className="text-xs text-gray-300 mt-1 line-clamp-2">
                               {notification.description}
                             </p>
                             {notification.projectTitle && (
-                              <p className="text-xs text-blue-400 font-mono mt-1">
+                              <p className="text-xs text-blue-400 mt-1">
                                 Project: {notification.projectTitle}
                               </p>
                             )}
@@ -283,7 +283,7 @@ export function NotificationBell() {
                         window.location.href = '/admin/messages';
                         setIsOpen(false);
                       }}
-                      className="w-full text-blue-400 hover:text-blue-300 font-mono text-sm"
+                      className="w-full text-blue-400 hover:text-blue-300 text-sm"
                     >
                       View All Messages
                     </Button>

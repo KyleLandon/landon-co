@@ -21,7 +21,7 @@ export function SupportWidget() {
             <Card className="bg-gray-900 border-gray-700 w-80">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white font-mono text-lg">Need Help?</CardTitle>
+                  <CardTitle className="text-white text-lg">Need Help?</CardTitle>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -42,7 +42,7 @@ export function SupportWidget() {
                 >
                   <Mail className="w-5 h-5 text-blue-400 mr-3" />
                   <div>
-                    <p className="text-white font-mono text-sm group-hover:text-blue-400">Email Support</p>
+                    <p className="text-white text-sm group-hover:text-blue-400">Email Support</p>
                     <p className="text-gray-400 text-xs">info@landonco.co</p>
                   </div>
                 </a>
@@ -53,7 +53,7 @@ export function SupportWidget() {
                 >
                   <Phone className="w-5 h-5 text-green-400 mr-3" />
                   <div>
-                    <p className="text-white font-mono text-sm group-hover:text-green-400">Call Direct</p>
+                    <p className="text-white text-sm group-hover:text-green-400">Call Direct</p>
                     <p className="text-gray-400 text-xs">(940) 389-2685</p>
                   </div>
                 </a>
@@ -64,7 +64,7 @@ export function SupportWidget() {
                 >
                   <MessageSquare className="w-5 h-5 text-purple-400 mr-3" />
                   <div>
-                    <p className="text-white font-mono text-sm group-hover:text-purple-400">Contact Form</p>
+                    <p className="text-white text-sm group-hover:text-purple-400">Contact Form</p>
                     <p className="text-gray-400 text-xs">Send a detailed message</p>
                   </div>
                 </button>

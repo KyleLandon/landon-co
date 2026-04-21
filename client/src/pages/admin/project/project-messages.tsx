@@ -1,9 +1,14 @@
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "wouter";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
-import { MessageCircle, User, Clock } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { MessageCircle, User, Clock, Send, CheckCircle2 } from "lucide-react";
 import AdminLayout from "../admin-layout";
 import AppleMessaging from "@/components/apple-messaging";
 import type { Project, Message, User as UserType } from "@shared/schema";
@@ -155,7 +160,7 @@ export default function AdminProjectMessages() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading messages...</div>
+          <div className="text-white/60">Loading messages...</div>
         </div>
       </AdminLayout>
     );
@@ -167,18 +172,18 @@ export default function AdminProjectMessages() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Messages</h1>
-            <p className="text-gray-400 font-mono mt-2">
+            <h1 className="text-3xl font-bold text-white">Project Messages</h1>
+            <p className="text-white/60 mt-2">
               Communicate with {client?.firstName || 'Client'} about {project?.title}
             </p>
           </div>
           <div className="flex items-center gap-4">
             {project && (
-              <Badge className="bg-blue-600 text-white font-mono">
+              <Badge className="bg-blue-600 text-white">
                 {project.status}
               </Badge>
             )}
-            <div className="text-sm text-gray-400 font-mono">
+            <div className="text-sm text-white/60">
               {messages?.length || 0} total messages
             </div>
           </div>
@@ -190,11 +195,11 @@ export default function AdminProjectMessages() {
           <div className="lg:col-span-3">
             <Card className="bg-gray-900 border-gray-700 h-[600px] flex flex-col">
               <CardHeader className="border-b border-gray-700">
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <MessageCircle className="w-5 h-5 mr-2" />
                   Conversation
                 </CardTitle>
-                <CardDescription className="text-gray-400 font-mono">
+                <CardDescription className="text-white/60">
                   Messages refresh automatically every 3 seconds
                 </CardDescription>
               </CardHeader>
@@ -212,24 +217,24 @@ export default function AdminProjectMessages() {
                             : 'bg-gray-800 text-white border border-gray-700'
                         }`}>
                           <div className="flex items-center justify-between mb-1">
-                            <span className="text-xs opacity-75 font-mono">
+                            <span className="text-xs opacity-75">
                               {isAdmin ? 'Admin' : (client?.firstName || 'Client')}
                             </span>
-                            <span className="text-xs opacity-75 font-mono">
+                            <span className="text-xs opacity-75">
                               {formatMessageTime(message.createdAt)}
                             </span>
                           </div>
-                          <p className="font-mono text-sm">{message.message}</p>
+                          <p className="text-sm">{message.message}</p>
                           {!message.isRead && !isAdmin && (
                             <div className="flex items-center mt-1">
                               <Clock className="w-3 h-3 mr-1 opacity-75" />
-                              <span className="text-xs opacity-75 font-mono">Unread</span>
+                              <span className="text-xs opacity-75">Unread</span>
                             </div>
                           )}
                           {message.isRead && isAdmin && (
                             <div className="flex items-center mt-1 justify-end">
                               <CheckCircle2 className="w-3 h-3 mr-1 opacity-75" />
-                              <span className="text-xs opacity-75 font-mono">Read</span>
+                              <span className="text-xs opacity-75">Read</span>
                             </div>
                           )}
                         </div>
@@ -238,7 +243,7 @@ export default function AdminProjectMessages() {
                   })
                 ) : (
                   <div className="flex items-center justify-center h-full">
-                    <div className="text-center text-gray-400 font-mono">
+                    <div className="text-center text-white/60">
                       <MessageCircle className="w-12 h-12 mx-auto mb-4 opacity-50" />
                       <p>No messages yet</p>
                       <p className="text-sm mt-1">Start a conversation with your client</p>
@@ -255,13 +260,13 @@ export default function AdminProjectMessages() {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Type your message..."
-                    className="bg-gray-800 border-gray-700 text-white font-mono flex-1"
+                    className="bg-gray-800 border-gray-700 text-white flex-1"
                     disabled={sendMessage.isPending}
                   />
                   <Button 
                     type="submit" 
                     disabled={!newMessage.trim() || sendMessage.isPending}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-mono px-6"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-6"
                   >
                     <Send className="w-4 h-4" />
                   </Button>
@@ -275,7 +280,7 @@ export default function AdminProjectMessages() {
             {/* Client Info */}
             <Card className="bg-gray-900 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <User className="w-5 h-5 mr-2" />
                   Client
                 </CardTitle>
@@ -284,21 +289,21 @@ export default function AdminProjectMessages() {
                 {client ? (
                   <div className="space-y-3">
                     <div>
-                      <span className="text-gray-400 font-mono text-sm">Name:</span>
-                      <p className="text-white font-mono">{client.firstName} {client.lastName}</p>
+                      <span className="text-white/60 text-sm">Name:</span>
+                      <p className="text-white">{client.firstName} {client.lastName}</p>
                     </div>
                     <div>
-                      <span className="text-gray-400 font-mono text-sm">Email:</span>
-                      <p className="text-white font-mono text-sm">{client.email}</p>
+                      <span className="text-white/60 text-sm">Email:</span>
+                      <p className="text-white text-sm">{client.email}</p>
                     </div>
                     <div className="pt-2">
-                      <Badge variant="outline" className="border-gray-600 text-gray-300 font-mono">
+                      <Badge variant="outline" className="border-gray-600 text-gray-300">
                         Active Client
                       </Badge>
                     </div>
                   </div>
                 ) : (
-                  <div className="text-gray-400 font-mono">Loading client info...</div>
+                  <div className="text-white/60">Loading client info...</div>
                 )}
               </CardContent>
             </Card>
@@ -306,28 +311,28 @@ export default function AdminProjectMessages() {
             {/* Project Info */}
             <Card className="bg-gray-900 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white font-mono">Project</CardTitle>
+                <CardTitle className="text-white">Project</CardTitle>
               </CardHeader>
               <CardContent>
                 {project ? (
                   <div className="space-y-3">
                     <div>
-                      <span className="text-gray-400 font-mono text-sm">Title:</span>
-                      <p className="text-white font-mono">{project.title}</p>
+                      <span className="text-white/60 text-sm">Title:</span>
+                      <p className="text-white">{project.title}</p>
                     </div>
                     <div>
-                      <span className="text-gray-400 font-mono text-sm">Status:</span>
-                      <p className="text-white font-mono capitalize">{project.status}</p>
+                      <span className="text-white/60 text-sm">Status:</span>
+                      <p className="text-white capitalize">{project.status}</p>
                     </div>
                     {project.budget && (
                       <div>
-                        <span className="text-gray-400 font-mono text-sm">Budget:</span>
-                        <p className="text-white font-mono">{project.budget}</p>
+                        <span className="text-white/60 text-sm">Budget:</span>
+                        <p className="text-white">{project.budget}</p>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="text-gray-400 font-mono">Loading project info...</div>
+                  <div className="text-white/60">Loading project info...</div>
                 )}
               </CardContent>
             </Card>
@@ -335,22 +340,22 @@ export default function AdminProjectMessages() {
             {/* Message Stats */}
             <Card className="bg-gray-900 border-gray-700">
               <CardHeader>
-                <CardTitle className="text-white font-mono">Stats</CardTitle>
+                <CardTitle className="text-white">Stats</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-400 font-mono text-sm">Total Messages:</span>
-                  <span className="text-white font-mono">{messages?.length || 0}</span>
+                  <span className="text-white/60 text-sm">Total Messages:</span>
+                  <span className="text-white">{messages?.length || 0}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400 font-mono text-sm">Unread:</span>
-                  <span className="text-white font-mono">
+                  <span className="text-white/60 text-sm">Unread:</span>
+                  <span className="text-white">
                     {messages?.filter(m => !m.isRead && m.senderId !== "admin").length || 0}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400 font-mono text-sm">Last Activity:</span>
-                  <span className="text-white font-mono text-sm">
+                  <span className="text-white/60 text-sm">Last Activity:</span>
+                  <span className="text-white text-sm">
                     {messages && messages.length > 0 
                       ? formatMessageTime(messages[messages.length - 1].createdAt)
                       : "No activity"

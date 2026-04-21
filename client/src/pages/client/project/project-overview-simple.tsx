@@ -34,7 +34,7 @@ export default function ProjectOverviewSimple() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading project...</div>
+          <div className="text-white/60">Loading project...</div>
         </div>
       </ProjectLayout>
     );
@@ -44,7 +44,7 @@ export default function ProjectOverviewSimple() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Project not found</div>
+          <div className="text-white/60">Project not found</div>
         </div>
       </ProjectLayout>
     );
@@ -107,18 +107,18 @@ export default function ProjectOverviewSimple() {
         {/* Project Header */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono mb-2">
+            <h1 className="text-3xl font-bold text-white mb-2">
               {(project as any)?.title || "Project"}
             </h1>
-            <p className="text-gray-400 font-mono mb-4">
+            <p className="text-white/60 mb-4">
               {(project as any)?.description || "Project description"}
             </p>
             <div className="flex items-center space-x-4">
-              <Badge className={`${getStatusColor((project as any)?.status || "proposal")} text-white font-mono`}>
+              <Badge className={`${getStatusColor((project as any)?.status || "proposal")} text-white`}>
                 {getStatusText((project as any)?.status || "proposal")}
               </Badge>
               {(project as any)?.startDate && (
-                <div className="flex items-center text-gray-400 font-mono text-sm">
+                <div className="flex items-center text-white/60 text-sm">
                   <Calendar className="w-4 h-4 mr-1" />
                   Started {new Date((project as any).startDate).toLocaleDateString()}
                 </div>
@@ -140,11 +140,11 @@ export default function ProjectOverviewSimple() {
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white font-mono text-sm">{stat.title}</p>
-                      <p className="text-2xl font-bold text-white font-mono">{stat.value}</p>
+                      <p className="text-white text-sm">{stat.title}</p>
+                      <p className="text-2xl font-bold text-white">{stat.value}</p>
                     </div>
                     <div className="p-3 rounded-lg bg-gray-800">
-                      <stat.icon className="w-6 h-6 text-gray-400" />
+                      <stat.icon className="w-6 h-6 text-white/60" />
                     </div>
                   </div>
                 </CardContent>
@@ -158,7 +158,7 @@ export default function ProjectOverviewSimple() {
           {/* Recent Messages */}
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-white font-mono flex items-center">
+              <CardTitle className="text-white flex items-center">
                 <MessageCircle className="w-5 h-5 mr-2" />
                 Recent Messages
               </CardTitle>
@@ -169,21 +169,21 @@ export default function ProjectOverviewSimple() {
                   {Array.isArray(messages) && messages.slice(-3).map((message: any) => (
                     <div key={message.id} className="p-3 bg-gray-800 border border-gray-700 rounded-lg">
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm text-white font-mono">
+                        <span className="text-sm text-white">
                           {message.senderId === (project as any)?.clientId ? "You" : "Admin"}
                         </span>
-                        <span className="text-xs text-gray-400 font-mono">
+                        <span className="text-xs text-white/60">
                           {new Date(message.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-gray-300 font-mono text-sm line-clamp-2">
+                      <p className="text-gray-300 text-sm line-clamp-2">
                         {message.message}
                       </p>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-400 font-mono text-center py-4">
+                <p className="text-white/60 text-center py-4">
                   No messages yet
                 </p>
               )}
@@ -193,7 +193,7 @@ export default function ProjectOverviewSimple() {
           {/* Project Info */}
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-white font-mono flex items-center">
+              <CardTitle className="text-white flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2" />
                 Project Details
               </CardTitle>
@@ -201,23 +201,23 @@ export default function ProjectOverviewSimple() {
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <div className="text-sm text-gray-400 font-mono mb-1">Status</div>
-                  <div className="text-white font-mono">
+                  <div className="text-sm text-white/60 mb-1">Status</div>
+                  <div className="text-white">
                     {getStatusText((project as any)?.status || "proposal")}
                   </div>
                 </div>
                 {(project as any)?.startDate && (
                   <div>
-                    <div className="text-sm text-gray-400 font-mono mb-1">Start Date</div>
-                    <div className="text-white font-mono">
+                    <div className="text-sm text-white/60 mb-1">Start Date</div>
+                    <div className="text-white">
                       {new Date((project as any).startDate).toLocaleDateString()}
                     </div>
                   </div>
                 )}
                 {(project as any)?.endDate && (
                   <div>
-                    <div className="text-sm text-gray-400 font-mono mb-1">Expected Completion</div>
-                    <div className="text-white font-mono">
+                    <div className="text-sm text-white/60 mb-1">Expected Completion</div>
+                    <div className="text-white">
                       {new Date((project as any).endDate).toLocaleDateString()}
                     </div>
                   </div>

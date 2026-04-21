@@ -147,7 +147,7 @@ export default function AdminProjectContracts() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading project...</div>
+          <div className="text-white/60">Loading project...</div>
         </div>
       </AdminLayout>
     );
@@ -157,7 +157,7 @@ export default function AdminProjectContracts() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Project not found</div>
+          <div className="text-white/60">Project not found</div>
         </div>
       </AdminLayout>
     );
@@ -169,72 +169,72 @@ export default function AdminProjectContracts() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Contract Management</h1>
-            <p className="text-gray-400 font-mono mt-2">
+            <h1 className="text-3xl font-bold text-white">Contract Management</h1>
+            <p className="text-white/60 mt-2">
               Project: {project.title} | Client: {client?.firstName || "Unknown"} {client?.lastName || ""}
             </p>
           </div>
           <Dialog open={isCreating} onOpenChange={setIsCreating}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Contract
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-gray-900 border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-white font-mono">Create New Contract</DialogTitle>
+                <DialogTitle className="text-white">Create New Contract</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreateContract} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="title" className="text-white font-mono">Contract Title</Label>
+                    <Label htmlFor="title" className="text-white">Contract Title</Label>
                     <Input
                       id="title"
                       name="title"
                       required
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                       placeholder="Web Development Service Agreement"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="totalAmount" className="text-white font-mono">Total Amount</Label>
+                    <Label htmlFor="totalAmount" className="text-white">Total Amount</Label>
                     <Input
                       id="totalAmount"
                       name="totalAmount"
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                       placeholder="$5,000"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="description" className="text-white font-mono">Description</Label>
+                  <Label htmlFor="description" className="text-white">Description</Label>
                   <Textarea
                     id="description"
                     name="description"
                     rows={3}
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                     placeholder="Brief description of the contract"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="content" className="text-white font-mono">Contract Content</Label>
+                  <Label htmlFor="content" className="text-white">Contract Content</Label>
                   <Textarea
                     id="content"
                     name="content"
                     rows={8}
                     required
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                     placeholder="Enter the full contract content here..."
                   />
                 </div>
                 <div>
-                  <Label htmlFor="terms" className="text-white font-mono">Terms & Conditions</Label>
+                  <Label htmlFor="terms" className="text-white">Terms & Conditions</Label>
                   <Textarea
                     id="terms"
                     name="terms"
                     rows={4}
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                     placeholder="Additional terms and conditions..."
                   />
                 </div>
@@ -242,7 +242,7 @@ export default function AdminProjectContracts() {
                   <Button
                     type="submit"
                     disabled={createContractMutation.isPending}
-                    className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                    className="flex-1 bg-white text-black hover:bg-gray-200"
                   >
                     {createContractMutation.isPending ? "Creating..." : "Create Contract"}
                   </Button>
@@ -250,7 +250,7 @@ export default function AdminProjectContracts() {
                     type="button"
                     variant="outline"
                     onClick={() => setIsCreating(false)}
-                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                   >
                     Cancel
                   </Button>
@@ -263,17 +263,17 @@ export default function AdminProjectContracts() {
         {/* Contracts List */}
         {contractsLoading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="text-gray-400 font-mono">Loading contracts...</div>
+            <div className="text-white/60">Loading contracts...</div>
           </div>
         ) : contracts.length === 0 ? (
           <Card className="bg-gray-900 border-gray-800">
             <CardContent className="p-12 text-center">
               <FileText className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-mono text-white mb-2">No Contracts Yet</h3>
-              <p className="text-gray-400 font-mono mb-4">Create your first contract for this project</p>
+              <h3 className="text-xl text-white mb-2">No Contracts Yet</h3>
+              <p className="text-white/60 mb-4">Create your first contract for this project</p>
               <Button 
                 onClick={() => setIsCreating(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Contract
@@ -287,15 +287,15 @@ export default function AdminProjectContracts() {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-white font-mono text-xl">{contract.title}</CardTitle>
+                      <CardTitle className="text-white text-xl">{contract.title}</CardTitle>
                       {contract.description && (
-                        <CardDescription className="text-gray-400 font-mono mt-2">
+                        <CardDescription className="text-white/60 mt-2">
                           {contract.description}
                         </CardDescription>
                       )}
                     </div>
                     <div className="flex items-center gap-3">
-                      <Badge className={`${getStatusColor(contract.status)} text-white font-mono`}>
+                      <Badge className={`${getStatusColor(contract.status)} text-white`}>
                         {contract.status?.toUpperCase()}
                       </Badge>
                       <div className="flex gap-2">
@@ -303,7 +303,7 @@ export default function AdminProjectContracts() {
                           size="sm"
                           variant="outline"
                           onClick={() => setEditingContract(contract)}
-                          className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono"
+                          className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800"
                         >
                           <Edit className="w-3 h-3" />
                         </Button>
@@ -311,7 +311,7 @@ export default function AdminProjectContracts() {
                           size="sm"
                           variant="outline"
                           onClick={() => deleteContractMutation.mutate(contract.id)}
-                          className="bg-transparent border-red-600 text-red-400 hover:bg-red-900 font-mono"
+                          className="bg-transparent border-red-600 text-red-400 hover:bg-red-900"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -322,17 +322,17 @@ export default function AdminProjectContracts() {
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     {contract.totalAmount && (
-                      <div className="flex items-center text-green-400 font-mono text-sm">
+                      <div className="flex items-center text-green-400 text-sm">
                         <DollarSign className="w-4 h-4 mr-2" />
                         {contract.totalAmount}
                       </div>
                     )}
-                    <div className="flex items-center text-blue-400 font-mono text-sm">
+                    <div className="flex items-center text-blue-400 text-sm">
                       <Calendar className="w-4 h-4 mr-2" />
                       Created {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : "Unknown"}
                     </div>
                     {contract.signedAt && (
-                      <div className="flex items-center text-green-400 font-mono text-sm">
+                      <div className="flex items-center text-green-400 text-sm">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Signed {new Date(contract.signedAt).toLocaleDateString()}
                       </div>
@@ -340,7 +340,7 @@ export default function AdminProjectContracts() {
                   </div>
                   
                   <div className="bg-gray-800 p-4 rounded-lg">
-                    <p className="text-gray-300 font-mono text-sm whitespace-pre-wrap">
+                    <p className="text-gray-300 text-sm whitespace-pre-wrap">
                       {contract.content?.substring(0, 300)}
                       {contract.content && contract.content.length > 300 && "..."}
                     </p>
@@ -349,7 +349,7 @@ export default function AdminProjectContracts() {
                   <div className="flex gap-3 mt-4">
                     <Button
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       View Full Contract
                     </Button>
@@ -357,7 +357,7 @@ export default function AdminProjectContracts() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono"
+                        className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800"
                       >
                         Send to Client
                       </Button>
@@ -374,66 +374,66 @@ export default function AdminProjectContracts() {
           <Dialog open={!!editingContract} onOpenChange={() => setEditingContract(null)}>
             <DialogContent className="bg-gray-900 border-gray-700 max-w-4xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-white font-mono">Edit Contract</DialogTitle>
+                <DialogTitle className="text-white">Edit Contract</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleUpdateContract} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="edit-title" className="text-white font-mono">Contract Title</Label>
+                    <Label htmlFor="edit-title" className="text-white">Contract Title</Label>
                     <Input
                       id="edit-title"
                       name="title"
                       defaultValue={editingContract.title}
                       required
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="edit-totalAmount" className="text-white font-mono">Total Amount</Label>
+                    <Label htmlFor="edit-totalAmount" className="text-white">Total Amount</Label>
                     <Input
                       id="edit-totalAmount"
                       name="totalAmount"
                       defaultValue={editingContract.totalAmount || ""}
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                     />
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="edit-description" className="text-white font-mono">Description</Label>
+                  <Label htmlFor="edit-description" className="text-white">Description</Label>
                   <Textarea
                     id="edit-description"
                     name="description"
                     defaultValue={editingContract.description || ""}
                     rows={3}
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit-content" className="text-white font-mono">Contract Content</Label>
+                  <Label htmlFor="edit-content" className="text-white">Contract Content</Label>
                   <Textarea
                     id="edit-content"
                     name="content"
                     defaultValue={editingContract.content}
                     rows={8}
                     required
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="edit-terms" className="text-white font-mono">Terms & Conditions</Label>
+                  <Label htmlFor="edit-terms" className="text-white">Terms & Conditions</Label>
                   <Textarea
                     id="edit-terms"
                     name="terms"
                     defaultValue={editingContract.terms || ""}
                     rows={4}
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="submit"
                     disabled={updateContractMutation.isPending}
-                    className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                    className="flex-1 bg-white text-black hover:bg-gray-200"
                   >
                     {updateContractMutation.isPending ? "Updating..." : "Update Contract"}
                   </Button>
@@ -441,7 +441,7 @@ export default function AdminProjectContracts() {
                     type="button"
                     variant="outline"
                     onClick={() => setEditingContract(null)}
-                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                   >
                     Cancel
                   </Button>

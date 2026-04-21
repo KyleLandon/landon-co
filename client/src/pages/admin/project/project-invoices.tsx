@@ -175,7 +175,7 @@ export default function AdminProjectInvoices() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading project...</div>
+          <div className="text-white/60">Loading project...</div>
         </div>
       </AdminLayout>
     );
@@ -185,7 +185,7 @@ export default function AdminProjectInvoices() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Project not found</div>
+          <div className="text-white/60">Project not found</div>
         </div>
       </AdminLayout>
     );
@@ -197,52 +197,52 @@ export default function AdminProjectInvoices() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Invoice Management</h1>
-            <p className="text-gray-400 font-mono mt-2">
+            <h1 className="text-3xl font-bold text-white">Invoice Management</h1>
+            <p className="text-white/60 mt-2">
               Project: {project.title} | Client: {client?.firstName || "Unknown"} {client?.lastName || ""}
             </p>
           </div>
           <Dialog open={isCreating} onOpenChange={setIsCreating}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
+              <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                 <Plus className="w-4 h-4 mr-2" />
                 Create Invoice
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-gray-900 border-gray-700 max-w-5xl max-h-[90vh] overflow-y-auto">
               <DialogHeader>
-                <DialogTitle className="text-white font-mono">Create New Invoice</DialogTitle>
+                <DialogTitle className="text-white">Create New Invoice</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreateInvoice} className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="title" className="text-white font-mono">Invoice Title</Label>
+                    <Label htmlFor="title" className="text-white">Invoice Title</Label>
                     <Input
                       id="title"
                       name="title"
                       required
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                       placeholder="Web Development Services - January 2024"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="dueDate" className="text-white font-mono">Due Date</Label>
+                    <Label htmlFor="dueDate" className="text-white">Due Date</Label>
                     <Input
                       id="dueDate"
                       name="dueDate"
                       type="date"
-                      className="bg-gray-800 border-gray-700 text-white font-mono"
+                      className="bg-gray-800 border-gray-700 text-white"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <Label htmlFor="description" className="text-white font-mono">Description</Label>
+                  <Label htmlFor="description" className="text-white">Description</Label>
                   <Textarea
                     id="description"
                     name="description"
                     rows={2}
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                     placeholder="Invoice description"
                   />
                 </div>
@@ -250,12 +250,12 @@ export default function AdminProjectInvoices() {
                 {/* Invoice Items */}
                 <div>
                   <div className="flex justify-between items-center mb-4">
-                    <Label className="text-white font-mono text-lg">Invoice Items</Label>
+                    <Label className="text-white text-lg">Invoice Items</Label>
                     <Button
                       type="button"
                       onClick={addInvoiceItem}
                       size="sm"
-                      className="bg-green-600 hover:bg-green-700 text-white font-mono"
+                      className="bg-green-600 hover:bg-green-700 text-white"
                     >
                       <Plus className="w-4 h-4 mr-1" />
                       Add Item
@@ -270,7 +270,7 @@ export default function AdminProjectInvoices() {
                             placeholder="Description"
                             value={item.description}
                             onChange={(e) => updateInvoiceItem(index, 'description', e.target.value)}
-                            className="bg-gray-700 border-gray-600 text-white font-mono"
+                            className="bg-gray-700 border-gray-600 text-white"
                           />
                         </div>
                         <div className="col-span-2">
@@ -279,7 +279,7 @@ export default function AdminProjectInvoices() {
                             placeholder="Qty"
                             value={item.quantity}
                             onChange={(e) => updateInvoiceItem(index, 'quantity', parseInt(e.target.value) || 0)}
-                            className="bg-gray-700 border-gray-600 text-white font-mono"
+                            className="bg-gray-700 border-gray-600 text-white"
                           />
                         </div>
                         <div className="col-span-2">
@@ -289,14 +289,14 @@ export default function AdminProjectInvoices() {
                             placeholder="Rate"
                             value={item.rate}
                             onChange={(e) => updateInvoiceItem(index, 'rate', parseFloat(e.target.value) || 0)}
-                            className="bg-gray-700 border-gray-600 text-white font-mono"
+                            className="bg-gray-700 border-gray-600 text-white"
                           />
                         </div>
                         <div className="col-span-2">
                           <Input
                             value={`$${item.amount.toFixed(2)}`}
                             readOnly
-                            className="bg-gray-600 border-gray-600 text-gray-300 font-mono"
+                            className="bg-gray-600 border-gray-600 text-gray-300"
                           />
                         </div>
                         <div className="col-span-1">
@@ -318,16 +318,16 @@ export default function AdminProjectInvoices() {
                   <div className="mt-6 bg-gray-800 p-4 rounded-lg">
                     <div className="space-y-2 text-right">
                       <div className="flex justify-between">
-                        <span className="text-gray-400 font-mono">Subtotal:</span>
-                        <span className="text-white font-mono">${calculateTotals().subtotal.toFixed(2)}</span>
+                        <span className="text-white/60">Subtotal:</span>
+                        <span className="text-white">${calculateTotals().subtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400 font-mono">Tax:</span>
-                        <span className="text-white font-mono">${calculateTotals().taxAmount.toFixed(2)}</span>
+                        <span className="text-white/60">Tax:</span>
+                        <span className="text-white">${calculateTotals().taxAmount.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-bold border-t border-gray-600 pt-2">
-                        <span className="text-white font-mono">Total:</span>
-                        <span className="text-green-400 font-mono">${calculateTotals().total.toFixed(2)}</span>
+                        <span className="text-white">Total:</span>
+                        <span className="text-green-400">${calculateTotals().total.toFixed(2)}</span>
                       </div>
                     </div>
                   </div>
@@ -337,7 +337,7 @@ export default function AdminProjectInvoices() {
                   <Button
                     type="submit"
                     disabled={createInvoiceMutation.isPending}
-                    className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                    className="flex-1 bg-white text-black hover:bg-gray-200"
                   >
                     {createInvoiceMutation.isPending ? "Creating..." : "Create Invoice"}
                   </Button>
@@ -345,7 +345,7 @@ export default function AdminProjectInvoices() {
                     type="button"
                     variant="outline"
                     onClick={() => setIsCreating(false)}
-                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                   >
                     Cancel
                   </Button>
@@ -358,17 +358,17 @@ export default function AdminProjectInvoices() {
         {/* Invoices List */}
         {invoicesLoading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="text-gray-400 font-mono">Loading invoices...</div>
+            <div className="text-white/60">Loading invoices...</div>
           </div>
         ) : invoices.length === 0 ? (
           <Card className="bg-gray-900 border-gray-800">
             <CardContent className="p-12 text-center">
               <Receipt className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-xl font-mono text-white mb-2">No Invoices Yet</h3>
-              <p className="text-gray-400 font-mono mb-4">Create your first invoice for this project</p>
+              <h3 className="text-xl text-white mb-2">No Invoices Yet</h3>
+              <p className="text-white/60 mb-4">Create your first invoice for this project</p>
               <Button 
                 onClick={() => setIsCreating(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Invoice
@@ -382,18 +382,18 @@ export default function AdminProjectInvoices() {
                 <CardHeader>
                   <div className="flex justify-between items-start">
                     <div>
-                      <CardTitle className="text-white font-mono text-xl">{invoice.title}</CardTitle>
-                      <CardDescription className="text-gray-400 font-mono mt-1">
+                      <CardTitle className="text-white text-xl">{invoice.title}</CardTitle>
+                      <CardDescription className="text-white/60 mt-1">
                         Invoice #{invoice.invoiceNumber}
                       </CardDescription>
                       {invoice.description && (
-                        <CardDescription className="text-gray-400 font-mono mt-2">
+                        <CardDescription className="text-white/60 mt-2">
                           {invoice.description}
                         </CardDescription>
                       )}
                     </div>
                     <div className="flex items-center gap-3">
-                      <Badge className={`${getStatusColor(invoice.status)} text-white font-mono`}>
+                      <Badge className={`${getStatusColor(invoice.status)} text-white`}>
                         {invoice.status?.toUpperCase()}
                       </Badge>
                       <div className="flex gap-2">
@@ -401,7 +401,7 @@ export default function AdminProjectInvoices() {
                           size="sm"
                           variant="outline"
                           onClick={() => setEditingInvoice(invoice)}
-                          className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono"
+                          className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800"
                         >
                           <Edit className="w-3 h-3" />
                         </Button>
@@ -409,7 +409,7 @@ export default function AdminProjectInvoices() {
                           size="sm"
                           variant="outline"
                           onClick={() => deleteInvoiceMutation.mutate(invoice.id)}
-                          className="bg-transparent border-red-600 text-red-400 hover:bg-red-900 font-mono"
+                          className="bg-transparent border-red-600 text-red-400 hover:bg-red-900"
                         >
                           <Trash2 className="w-3 h-3" />
                         </Button>
@@ -419,22 +419,22 @@ export default function AdminProjectInvoices() {
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
-                    <div className="flex items-center text-green-400 font-mono text-lg font-bold">
+                    <div className="flex items-center text-green-400 text-lg font-bold">
                       <DollarSign className="w-5 h-5 mr-2" />
                       {invoice.totalAmount}
                     </div>
-                    <div className="flex items-center text-blue-400 font-mono text-sm">
+                    <div className="flex items-center text-blue-400 text-sm">
                       <Calendar className="w-4 h-4 mr-2" />
                       Created {invoice.createdAt ? new Date(invoice.createdAt).toLocaleDateString() : "Unknown"}
                     </div>
                     {invoice.dueDate && (
-                      <div className="flex items-center text-orange-400 font-mono text-sm">
+                      <div className="flex items-center text-orange-400 text-sm">
                         <Clock className="w-4 h-4 mr-2" />
                         Due {new Date(invoice.dueDate).toLocaleDateString()}
                       </div>
                     )}
                     {invoice.paidAt && (
-                      <div className="flex items-center text-green-400 font-mono text-sm">
+                      <div className="flex items-center text-green-400 text-sm">
                         <CheckCircle className="w-4 h-4 mr-2" />
                         Paid {new Date(invoice.paidAt).toLocaleDateString()}
                       </div>
@@ -444,7 +444,7 @@ export default function AdminProjectInvoices() {
                   <div className="flex gap-3 mt-4">
                     <Button
                       size="sm"
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       View Invoice
                     </Button>
@@ -452,7 +452,7 @@ export default function AdminProjectInvoices() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono"
+                        className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800"
                       >
                         Send to Client
                       </Button>
@@ -460,7 +460,7 @@ export default function AdminProjectInvoices() {
                     {invoice.status === "sent" && (
                       <Button
                         size="sm"
-                        className="bg-green-600 hover:bg-green-700 text-white font-mono"
+                        className="bg-green-600 hover:bg-green-700 text-white"
                       >
                         <CreditCard className="w-4 h-4 mr-2" />
                         Payment Link

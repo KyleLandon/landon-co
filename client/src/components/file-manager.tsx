@@ -184,7 +184,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
       <Card className="bg-gray-900 border-gray-800">
         <CardContent className="p-6">
           <div className="flex items-center justify-center h-32">
-            <div className="text-gray-400 font-mono">Loading files...</div>
+            <div className="text-gray-400">Loading files...</div>
           </div>
         </CardContent>
       </Card>
@@ -195,10 +195,10 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
     <div className="space-y-4">
       <Card className="bg-gray-900 border-gray-800">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="text-white font-mono">Project Files</CardTitle>
+          <CardTitle className="text-white">Project Files</CardTitle>
           <Button
             onClick={() => setShowUpload(!showUpload)}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+            className="bg-blue-600 hover:bg-blue-700 text-white"
           >
             <Plus className="w-4 h-4 mr-2" />
             Upload File
@@ -216,7 +216,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                 className="border border-gray-700 rounded-lg p-4 space-y-4"
               >
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-mono text-white">Upload New File</h3>
+                  <h3 className="text-lg text-white">Upload New File</h3>
                   <Button
                     variant="ghost"
                     size="sm"
@@ -241,7 +241,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                   onClick={() => fileInputRef.current?.click()}
                 >
                   <Upload className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                  <p className="text-gray-300 font-mono mb-2">
+                  <p className="text-gray-300 mb-2">
                     Drag and drop files here, or click to select
                   </p>
                   <p className="text-sm text-gray-500">
@@ -258,7 +258,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                 {/* Upload Options */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-gray-300 font-mono">Category</Label>
+                    <Label className="text-gray-300">Category</Label>
                     <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                       <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
                         <SelectValue />
@@ -282,7 +282,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                         onChange={(e) => setIsPublic(e.target.checked)}
                         className="rounded border-gray-600"
                       />
-                      <Label htmlFor="isPublic" className="text-gray-300 font-mono">
+                      <Label htmlFor="isPublic" className="text-gray-300">
                         Visible to client
                       </Label>
                     </div>
@@ -290,12 +290,12 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                 </div>
                 
                 <div>
-                  <Label className="text-gray-300 font-mono">Description (Optional)</Label>
+                  <Label className="text-gray-300">Description (Optional)</Label>
                   <Textarea
                     value={uploadDescription}
                     onChange={(e) => setUploadDescription(e.target.value)}
                     placeholder="Describe this file..."
-                    className="bg-gray-800 border-gray-700 text-white font-mono"
+                    className="bg-gray-800 border-gray-700 text-white"
                   />
                 </div>
               </motion.div>
@@ -306,13 +306,13 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
           {Object.keys(groupedFiles).length === 0 ? (
             <div className="text-center py-8">
               <Folder className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-              <p className="text-gray-400 font-mono">No files uploaded yet</p>
+              <p className="text-gray-400">No files uploaded yet</p>
             </div>
           ) : (
             <div className="space-y-6">
               {Object.entries(groupedFiles).map(([category, categoryFiles]) => (
                 <div key={category}>
-                  <h3 className="text-lg font-mono text-white mb-3 capitalize flex items-center">
+                  <h3 className="text-lg text-white mb-3 capitalize flex items-center">
                     <Folder className="w-5 h-5 mr-2" />
                     {category} ({categoryFiles.length})
                   </h3>
@@ -331,14 +331,14 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
                           </div>
                           <div className="flex-1">
                             <div className="flex items-center space-x-2">
-                              <h4 className="font-mono text-white">{file.originalName}</h4>
+                              <h4 className="text-white">{file.originalName}</h4>
                               {!file.isPublic && (
                                 <Badge variant="secondary" className="text-xs">
                                   Private
                                 </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-gray-400 font-mono">
+                            <p className="text-sm text-gray-400">
                               {formatFileSize(file.fileSize)} • {new Date(file.createdAt).toLocaleDateString()}
                             </p>
                             {file.description && (

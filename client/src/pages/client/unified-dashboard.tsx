@@ -39,38 +39,38 @@ function FilesTab({ projectId }: { projectId: string }) {
   });
 
   if (isLoading) {
-    return <div className="text-center text-gray-400 font-mono py-8">Loading files...</div>;
+    return <div className="text-center text-white/60 py-8">Loading files...</div>;
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-mono text-white">Project Files</h3>
-        <span className="text-sm text-gray-400 font-mono">{files.length} files</span>
+        <h3 className="text-lg text-white">Project Files</h3>
+        <span className="text-sm text-white/60">{files.length} files</span>
       </div>
       
       {files.length === 0 ? (
         <div className="text-center py-12">
-          <FileText className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-400 font-mono">No files uploaded yet</p>
+          <FileText className="w-16 h-16 text-white/50 mx-auto mb-4" />
+          <p className="text-white/60">No files uploaded yet</p>
         </div>
       ) : (
         <div className="space-y-3">
           {files.map((file) => (
-            <div key={file.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+            <div key={file.id} className="bg-zinc-800 p-4 rounded-lg border border-white/10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <FileText className="w-5 h-5 text-gray-400" />
+                  <FileText className="w-5 h-5 text-white/60" />
                   <div>
-                    <h4 className="font-mono text-white">{file.originalName}</h4>
-                    <p className="text-sm text-gray-400 font-mono">{file.description || "No description"}</p>
+                    <h4 className="text-white">{file.originalName}</h4>
+                    <p className="text-sm text-white/60">{file.description || "No description"}</p>
                   </div>
                 </div>
                 <Button
                   onClick={() => window.open(`/api/files/${file.id}/download`, '_blank')}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-white/10"
                 >
                   <Download className="w-4 h-4 mr-1" />
                   Download
@@ -92,38 +92,38 @@ function ContractsTab({ projectId }: { projectId: string }) {
   });
 
   if (isLoading) {
-    return <div className="text-center text-gray-400 font-mono py-8">Loading contracts...</div>;
+    return <div className="text-center text-white/60 py-8">Loading contracts...</div>;
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-mono text-white">Project Contracts</h3>
-        <span className="text-sm text-gray-400 font-mono">{contracts.length} contracts</span>
+        <h3 className="text-lg text-white">Project Contracts</h3>
+        <span className="text-sm text-white/60">{contracts.length} contracts</span>
       </div>
       
       {contracts.length === 0 ? (
         <div className="text-center py-12">
-          <FileText className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-400 font-mono">No contracts available</p>
+          <FileText className="w-16 h-16 text-white/50 mx-auto mb-4" />
+          <p className="text-white/60">No contracts available</p>
         </div>
       ) : (
         <div className="space-y-3">
           {contracts.map((contract) => (
-            <div key={contract.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+            <div key={contract.id} className="bg-zinc-800 p-4 rounded-lg border border-white/10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <FileText className="w-5 h-5 text-gray-400" />
+                  <FileText className="w-5 h-5 text-white/60" />
                   <div>
-                    <h4 className="font-mono text-white">{contract.title}</h4>
-                    <p className="text-sm text-gray-400 font-mono">Status: {contract.status}</p>
+                    <h4 className="text-white">{contract.title}</h4>
+                    <p className="text-sm text-white/60">Status: {contract.status}</p>
                   </div>
                 </div>
                 <Button
                   onClick={() => window.open(`/projects/${projectId}/contracts/${contract.id}`, '_blank')}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-white/10"
                 >
                   <Eye className="w-4 h-4 mr-1" />
                   View
@@ -145,31 +145,31 @@ function InvoicesTab({ projectId }: { projectId: string }) {
   });
 
   if (isLoading) {
-    return <div className="text-center text-gray-400 font-mono py-8">Loading invoices...</div>;
+    return <div className="text-center text-white/60 py-8">Loading invoices...</div>;
   }
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-mono text-white">Project Invoices</h3>
-        <span className="text-sm text-gray-400 font-mono">{invoices.length} invoices</span>
+        <h3 className="text-lg text-white">Project Invoices</h3>
+        <span className="text-sm text-white/60">{invoices.length} invoices</span>
       </div>
       
       {invoices.length === 0 ? (
         <div className="text-center py-12">
-          <DollarSign className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-          <p className="text-gray-400 font-mono">No invoices available</p>
+          <DollarSign className="w-16 h-16 text-white/50 mx-auto mb-4" />
+          <p className="text-white/60">No invoices available</p>
         </div>
       ) : (
         <div className="space-y-3">
           {invoices.map((invoice) => (
-            <div key={invoice.id} className="bg-zinc-800 p-4 rounded-lg border border-zinc-700">
+            <div key={invoice.id} className="bg-zinc-800 p-4 rounded-lg border border-white/10">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
-                  <DollarSign className="w-5 h-5 text-gray-400" />
+                  <DollarSign className="w-5 h-5 text-white/60" />
                   <div>
-                    <h4 className="font-mono text-white">Invoice #{invoice.invoiceNumber}</h4>
-                    <p className="text-sm text-gray-400 font-mono">
+                    <h4 className="text-white">Invoice #{invoice.invoiceNumber}</h4>
+                    <p className="text-sm text-white/60">
                       ${invoice.totalAmount} - {invoice.status}
                     </p>
                   </div>
@@ -178,7 +178,7 @@ function InvoicesTab({ projectId }: { projectId: string }) {
                   onClick={() => window.open(`/projects/${projectId}/invoices/${invoice.id}`, '_blank')}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-zinc-600 text-white hover:bg-zinc-700 font-mono"
+                  className="bg-transparent border-zinc-600 text-white hover:bg-white/10"
                 >
                   <Eye className="w-4 h-4 mr-1" />
                   View
@@ -301,7 +301,7 @@ export default function UnifiedDashboard() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-400 font-mono">Loading dashboard...</p>
+          <p className="text-white/60">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -322,17 +322,17 @@ export default function UnifiedDashboard() {
           >
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-mono font-bold mb-2">
+                <h1 className="text-3xl font-bold mb-2">
                   Welcome back, {user?.firstName || "Client"}
                 </h1>
-                <p className="text-gray-400 font-mono">
+                <p className="text-white/60">
                   Everything you need in one place
                 </p>
               </div>
               
               <div className="flex items-center gap-3">
                 <ProjectRequestDialog>
-                  <Button className="bg-white text-black hover:bg-gray-200 font-mono">
+                  <Button className="bg-white text-black hover:bg-gray-200">
                     <Plus className="w-4 h-4 mr-2" />
                     New Project
                   </Button>
@@ -342,7 +342,7 @@ export default function UnifiedDashboard() {
                   onClick={() => window.location.href = "/api/logout"}
                   variant="outline"
                   size="sm"
-                  className="bg-transparent border-zinc-700 text-white hover:bg-zinc-800 font-mono"
+                  className="bg-transparent border-white/10 text-white hover:bg-white/5"
                 >
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
@@ -357,15 +357,15 @@ export default function UnifiedDashboard() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <Card className="bg-zinc-900 border-zinc-800 text-center py-16">
+              <Card className="bg-white/5 border-white/10 text-center py-16">
                 <CardContent>
                   <MessageCircle className="w-20 h-20 text-white mx-auto mb-6" />
-                  <h3 className="text-2xl font-mono font-bold mb-4 text-white">Ready to Start?</h3>
-                  <p className="text-gray-400 font-mono mb-8 max-w-md mx-auto">
+                  <h3 className="text-2xl font-bold mb-4 text-white">Ready to Start?</h3>
+                  <p className="text-white/60 mb-8 max-w-md mx-auto">
                     Let's bring your ideas to life. Start by telling us about your project.
                   </p>
                   <ProjectRequestDialog>
-                    <Button size="lg" className="bg-white text-black hover:bg-gray-200 font-mono">
+                    <Button size="lg" className="bg-white text-black hover:bg-gray-200">
                       <Plus className="w-5 h-5 mr-2" />
                       Start Your First Project
                     </Button>
@@ -385,9 +385,9 @@ export default function UnifiedDashboard() {
               >
                 
                 {/* Project Selector */}
-                <Card className="bg-zinc-900 border-zinc-800">
+                <Card className="bg-white/5 border-white/10">
                   <CardHeader>
-                    <CardTitle className="font-mono text-lg text-white">Your Projects</CardTitle>
+                    <CardTitle className="text-lg text-white">Your Projects</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {projects.map((project) => (
@@ -401,12 +401,12 @@ export default function UnifiedDashboard() {
                         }`}
                       >
                         <div className="flex items-center justify-between mb-2">
-                          <h4 className="font-mono font-bold text-white truncate">{project.title}</h4>
+                          <h4 className="font-bold text-white truncate">{project.title}</h4>
                           <Badge className={`${getStatusColor(project.status)} text-white text-xs`}>
                             {getStatusText(project.status)}
                           </Badge>
                         </div>
-                        <p className="text-gray-400 font-mono text-sm truncate">{project.description}</p>
+                        <p className="text-white/60 text-sm truncate">{project.description}</p>
                       </div>
                     ))}
                   </CardContent>
@@ -414,20 +414,20 @@ export default function UnifiedDashboard() {
 
                 {/* Active Project Details */}
                 {activeProject && (
-                  <Card className="bg-zinc-900 border-zinc-800">
+                  <Card className="bg-white/5 border-white/10">
                     <CardHeader>
-                      <CardTitle className="font-mono text-lg text-white">Project Details</CardTitle>
+                      <CardTitle className="text-lg text-white">Project Details</CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <h4 className="font-mono font-bold text-white mb-1">{activeProject.title}</h4>
-                        <p className="text-gray-400 font-mono text-sm">{activeProject.description}</p>
+                        <h4 className="font-bold text-white mb-1">{activeProject.title}</h4>
+                        <p className="text-white/60 text-sm">{activeProject.description}</p>
                       </div>
                       
                       {activeProject.budget && (
                         <div className="flex items-center gap-2">
                           <DollarSign className="w-4 h-4 text-green-500" />
-                          <span className="font-mono text-green-500">
+                          <span className="text-green-500">
                             ${parseFloat(activeProject.budget).toLocaleString()}
                           </span>
                         </div>
@@ -436,7 +436,7 @@ export default function UnifiedDashboard() {
                       {activeProject.startDate && (
                         <div className="flex items-center gap-2">
                           <Calendar className="w-4 h-4 text-blue-500" />
-                          <span className="font-mono text-white text-sm">
+                          <span className="text-white text-sm">
                             Started {new Date(activeProject.startDate).toLocaleDateString()}
                           </span>
                         </div>
@@ -446,10 +446,10 @@ export default function UnifiedDashboard() {
                         <Button
                           onClick={() => setActiveTab('files')}
                           variant={activeTab === 'files' ? 'default' : 'outline'}
-                          className={`w-full font-mono justify-start ${
+                          className={`w-full justify-start ${
                             activeTab === 'files' 
                               ? 'bg-white text-black hover:bg-gray-200' 
-                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                              : 'bg-transparent border-white/10 text-white hover:bg-white/5'
                           }`}
                         >
                           <FileText className="w-4 h-4 mr-2" />
@@ -459,10 +459,10 @@ export default function UnifiedDashboard() {
                         <Button
                           onClick={() => setActiveTab('contracts')}
                           variant={activeTab === 'contracts' ? 'default' : 'outline'}
-                          className={`w-full font-mono justify-start ${
+                          className={`w-full justify-start ${
                             activeTab === 'contracts' 
                               ? 'bg-white text-black hover:bg-gray-200' 
-                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                              : 'bg-transparent border-white/10 text-white hover:bg-white/5'
                           }`}
                         >
                           <FileText className="w-4 h-4 mr-2" />
@@ -472,10 +472,10 @@ export default function UnifiedDashboard() {
                         <Button
                           onClick={() => setActiveTab('invoices')}
                           variant={activeTab === 'invoices' ? 'default' : 'outline'}
-                          className={`w-full font-mono justify-start ${
+                          className={`w-full justify-start ${
                             activeTab === 'invoices' 
                               ? 'bg-white text-black hover:bg-gray-200' 
-                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                              : 'bg-transparent border-white/10 text-white hover:bg-white/5'
                           }`}
                         >
                           <DollarSign className="w-4 h-4 mr-2" />
@@ -485,10 +485,10 @@ export default function UnifiedDashboard() {
                         <Button
                           onClick={() => setActiveTab('communication')}
                           variant={activeTab === 'communication' ? 'default' : 'outline'}
-                          className={`w-full font-mono justify-start ${
+                          className={`w-full justify-start ${
                             activeTab === 'communication' 
                               ? 'bg-white text-black hover:bg-gray-200' 
-                              : 'bg-transparent border-zinc-700 text-white hover:bg-zinc-800'
+                              : 'bg-transparent border-white/10 text-white hover:bg-white/5'
                           }`}
                         >
                           <MessageCircle className="w-4 h-4 mr-2" />
@@ -508,17 +508,17 @@ export default function UnifiedDashboard() {
               >
                 
                 {activeProject ? (
-                  <Card className="bg-zinc-900 border-zinc-800 h-[600px] flex flex-col">
+                  <Card className="bg-white/5 border-white/10 h-[600px] flex flex-col">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="font-mono text-lg text-white flex items-center">
+                        <CardTitle className="text-lg text-white flex items-center">
                           {activeTab === 'communication' && <><MessageCircle className="w-5 h-5 mr-2" />Project Communication</>}
                           {activeTab === 'files' && <><FileText className="w-5 h-5 mr-2" />Project Files</>}
                           {activeTab === 'contracts' && <><FileText className="w-5 h-5 mr-2" />Contracts</>}
                           {activeTab === 'invoices' && <><DollarSign className="w-5 h-5 mr-2" />Invoices</>}
                         </CardTitle>
                         {activeTab === 'communication' && (
-                          <Badge variant="outline" className="font-mono">
+                          <Badge variant="outline">
                             {messages.length} messages
                           </Badge>
                         )}
@@ -563,11 +563,11 @@ export default function UnifiedDashboard() {
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="bg-zinc-900 border-zinc-800 h-[600px] flex items-center justify-center">
+                  <Card className="bg-white/5 border-white/10 h-[600px] flex items-center justify-center">
                     <CardContent className="text-center">
-                      <MessageCircle className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                      <h3 className="text-xl font-mono font-bold text-white mb-2">Select a Project</h3>
-                      <p className="text-gray-400 font-mono">
+                      <MessageCircle className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                      <h3 className="text-xl font-bold text-white mb-2">Select a Project</h3>
+                      <p className="text-white/60">
                         Choose a project from the left to view details and communicate with the team
                       </p>
                     </CardContent>

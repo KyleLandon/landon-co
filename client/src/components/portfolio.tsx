@@ -67,7 +67,7 @@ const Portfolio = () => {
     <section id="portfolio" className="bg-black py-20">
       <div className="container mx-auto px-4">
         <motion.h2
-          className="mb-12 text-center text-4xl font-bold tracking-wider sm:text-5xl font-mono uppercase"
+          className="mb-12 text-center text-4xl font-bold tracking-wider sm:text-5xl uppercase"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
@@ -84,7 +84,7 @@ const Portfolio = () => {
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}
               onClick={() => setSelectedCategory(category)}
-              className="text-sm uppercase tracking-wider font-mono border-2 border-white/30 bg-transparent hover:bg-white hover:text-black transition-all duration-300 rounded-none"
+              className="text-sm uppercase tracking-wider border-2 border-white/30 bg-transparent hover:bg-white hover:text-black transition-all duration-300 rounded-none"
               style={{
                 filter: selectedCategory === category ? "contrast(1.2)" : "none",
               }}
@@ -114,15 +114,15 @@ const Portfolio = () => {
                       />
                       <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <h3
-                          className="text-xl font-bold text-white font-mono tracking-wider mb-2 text-center px-4"
+                          className="text-xl font-bold text-white tracking-wider mb-2 text-center px-4"
                           style={{
                             textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
                           }}
                         >
                           {work.title}
                         </h3>
-                        <p className="text-sm text-gray-300 font-mono tracking-widest uppercase mb-1">{work.year}</p>
-                        <p className="text-xs text-gray-400 font-mono text-center px-4">{work.tech}</p>
+                        <p className="text-sm text-gray-300 tracking-widest uppercase mb-1">{work.year}</p>
+                        <p className="text-xs text-gray-400 text-center px-4">{work.tech}</p>
                       </div>
                     </div>
                   </CardContent>

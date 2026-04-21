@@ -122,7 +122,7 @@ export default function AdminProjectDetail() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-gray-400 font-mono">Loading project...</div>
+          <div className="text-white/60">Loading project...</div>
         </div>
       </AdminLayout>
     );
@@ -132,7 +132,7 @@ export default function AdminProjectDetail() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center min-h-screen">
-          <div className="text-gray-400 font-mono">Project not found</div>
+          <div className="text-white/60">Project not found</div>
         </div>
       </AdminLayout>
     );
@@ -140,26 +140,26 @@ export default function AdminProjectDetail() {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-gray-950">
+      <div className="min-h-screen bg-black">
         {/* Header Section */}
-        <div className="border-b border-gray-800 bg-gray-950 px-6 py-6">
+        <div className="border-b border-gray-800 bg-black px-6 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/admin/projects">
-                <Button variant="ghost" size="sm" className="text-gray-400 hover:text-white font-mono">
+                <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Projects
                 </Button>
               </Link>
               <div>
-                <h1 className="text-2xl font-mono font-bold text-white">{project.title}</h1>
-                <p className="text-gray-400 font-mono text-sm mt-1">{project.description}</p>
+                <h1 className="text-2xl font-bold text-white">{project.title}</h1>
+                <p className="text-white/60 text-sm mt-1">{project.description}</p>
               </div>
             </div>
             <div className="flex items-center space-x-3">
               <Badge 
                 variant={project.status === "completed" ? "default" : project.status === "active" ? "secondary" : "outline"}
-                className="font-mono text-sm"
+                className="text-sm"
               >
                 {project.status?.toUpperCase()}
               </Badge>
@@ -167,7 +167,7 @@ export default function AdminProjectDetail() {
                 onClick={() => setIsEditing(!isEditing)}
                 variant="outline"
                 size="sm"
-                className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono"
+                className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700"
               >
                 {isEditing ? <X className="w-4 h-4 mr-2" /> : <Edit className="w-4 h-4 mr-2" />}
                 {isEditing ? "Cancel" : "Edit"}
@@ -177,7 +177,7 @@ export default function AdminProjectDetail() {
                   onClick={handleSave}
                   disabled={updateProject.isPending}
                   size="sm"
-                  className="bg-blue-600 hover:bg-blue-700 font-mono"
+                  className="bg-blue-600 hover:bg-blue-700"
                 >
                   <Save className="w-4 h-4 mr-2" />
                   {updateProject.isPending ? "Saving..." : "Save"}
@@ -198,8 +198,8 @@ export default function AdminProjectDetail() {
                     <DollarSign className="w-5 h-5 text-blue-400" />
                   </div>
                   <div>
-                    <p className="text-gray-400 font-mono text-xs">Budget</p>
-                    <p className="text-white font-mono font-semibold">{project.budget || "TBD"}</p>
+                    <p className="text-white/60 text-xs">Budget</p>
+                    <p className="text-white font-semibold">{project.budget || "TBD"}</p>
                   </div>
                 </div>
               </CardContent>
@@ -212,8 +212,8 @@ export default function AdminProjectDetail() {
                     <MessageCircle className="w-5 h-5 text-green-400" />
                   </div>
                   <div>
-                    <p className="text-gray-400 font-mono text-xs">Messages</p>
-                    <p className="text-white font-mono font-semibold">{messages?.length || 0}</p>
+                    <p className="text-white/60 text-xs">Messages</p>
+                    <p className="text-white font-semibold">{messages?.length || 0}</p>
                   </div>
                 </div>
               </CardContent>
@@ -226,8 +226,8 @@ export default function AdminProjectDetail() {
                     <Activity className="w-5 h-5 text-purple-400" />
                   </div>
                   <div>
-                    <p className="text-gray-400 font-mono text-xs">Status</p>
-                    <p className="text-white font-mono font-semibold capitalize">{project.status}</p>
+                    <p className="text-white/60 text-xs">Status</p>
+                    <p className="text-white font-semibold capitalize">{project.status}</p>
                   </div>
                 </div>
               </CardContent>
@@ -240,8 +240,8 @@ export default function AdminProjectDetail() {
                     <Clock className="w-5 h-5 text-orange-400" />
                   </div>
                   <div>
-                    <p className="text-gray-400 font-mono text-xs">Created</p>
-                    <p className="text-white font-mono font-semibold">
+                    <p className="text-white/60 text-xs">Created</p>
+                    <p className="text-white font-semibold">
                       {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : "Unknown"}
                     </p>
                   </div>
@@ -253,25 +253,25 @@ export default function AdminProjectDetail() {
           {/* Navigation Tabs */}
           <div className="flex space-x-1 mb-6 border-b border-gray-800">
             <Link href={`/admin/projects/${id}`}>
-              <Button variant="ghost" className="font-mono text-white border-b-2 border-blue-500 rounded-none">
+              <Button variant="ghost" className="text-white border-b-2 border-blue-500 rounded-none">
                 <FileText className="w-4 h-4 mr-2" />
                 Overview
               </Button>
             </Link>
             <Link href={`/admin/projects/${id}/messages`}>
-              <Button variant="ghost" className="font-mono text-gray-400 hover:text-white rounded-none">
+              <Button variant="ghost" className="text-white/60 hover:text-white rounded-none">
                 <MessageCircle className="w-4 h-4 mr-2" />
                 Communication
               </Button>
             </Link>
             <Link href={`/admin/projects/${id}/timeline`}>
-              <Button variant="ghost" className="font-mono text-gray-400 hover:text-white rounded-none">
+              <Button variant="ghost" className="text-white/60 hover:text-white rounded-none">
                 <GitBranch className="w-4 h-4 mr-2" />
                 Timeline
               </Button>
             </Link>
             <Link href={`/admin/projects/${id}/files`}>
-              <Button variant="ghost" className="font-mono text-gray-400 hover:text-white rounded-none">
+              <Button variant="ghost" className="text-white/60 hover:text-white rounded-none">
                 <Settings className="w-4 h-4 mr-2" />
                 Files
               </Button>
@@ -285,35 +285,35 @@ export default function AdminProjectDetail() {
               {/* Project Information */}
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white font-mono text-lg">Project Details</CardTitle>
+                  <CardTitle className="text-white text-lg">Project Details</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {isEditing ? (
                     <div className="space-y-4">
                       <div>
-                        <Label htmlFor="title" className="text-white font-mono text-sm">Project Title</Label>
+                        <Label htmlFor="title" className="text-white text-sm">Project Title</Label>
                         <Input
                           id="title"
                           value={editForm.title}
                           onChange={(e) => setEditForm({ ...editForm, title: e.target.value })}
-                          className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                          className="bg-gray-800 border-gray-700 text-white mt-1"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="description" className="text-white font-mono text-sm">Description</Label>
+                        <Label htmlFor="description" className="text-white text-sm">Description</Label>
                         <Textarea
                           id="description"
                           value={editForm.description}
                           onChange={(e) => setEditForm({ ...editForm, description: e.target.value })}
-                          className="bg-gray-800 border-gray-700 text-white font-mono mt-1 min-h-[120px]"
+                          className="bg-gray-800 border-gray-700 text-white mt-1 min-h-[120px]"
                           placeholder="Describe the project scope and requirements..."
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="status" className="text-white font-mono text-sm">Status</Label>
+                          <Label htmlFor="status" className="text-white text-sm">Status</Label>
                           <Select value={editForm.status} onValueChange={(value) => setEditForm({ ...editForm, status: value })}>
-                            <SelectTrigger className="bg-gray-800 border-gray-700 text-white font-mono mt-1">
+                            <SelectTrigger className="bg-gray-800 border-gray-700 text-white mt-1">
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-gray-800 border-gray-700">
@@ -326,35 +326,35 @@ export default function AdminProjectDetail() {
                           </Select>
                         </div>
                         <div>
-                          <Label htmlFor="budget" className="text-white font-mono text-sm">Budget</Label>
+                          <Label htmlFor="budget" className="text-white text-sm">Budget</Label>
                           <Input
                             id="budget"
                             value={editForm.budget}
                             onChange={(e) => setEditForm({ ...editForm, budget: e.target.value })}
-                            className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                            className="bg-gray-800 border-gray-700 text-white mt-1"
                             placeholder="$5,000"
                           />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor="startDate" className="text-white font-mono text-sm">Start Date</Label>
+                          <Label htmlFor="startDate" className="text-white text-sm">Start Date</Label>
                           <Input
                             id="startDate"
                             type="date"
                             value={editForm.startDate}
                             onChange={(e) => setEditForm({ ...editForm, startDate: e.target.value })}
-                            className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                            className="bg-gray-800 border-gray-700 text-white mt-1"
                           />
                         </div>
                         <div>
-                          <Label htmlFor="endDate" className="text-white font-mono text-sm">Target Completion</Label>
+                          <Label htmlFor="endDate" className="text-white text-sm">Target Completion</Label>
                           <Input
                             id="endDate"
                             type="date"
                             value={editForm.endDate}
                             onChange={(e) => setEditForm({ ...editForm, endDate: e.target.value })}
-                            className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                            className="bg-gray-800 border-gray-700 text-white mt-1"
                           />
                         </div>
                       </div>
@@ -362,39 +362,39 @@ export default function AdminProjectDetail() {
                   ) : (
                     <div className="space-y-6">
                       <div>
-                        <h3 className="text-white font-mono font-medium mb-2">Description</h3>
-                        <p className="text-gray-300 font-mono text-sm leading-relaxed">
+                        <h3 className="text-white font-medium mb-2">Description</h3>
+                        <p className="text-gray-300 text-sm leading-relaxed">
                           {project.description || "No description provided"}
                         </p>
                       </div>
                       <div className="grid grid-cols-2 gap-6">
                         <div>
-                          <h4 className="text-gray-400 font-mono text-xs uppercase tracking-wide mb-2">Timeline</h4>
+                          <h4 className="text-white/60 text-xs uppercase tracking-wide mb-2">Timeline</h4>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-gray-400 font-mono text-sm">Start:</span>
-                              <span className="text-white font-mono text-sm">
+                              <span className="text-white/60 text-sm">Start:</span>
+                              <span className="text-white text-sm">
                                 {project.startDate ? new Date(project.startDate).toLocaleDateString() : "TBD"}
                               </span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-400 font-mono text-sm">Target:</span>
-                              <span className="text-white font-mono text-sm">
+                              <span className="text-white/60 text-sm">Target:</span>
+                              <span className="text-white text-sm">
                                 {project.endDate ? new Date(project.endDate).toLocaleDateString() : "TBD"}
                               </span>
                             </div>
                           </div>
                         </div>
                         <div>
-                          <h4 className="text-gray-400 font-mono text-xs uppercase tracking-wide mb-2">Project Info</h4>
+                          <h4 className="text-white/60 text-xs uppercase tracking-wide mb-2">Project Info</h4>
                           <div className="space-y-2">
                             <div className="flex justify-between">
-                              <span className="text-gray-400 font-mono text-sm">Budget:</span>
-                              <span className="text-white font-mono text-sm">{project.budget || "TBD"}</span>
+                              <span className="text-white/60 text-sm">Budget:</span>
+                              <span className="text-white text-sm">{project.budget || "TBD"}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-gray-400 font-mono text-sm">Updated:</span>
-                              <span className="text-white font-mono text-sm">
+                              <span className="text-white/60 text-sm">Updated:</span>
+                              <span className="text-white text-sm">
                                 {project.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : "Unknown"}
                               </span>
                             </div>
@@ -410,9 +410,9 @@ export default function AdminProjectDetail() {
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-white font-mono text-lg">Recent Messages</CardTitle>
+                    <CardTitle className="text-white text-lg">Recent Messages</CardTitle>
                     <Link href={`/admin/projects/${id}/messages`}>
-                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300 font-mono">
+                      <Button variant="ghost" size="sm" className="text-blue-400 hover:text-blue-300">
                         View All
                       </Button>
                     </Link>
@@ -420,27 +420,27 @@ export default function AdminProjectDetail() {
                 </CardHeader>
                 <CardContent>
                   {messagesLoading ? (
-                    <div className="text-gray-400 font-mono text-sm">Loading messages...</div>
+                    <div className="text-white/60 text-sm">Loading messages...</div>
                   ) : messages && messages.length > 0 ? (
                     <div className="space-y-3">
                       {messages.slice(0, 3).map((message: any) => (
                         <div key={message.id} className="p-4 bg-gray-800 rounded-lg">
                           <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-gray-400 font-mono">
+                            <span className="text-sm text-white/60">
                               {message.senderId === client?.id ? client?.firstName || "Client" : "Admin"}
                             </span>
-                            <span className="text-xs text-gray-500 font-mono">
+                            <span className="text-xs text-white/50">
                               {message.createdAt ? new Date(message.createdAt).toLocaleDateString() : "Unknown"}
                             </span>
                           </div>
-                          <p className="text-white font-mono text-sm">{message.message}</p>
+                          <p className="text-white text-sm">{message.message}</p>
                         </div>
                       ))}
                     </div>
                   ) : (
                     <div className="text-center py-8">
                       <MessageCircle className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                      <p className="text-gray-400 font-mono text-sm">No messages yet</p>
+                      <p className="text-white/60 text-sm">No messages yet</p>
                     </div>
                   )}
                 </CardContent>
@@ -451,7 +451,7 @@ export default function AdminProjectDetail() {
             <div className="space-y-6">
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white font-mono text-lg">Client Information</CardTitle>
+                  <CardTitle className="text-white text-lg">Client Information</CardTitle>
                 </CardHeader>
                 <CardContent>
                   {client ? (
@@ -465,24 +465,24 @@ export default function AdminProjectDetail() {
                           />
                         ) : (
                           <div className="w-16 h-16 rounded-full bg-gray-700 flex items-center justify-center mx-auto border-2 border-gray-700">
-                            <User className="w-8 h-8 text-gray-400" />
+                            <User className="w-8 h-8 text-white/60" />
                           </div>
                         )}
-                        <h3 className="text-white font-mono font-medium mt-3">
+                        <h3 className="text-white font-medium mt-3">
                           {client.firstName} {client.lastName}
                         </h3>
-                        <p className="text-gray-400 font-mono text-sm">{client.email}</p>
+                        <p className="text-white/60 text-sm">{client.email}</p>
                       </div>
                       
                       <div className="pt-4 border-t border-gray-800">
                         <div className="space-y-3">
                           <div className="flex items-center space-x-3">
-                            <Mail className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-300 font-mono text-sm">{client.email}</span>
+                            <Mail className="w-4 h-4 text-white/60" />
+                            <span className="text-gray-300 text-sm">{client.email}</span>
                           </div>
                           <div className="flex items-center space-x-3">
-                            <User className="w-4 h-4 text-gray-400" />
-                            <span className="text-gray-300 font-mono text-sm">
+                            <User className="w-4 h-4 text-white/60" />
+                            <span className="text-gray-300 text-sm">
                               Joined {client.createdAt ? new Date(client.createdAt).toLocaleDateString() : "Unknown"}
                             </span>
                           </div>
@@ -490,11 +490,11 @@ export default function AdminProjectDetail() {
                       </div>
                     </div>
                   ) : clientLoading ? (
-                    <div className="text-gray-400 font-mono text-sm">Loading client info...</div>
+                    <div className="text-white/60 text-sm">Loading client info...</div>
                   ) : (
                     <div className="text-center py-8">
                       <Users className="w-12 h-12 text-gray-600 mx-auto mb-3" />
-                      <p className="text-gray-400 font-mono text-sm">Client not found</p>
+                      <p className="text-white/60 text-sm">Client not found</p>
                     </div>
                   )}
                 </CardContent>
@@ -503,35 +503,35 @@ export default function AdminProjectDetail() {
               {/* Quick Actions */}
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="text-white font-mono text-lg">Quick Actions</CardTitle>
+                  <CardTitle className="text-white text-lg">Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Link href={`/admin/projects/${id}/messages`}>
-                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <MessageCircle className="w-4 h-4 mr-2" />
                       Send Message
                     </Button>
                   </Link>
                   <Link href={`/admin/projects/${id}/timeline`}>
-                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <GitBranch className="w-4 h-4 mr-2" />
                       View Timeline
                     </Button>
                   </Link>
                   <Link href={`/admin/projects/${id}/files`}>
-                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <Settings className="w-4 h-4 mr-2" />
                       Manage Files
                     </Button>
                   </Link>
                   <Link href={`/admin/projects/${id}/contracts`}>
-                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <FileText className="w-4 h-4 mr-2" />
                       Contracts
                     </Button>
                   </Link>
                   <Link href={`/admin/projects/${id}/invoices`}>
-                    <Button variant="outline" className="w-full font-mono bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
+                    <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       <DollarSign className="w-4 h-4 mr-2" />
                       Invoices
                     </Button>

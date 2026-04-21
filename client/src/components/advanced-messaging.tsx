@@ -169,7 +169,7 @@ export default function AdvancedMessaging({
             placeholder="Search messages..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-black border-white/20 text-white font-mono"
+            className="pl-10 bg-black border-white/20 text-white"
           />
         </div>
       </div>
@@ -192,7 +192,7 @@ export default function AdvancedMessaging({
                   message.senderId === currentUserId 
                     ? 'bg-white text-black' 
                     : 'bg-gray-800 text-white'
-                } rounded-lg p-3 font-mono`}>
+                } rounded-lg p-3`}>
                   
                   {/* Reply Reference */}
                   {replyMessage && (
@@ -308,7 +308,7 @@ export default function AdvancedMessaging({
             value={messageText}
             onChange={(e) => setMessageText(e.target.value)}
             placeholder="Type your message..."
-            className="flex-1 bg-black border-white/20 text-white placeholder:text-gray-400 font-mono"
+            className="flex-1 bg-black border-white/20 text-white placeholder:text-gray-400"
             disabled={sendMessageMutation.isPending}
           />
 

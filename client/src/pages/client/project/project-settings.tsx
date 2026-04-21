@@ -88,7 +88,7 @@ export default function ProjectSettings() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading settings...</div>
+          <div className="text-white/60">Loading settings...</div>
         </div>
       </ProjectLayout>
     );
@@ -100,8 +100,8 @@ export default function ProjectSettings() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Settings</h1>
-            <p className="text-gray-400 font-mono mt-2">Manage project configuration and preferences</p>
+            <h1 className="text-3xl font-bold text-white">Project Settings</h1>
+            <p className="text-white/60 mt-2">Manage project configuration and preferences</p>
           </div>
         </div>
 
@@ -111,11 +111,11 @@ export default function ProjectSettings() {
             {/* Project Information */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <Settings className="w-5 h-5 mr-2" />
                   Project Information
                 </CardTitle>
-                <CardDescription className="text-gray-400 font-mono">
+                <CardDescription className="text-white/60">
                   Basic project details and metadata
                 </CardDescription>
               </CardHeader>
@@ -123,22 +123,22 @@ export default function ProjectSettings() {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="title" className="text-white font-mono">Project Title</Label>
+                      <Label htmlFor="title" className="text-white">Project Title</Label>
                       <Input
                         id="title"
                         {...form.register("title")}
-                        className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                        className="bg-gray-800 border-gray-700 text-white mt-1"
                         placeholder="Enter project title"
                       />
                       {form.formState.errors.title && (
-                        <p className="text-red-400 text-sm font-mono mt-1">{form.formState.errors.title.message}</p>
+                        <p className="text-red-400 text-sm mt-1">{form.formState.errors.title.message}</p>
                       )}
                     </div>
 
                     <div>
-                      <Label htmlFor="status" className="text-white font-mono">Status</Label>
+                      <Label htmlFor="status" className="text-white">Status</Label>
                       <Select value={form.watch("status")} onValueChange={(value) => form.setValue("status", value as any)}>
-                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white font-mono mt-1">
+                        <SelectTrigger className="bg-gray-800 border-gray-700 text-white mt-1">
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
                         <SelectContent className="bg-gray-800 border-gray-700">
@@ -153,11 +153,11 @@ export default function ProjectSettings() {
                   </div>
 
                   <div>
-                    <Label htmlFor="description" className="text-white font-mono">Description</Label>
+                    <Label htmlFor="description" className="text-white">Description</Label>
                     <Textarea
                       id="description"
                       {...form.register("description")}
-                      className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                      className="bg-gray-800 border-gray-700 text-white mt-1"
                       placeholder="Project description"
                       rows={3}
                     />
@@ -165,32 +165,32 @@ export default function ProjectSettings() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
-                      <Label htmlFor="budget" className="text-white font-mono">Budget</Label>
+                      <Label htmlFor="budget" className="text-white">Budget</Label>
                       <Input
                         id="budget"
                         {...form.register("budget")}
-                        className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                        className="bg-gray-800 border-gray-700 text-white mt-1"
                         placeholder="$0.00"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="startDate" className="text-white font-mono">Start Date</Label>
+                      <Label htmlFor="startDate" className="text-white">Start Date</Label>
                       <Input
                         id="startDate"
                         type="date"
                         {...form.register("startDate")}
-                        className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                        className="bg-gray-800 border-gray-700 text-white mt-1"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="endDate" className="text-white font-mono">End Date</Label>
+                      <Label htmlFor="endDate" className="text-white">End Date</Label>
                       <Input
                         id="endDate"
                         type="date"
                         {...form.register("endDate")}
-                        className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                        className="bg-gray-800 border-gray-700 text-white mt-1"
                       />
                     </div>
                   </div>
@@ -198,7 +198,7 @@ export default function ProjectSettings() {
                   <div className="flex justify-end">
                     <Button 
                       type="submit" 
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                       disabled={updateProject.isPending}
                     >
                       {updateProject.isPending ? "Saving..." : "Save Changes"}
@@ -211,11 +211,11 @@ export default function ProjectSettings() {
             {/* Notification Settings */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <Bell className="w-5 h-5 mr-2" />
                   Notification Preferences
                 </CardTitle>
-                <CardDescription className="text-gray-400 font-mono">
+                <CardDescription className="text-white/60">
                   Configure how you receive project updates
                 </CardDescription>
               </CardHeader>
@@ -223,40 +223,40 @@ export default function ProjectSettings() {
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-white font-mono font-semibold">Email Notifications</h4>
-                      <p className="text-gray-400 font-mono text-sm">Receive updates via email</p>
+                      <h4 className="text-white font-semibold">Email Notifications</h4>
+                      <p className="text-white/60 text-sm">Receive updates via email</p>
                     </div>
-                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       Enabled
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-white font-mono font-semibold">Project Updates</h4>
-                      <p className="text-gray-400 font-mono text-sm">Notify when milestones are completed</p>
+                      <h4 className="text-white font-semibold">Project Updates</h4>
+                      <p className="text-white/60 text-sm">Notify when milestones are completed</p>
                     </div>
-                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       Enabled
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-white font-mono font-semibold">Message Notifications</h4>
-                      <p className="text-gray-400 font-mono text-sm">Alert when new messages arrive</p>
+                      <h4 className="text-white font-semibold">Message Notifications</h4>
+                      <p className="text-white/60 text-sm">Alert when new messages arrive</p>
                     </div>
-                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       Enabled
                     </Button>
                   </div>
 
                   <div className="flex items-center justify-between">
                     <div>
-                      <h4 className="text-white font-mono font-semibold">File Uploads</h4>
-                      <p className="text-gray-400 font-mono text-sm">Notify when files are shared</p>
+                      <h4 className="text-white font-semibold">File Uploads</h4>
+                      <p className="text-white/60 text-sm">Notify when files are shared</p>
                     </div>
-                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                    <Button variant="outline" size="sm" className="bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                       Enabled
                     </Button>
                   </div>
@@ -270,7 +270,7 @@ export default function ProjectSettings() {
             {/* Project Status */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <Shield className="w-5 h-5 mr-2" />
                   Project Status
                 </CardTitle>
@@ -278,20 +278,20 @@ export default function ProjectSettings() {
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 font-mono text-sm">Status</span>
-                    <Badge className="bg-blue-900 text-blue-300 font-mono">
+                    <span className="text-white/60 text-sm">Status</span>
+                    <Badge className="bg-blue-900 text-blue-300">
                       {project?.status || "Active"}
                     </Badge>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 font-mono text-sm">Created</span>
-                    <span className="text-white font-mono text-sm">
+                    <span className="text-white/60 text-sm">Created</span>
+                    <span className="text-white text-sm">
                       {project?.createdAt ? new Date(project.createdAt).toLocaleDateString() : "N/A"}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-400 font-mono text-sm">Last Updated</span>
-                    <span className="text-white font-mono text-sm">
+                    <span className="text-white/60 text-sm">Last Updated</span>
+                    <span className="text-white text-sm">
                       {project?.updatedAt ? new Date(project.updatedAt).toLocaleDateString() : "N/A"}
                     </span>
                   </div>
@@ -302,7 +302,7 @@ export default function ProjectSettings() {
             {/* Contact Information */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <User className="w-5 h-5 mr-2" />
                   Project Contacts
                 </CardTitle>
@@ -310,17 +310,17 @@ export default function ProjectSettings() {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="text-white font-mono font-semibold mb-2">Project Manager</h4>
+                    <h4 className="text-white font-semibold mb-2">Project Manager</h4>
                     <div className="space-y-2">
-                      <div className="flex items-center text-gray-400 font-mono text-sm">
+                      <div className="flex items-center text-white/60 text-sm">
                         <User className="w-4 h-4 mr-2" />
                         Kyle Landon
                       </div>
-                      <div className="flex items-center text-gray-400 font-mono text-sm">
+                      <div className="flex items-center text-white/60 text-sm">
                         <Mail className="w-4 h-4 mr-2" />
                         kyle@landonco.co
                       </div>
-                      <div className="flex items-center text-gray-400 font-mono text-sm">
+                      <div className="flex items-center text-white/60 text-sm">
                         <Phone className="w-4 h-4 mr-2" />
                         (940) 389-2685
                       </div>
@@ -333,15 +333,15 @@ export default function ProjectSettings() {
             {/* Quick Actions */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono">Quick Actions</CardTitle>
+                <CardTitle className="text-white">Quick Actions</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                  <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                     <Eye className="w-4 h-4 mr-2" />
                     View Public Page
                   </Button>
-                  <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700 font-mono">
+                  <Button variant="outline" className="w-full bg-gray-800 border-gray-700 text-white hover:bg-gray-700">
                     <Archive className="w-4 h-4 mr-2" />
                     Export Project Data
                   </Button>

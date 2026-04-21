@@ -32,7 +32,7 @@ export default function AdminProjectMessages() {
     return (
       <AdminLayout>
         <div className="p-6">
-          <div className="text-center text-gray-500">No project selected</div>
+          <div className="text-center text-white/50">No project selected</div>
         </div>
       </AdminLayout>
     );
@@ -42,7 +42,7 @@ export default function AdminProjectMessages() {
     return (
       <AdminLayout>
         <div className="p-6">
-          <div className="text-center text-gray-500">Loading messages...</div>
+          <div className="text-center text-white/50">Loading messages...</div>
         </div>
       </AdminLayout>
     );
@@ -55,22 +55,22 @@ export default function AdminProjectMessages() {
         <div className="p-6 border-b border-gray-200 bg-white">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900 font-mono">
+              <h1 className="text-2xl font-bold text-gray-900">
                 Messages
               </h1>
-              <p className="text-gray-600 font-mono">
+              <p className="text-gray-600">
                 Communicate with Client about {project?.title || 'Project'}
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <Badge variant="outline" className="font-mono">
+              <Badge variant="outline">
                 <MessageCircle className="w-3 h-3 mr-1" />
                 {messages?.length || 0} total messages
               </Badge>
               {client && (
                 <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4 text-gray-500" />
-                  <span className="text-sm text-gray-600 font-mono">
+                  <User className="w-4 h-4 text-white/50" />
+                  <span className="text-sm text-gray-600">
                     {client.firstName && client.lastName 
                       ? `${client.firstName} ${client.lastName}`
                       : client.email
@@ -88,9 +88,9 @@ export default function AdminProjectMessages() {
             <CardHeader className="pb-2 bg-gray-50">
               <div className="flex items-center space-x-2">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <CardTitle className="text-lg font-mono">Conversation</CardTitle>
+                <CardTitle className="text-lg">Conversation</CardTitle>
               </div>
-              <CardDescription className="font-mono">
+              <CardDescription>
                 Messages refresh automatically every 3 seconds
               </CardDescription>
             </CardHeader>

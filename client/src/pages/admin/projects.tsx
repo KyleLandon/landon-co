@@ -121,7 +121,7 @@ export default function AdminProjects() {
         <div className="flex items-center justify-center min-h-[400px]">
           <div className="text-center">
             <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-gray-400 font-mono">Loading projects...</p>
+            <p className="text-white/60">Loading projects...</p>
           </div>
         </div>
       </AdminLayout>
@@ -134,53 +134,53 @@ export default function AdminProjects() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-mono font-bold text-white">Projects</h1>
-            <p className="text-gray-400 font-mono mt-1">Manage all client projects</p>
+            <h1 className="text-3xl font-bold text-white">Projects</h1>
+            <p className="text-white/60 mt-1">Manage all client projects</p>
           </div>
           <Dialog open={newProjectOpen} onOpenChange={setNewProjectOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-white text-black hover:bg-gray-200 font-mono">
+              <Button className="bg-white text-black hover:bg-gray-200">
                 <Plus className="w-4 h-4 mr-2" />
                 New Project
               </Button>
             </DialogTrigger>
             <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-md">
               <DialogHeader>
-                <DialogTitle className="font-mono text-xl">Create New Project</DialogTitle>
+                <DialogTitle className="text-xl">Create New Project</DialogTitle>
               </DialogHeader>
               <form onSubmit={handleCreateProject} className="space-y-4">
                 <div>
-                  <Label className="text-sm font-mono text-gray-300 block mb-2">Client ID</Label>
+                  <Label className="text-sm text-gray-300 block mb-2">Client ID</Label>
                   <Input
                     name="clientId"
                     placeholder="Enter client ID or email"
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-mono text-gray-300 block mb-2">Project Title</Label>
+                  <Label className="text-sm text-gray-300 block mb-2">Project Title</Label>
                   <Input
                     name="title"
                     placeholder="Enter project title"
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                     required
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-mono text-gray-300 block mb-2">Description</Label>
+                  <Label className="text-sm text-gray-300 block mb-2">Description</Label>
                   <Textarea
                     name="description"
                     placeholder="Project description"
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none min-h-[100px]"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none min-h-[100px]"
                     required
                   />
                 </div>
                 <div>
-                  <Label className="text-sm font-mono text-gray-300 block mb-2">Status</Label>
+                  <Label className="text-sm text-gray-300 block mb-2">Status</Label>
                   <select
                     name="status"
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                   >
                     <option value="inquiry">Inquiry</option>
                     <option value="proposal">Proposal</option>
@@ -190,19 +190,19 @@ export default function AdminProjects() {
                   </select>
                 </div>
                 <div>
-                  <Label className="text-sm font-mono text-gray-300 block mb-2">Budget (optional)</Label>
+                  <Label className="text-sm text-gray-300 block mb-2">Budget (optional)</Label>
                   <Input
                     name="budget"
                     type="number"
                     placeholder="0.00"
-                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                    className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                   />
                 </div>
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="submit"
                     disabled={createProjectMutation.isPending}
-                    className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                    className="flex-1 bg-white text-black hover:bg-gray-200"
                   >
                     {createProjectMutation.isPending ? "Creating..." : "Create Project"}
                   </Button>
@@ -210,7 +210,7 @@ export default function AdminProjects() {
                     type="button"
                     variant="outline"
                     onClick={() => setNewProjectOpen(false)}
-                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                    className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                   >
                     Cancel
                   </Button>
@@ -223,16 +223,16 @@ export default function AdminProjects() {
         {/* Filters */}
         <div className="flex gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-4 h-4" />
             <Input
               placeholder="Search projects..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-gray-800 border-gray-700 text-white font-mono focus:border-gray-600"
+              className="pl-10 bg-gray-800 border-gray-700 text-white focus:border-gray-600"
             />
           </div>
           <Select value={filterStatus} onValueChange={setFilterStatus}>
-            <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-white font-mono">
+            <SelectTrigger className="w-48 bg-gray-800 border-gray-700 text-white">
               <Filter className="w-4 h-4 mr-2" />
               <SelectValue />
             </SelectTrigger>
@@ -259,27 +259,27 @@ export default function AdminProjects() {
               <Card className="bg-gray-900 border-gray-800 border-2 hover:border-gray-700 transition-colors">
                 <CardHeader>
                   <div className="flex justify-between items-start mb-2">
-                    <CardTitle className="text-white font-mono text-lg">{project.title}</CardTitle>
-                    <Badge className={`${getStatusColor(project.status)} text-white font-mono text-xs`}>
+                    <CardTitle className="text-white text-lg">{project.title}</CardTitle>
+                    <Badge className={`${getStatusColor(project.status)} text-white text-xs`}>
                       {getStatusText(project.status)}
                     </Badge>
                   </div>
-                  <p className="text-gray-500 font-mono text-sm">Client: {project.clientId}</p>
+                  <p className="text-white/50 text-sm">Client: {project.clientId}</p>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-gray-300 font-mono text-sm mb-4 line-clamp-3">
+                  <p className="text-gray-300 text-sm mb-4 line-clamp-3">
                     {project.description}
                   </p>
                   
                   <div className="space-y-2 mb-4">
                     {project.budget && (
-                      <div className="flex items-center text-green-400 font-mono text-sm">
+                      <div className="flex items-center text-green-400 text-sm">
                         <DollarSign className="w-4 h-4 mr-2" />
                         ${parseFloat(project.budget).toLocaleString()}
                       </div>
                     )}
                     {project.createdAt && (
-                      <div className="flex items-center text-blue-400 font-mono text-sm">
+                      <div className="flex items-center text-blue-400 text-sm">
                         <Clock className="w-4 h-4 mr-2" />
                         {new Date(project.createdAt).toLocaleDateString()}
                       </div>
@@ -290,7 +290,7 @@ export default function AdminProjects() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="flex-1 bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono text-xs"
+                      className="flex-1 bg-transparent border-gray-600 text-white/60 hover:bg-gray-800 text-xs"
                       onClick={() => setEditingProject(project)}
                     >
                       <Edit className="w-3 h-3 mr-1" />
@@ -299,7 +299,7 @@ export default function AdminProjects() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono text-xs"
+                      className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800 text-xs"
                       onClick={() => window.location.href = `/admin/projects/${project.id}`}
                     >
                       View
@@ -314,8 +314,8 @@ export default function AdminProjects() {
         {filteredProjects.length === 0 && (
           <div className="text-center py-12">
             <FolderOpen className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-mono text-white mb-2">No Projects Found</h3>
-            <p className="text-gray-400 font-mono mb-4">
+            <h3 className="text-xl text-white mb-2">No Projects Found</h3>
+            <p className="text-white/60 mb-4">
               {searchTerm || filterStatus !== "all" ? "Try adjusting your filters" : "Create your first project to get started"}
             </p>
           </div>
@@ -327,7 +327,7 @@ export default function AdminProjects() {
         <Dialog open={!!editingProject} onOpenChange={() => setEditingProject(null)}>
           <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-mono text-xl">Edit Project</DialogTitle>
+              <DialogTitle className="text-xl">Edit Project</DialogTitle>
             </DialogHeader>
             <form onSubmit={(e) => {
               e.preventDefault();
@@ -343,29 +343,29 @@ export default function AdminProjects() {
               });
             }} className="space-y-4">
               <div>
-                <Label className="text-sm font-mono text-gray-300 block mb-2">Project Title</Label>
+                <Label className="text-sm text-gray-300 block mb-2">Project Title</Label>
                 <Input
                   name="title"
                   defaultValue={editingProject.title}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                   required
                 />
               </div>
               <div>
-                <Label className="text-sm font-mono text-gray-300 block mb-2">Description</Label>
+                <Label className="text-sm text-gray-300 block mb-2">Description</Label>
                 <Textarea
                   name="description"
                   defaultValue={editingProject.description}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none min-h-[100px]"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none min-h-[100px]"
                   required
                 />
               </div>
               <div>
-                <Label className="text-sm font-mono text-gray-300 block mb-2">Status</Label>
+                <Label className="text-sm text-gray-300 block mb-2">Status</Label>
                 <select
                   name="status"
                   defaultValue={editingProject.status}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                 >
                   <option value="inquiry">Inquiry</option>
                   <option value="proposal">Proposal</option>
@@ -375,19 +375,19 @@ export default function AdminProjects() {
                 </select>
               </div>
               <div>
-                <Label className="text-sm font-mono text-gray-300 block mb-2">Budget</Label>
+                <Label className="text-sm text-gray-300 block mb-2">Budget</Label>
                 <Input
                   name="budget"
                   type="number"
                   defaultValue={editingProject.budget || ''}
-                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white font-mono focus:border-gray-600 focus:outline-none"
+                  className="w-full p-3 bg-gray-800 border border-gray-700 rounded text-white focus:border-gray-600 focus:outline-none"
                 />
               </div>
               <div className="flex gap-3 pt-4">
                 <Button
                   type="submit"
                   disabled={updateProjectMutation.isPending}
-                  className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                  className="flex-1 bg-white text-black hover:bg-gray-200"
                 >
                   {updateProjectMutation.isPending ? "Updating..." : "Update Project"}
                 </Button>
@@ -395,7 +395,7 @@ export default function AdminProjects() {
                   type="button"
                   variant="outline"
                   onClick={() => setEditingProject(null)}
-                  className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                  className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                 >
                   Cancel
                 </Button>

@@ -81,8 +81,8 @@ export default function AdminDashboard() {
       <div className="space-y-8">
         {/* Welcome Header */}
         <div>
-          <h1 className="text-3xl font-mono font-bold text-white">Admin Dashboard</h1>
-          <p className="text-gray-400 font-mono mt-1">Welcome back! Here's what's happening with your business.</p>
+          <h1 className="text-3xl font-bold text-white">Admin Dashboard</h1>
+          <p className="text-white/60 mt-1">Welcome back! Here's what's happening with your business.</p>
         </div>
 
         {/* Quick Stats Grid */}
@@ -99,8 +99,8 @@ export default function AdminDashboard() {
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-gray-400 font-mono text-sm">{stat.title}</p>
-                        <p className="text-2xl font-mono font-bold text-white mt-1">{stat.value}</p>
+                        <p className="text-white/60 text-sm">{stat.title}</p>
+                        <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
                       </div>
                       <stat.icon className={`w-8 h-8 ${stat.color}`} />
                     </div>
@@ -120,7 +120,7 @@ export default function AdminDashboard() {
           >
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <Activity className="w-5 h-5 mr-2" />
                   Recent Activity
                 </CardTitle>
@@ -132,16 +132,16 @@ export default function AdminDashboard() {
                       <div key={index} className="flex items-start space-x-3">
                         <div className="w-2 h-2 bg-gray-400 rounded-full mt-2"></div>
                         <div className="flex-1">
-                          <p className="text-white font-mono text-sm">{activity.title}</p>
-                          <p className="text-gray-400 font-mono text-xs">{activity.description}</p>
-                          <p className="text-gray-500 font-mono text-xs">
+                          <p className="text-white text-sm">{activity.title}</p>
+                          <p className="text-white/60 text-xs">{activity.description}</p>
+                          <p className="text-white/50 text-xs">
                             {activity.time ? new Date(activity.time).toLocaleDateString() : 'Recently'}
                           </p>
                         </div>
                       </div>
                     ))
                   ) : (
-                    <p className="text-gray-400 font-mono text-center py-8">No recent activity</p>
+                    <p className="text-white/60 text-center py-8">No recent activity</p>
                   )}
                 </div>
               </CardContent>
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
           >
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="text-white font-mono flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <TrendingUp className="w-5 h-5 mr-2" />
                   Quick Actions
                 </CardTitle>
@@ -164,19 +164,19 @@ export default function AdminDashboard() {
               <CardContent>
                 <div className="space-y-3">
                   <Link href="/admin/projects">
-                    <Button className="w-full bg-gray-800 text-white hover:bg-gray-700 font-mono justify-start">
+                    <Button className="w-full bg-gray-800 text-white hover:bg-gray-700 justify-start">
                       <FolderOpen className="w-4 h-4 mr-2" />
                       Manage Projects
                     </Button>
                   </Link>
                   <Link href="/admin/clients">
-                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono justify-start" variant="outline">
+                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 justify-start" variant="outline">
                       <Users className="w-4 h-4 mr-2" />
                       View Clients
                     </Button>
                   </Link>
                   <Link href="/admin/messages">
-                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono justify-start" variant="outline">
+                    <Button className="w-full bg-transparent border-gray-700 text-white hover:bg-gray-800 justify-start" variant="outline">
                       <MessageSquare className="w-4 h-4 mr-2" />
                       Check Messages
                     </Button>
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
         >
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-white font-mono">Project Status Overview</CardTitle>
+              <CardTitle className="text-white">Project Status Overview</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
@@ -207,17 +207,17 @@ export default function AdminDashboard() {
                       case "proposal": return "text-yellow-400";
                       case "completed": return "text-blue-400";
                       case "pending": return "text-orange-400";
-                      case "inquiry": return "text-gray-400";
-                      default: return "text-gray-400";
+                      case "inquiry": return "text-white/60";
+                      default: return "text-white/60";
                     }
                   };
                   
                   return (
                     <div key={status} className="text-center">
-                      <div className={`text-2xl font-mono font-bold ${getStatusColor(status)}`}>
+                      <div className={`text-2xl font-bold ${getStatusColor(status)}`}>
                         {count}
                       </div>
-                      <div className="text-sm font-mono text-gray-400 capitalize">
+                      <div className="text-sm text-white/60 capitalize">
                         {status}
                       </div>
                     </div>

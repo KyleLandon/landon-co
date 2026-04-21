@@ -132,7 +132,7 @@ export default function ClientProjectContracts() {
   if (projectLoading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400 font-mono">Loading project...</div>
+        <div className="text-white/60">Loading project...</div>
       </div>
     );
   }
@@ -140,7 +140,7 @@ export default function ClientProjectContracts() {
   if (!project) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="text-gray-400 font-mono">Project not found</div>
+        <div className="text-white/60">Project not found</div>
       </div>
     );
   }
@@ -149,8 +149,8 @@ export default function ClientProjectContracts() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white font-mono">Contracts</h1>
-        <p className="text-gray-400 font-mono mt-2">
+        <h1 className="text-3xl font-bold text-white">Contracts</h1>
+        <p className="text-white/60 mt-2">
           View and sign contracts for project: {project.title}
         </p>
       </div>
@@ -158,14 +158,14 @@ export default function ClientProjectContracts() {
       {/* Contracts List */}
       {contractsLoading ? (
         <div className="flex items-center justify-center h-32">
-          <div className="text-gray-400 font-mono">Loading contracts...</div>
+          <div className="text-white/60">Loading contracts...</div>
         </div>
       ) : contracts.length === 0 ? (
         <Card className="bg-gray-900 border-gray-800">
           <CardContent className="p-12 text-center">
             <FileText className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-mono text-white mb-2">No Contracts Available</h3>
-            <p className="text-gray-400 font-mono">
+            <h3 className="text-xl text-white mb-2">No Contracts Available</h3>
+            <p className="text-white/60">
               Contracts will appear here when your project manager sends them
             </p>
           </CardContent>
@@ -177,14 +177,14 @@ export default function ClientProjectContracts() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
-                    <CardTitle className="text-white font-mono text-xl">{contract.title}</CardTitle>
+                    <CardTitle className="text-white text-xl">{contract.title}</CardTitle>
                     {contract.description && (
-                      <CardDescription className="text-gray-400 font-mono mt-2">
+                      <CardDescription className="text-white/60 mt-2">
                         {contract.description}
                       </CardDescription>
                     )}
                   </div>
-                  <Badge className={`${getStatusColor(contract.status)} text-white font-mono`}>
+                  <Badge className={`${getStatusColor(contract.status)} text-white`}>
                     {contract.status?.toUpperCase()}
                   </Badge>
                 </div>
@@ -192,17 +192,17 @@ export default function ClientProjectContracts() {
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                   {contract.totalAmount && (
-                    <div className="flex items-center text-green-400 font-mono text-sm">
+                    <div className="flex items-center text-green-400 text-sm">
                       <DollarSign className="w-4 h-4 mr-2" />
                       {contract.totalAmount}
                     </div>
                   )}
-                  <div className="flex items-center text-blue-400 font-mono text-sm">
+                  <div className="flex items-center text-blue-400 text-sm">
                     <Calendar className="w-4 h-4 mr-2" />
                     Created {contract.createdAt ? new Date(contract.createdAt).toLocaleDateString() : "Unknown"}
                   </div>
                   {contract.signedAt && (
-                    <div className="flex items-center text-green-400 font-mono text-sm">
+                    <div className="flex items-center text-green-400 text-sm">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Signed {new Date(contract.signedAt).toLocaleDateString()}
                     </div>
@@ -210,7 +210,7 @@ export default function ClientProjectContracts() {
                 </div>
 
                 <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                  <p className="text-gray-300 font-mono text-sm whitespace-pre-wrap">
+                  <p className="text-gray-300 text-sm whitespace-pre-wrap">
                     {contract.content?.substring(0, 500)}
                     {contract.content && contract.content.length > 500 && "..."}
                   </p>
@@ -218,8 +218,8 @@ export default function ClientProjectContracts() {
 
                 {contract.terms && (
                   <div className="bg-gray-800 p-4 rounded-lg mb-4">
-                    <h4 className="text-white font-mono text-sm font-bold mb-2">Terms & Conditions:</h4>
-                    <p className="text-gray-300 font-mono text-xs whitespace-pre-wrap">
+                    <h4 className="text-white text-sm font-bold mb-2">Terms & Conditions:</h4>
+                    <p className="text-gray-300 text-xs whitespace-pre-wrap">
                       {contract.terms}
                     </p>
                   </div>
@@ -228,7 +228,7 @@ export default function ClientProjectContracts() {
                 <div className="flex gap-3">
                   <Button
                     size="sm"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <Download className="w-4 h-4 mr-2" />
                     Download PDF
@@ -240,7 +240,7 @@ export default function ClientProjectContracts() {
                         <Button
                           size="sm"
                           onClick={() => setSigningContract(contract)}
-                          className="bg-green-600 hover:bg-green-700 text-white font-mono"
+                          className="bg-green-600 hover:bg-green-700 text-white"
                         >
                           <PenTool className="w-4 h-4 mr-2" />
                           Sign Contract
@@ -248,27 +248,27 @@ export default function ClientProjectContracts() {
                       </DialogTrigger>
                       <DialogContent className="bg-gray-900 border-gray-700 max-w-4xl">
                         <DialogHeader>
-                          <DialogTitle className="text-white font-mono">Sign Contract: {contract.title}</DialogTitle>
+                          <DialogTitle className="text-white">Sign Contract: {contract.title}</DialogTitle>
                         </DialogHeader>
                         
                         <div className="space-y-4">
                           <div className="bg-gray-800 p-4 rounded-lg max-h-60 overflow-y-auto">
-                            <p className="text-gray-300 font-mono text-sm whitespace-pre-wrap">
+                            <p className="text-gray-300 text-sm whitespace-pre-wrap">
                               {contract.content}
                             </p>
                           </div>
 
                           {contract.terms && (
                             <div className="bg-gray-800 p-4 rounded-lg">
-                              <h4 className="text-white font-mono text-sm font-bold mb-2">Terms & Conditions:</h4>
-                              <p className="text-gray-300 font-mono text-xs whitespace-pre-wrap">
+                              <h4 className="text-white text-sm font-bold mb-2">Terms & Conditions:</h4>
+                              <p className="text-gray-300 text-xs whitespace-pre-wrap">
                                 {contract.terms}
                               </p>
                             </div>
                           )}
 
                           <div>
-                            <label className="text-white font-mono text-sm block mb-2">
+                            <label className="text-white text-sm block mb-2">
                               Digital Signature (Draw your signature below):
                             </label>
                             <div className="border border-gray-600 rounded-lg p-4 bg-white">
@@ -289,7 +289,7 @@ export default function ClientProjectContracts() {
                                 size="sm"
                                 variant="outline"
                                 onClick={clearCanvas}
-                                className="bg-transparent border-gray-600 text-gray-400 hover:bg-gray-800 font-mono"
+                                className="bg-transparent border-gray-600 text-white/60 hover:bg-gray-800"
                               >
                                 Clear Signature
                               </Button>
@@ -297,7 +297,7 @@ export default function ClientProjectContracts() {
                           </div>
 
                           <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                            <p className="text-yellow-800 font-mono text-sm">
+                            <p className="text-yellow-800 text-sm">
                               <strong>Legal Notice:</strong> By signing this contract digitally, you agree to all terms and conditions outlined above. 
                               This digital signature has the same legal validity as a handwritten signature.
                             </p>
@@ -307,7 +307,7 @@ export default function ClientProjectContracts() {
                             <Button
                               onClick={handleSignContract}
                               disabled={signContractMutation.isPending || !signature}
-                              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-mono"
+                              className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                             >
                               {signContractMutation.isPending ? "Signing..." : "Sign Contract"}
                             </Button>
@@ -319,7 +319,7 @@ export default function ClientProjectContracts() {
                                 clearCanvas();
                                 setSignature("");
                               }}
-                              className="bg-transparent border-gray-700 text-white hover:bg-gray-800 font-mono"
+                              className="bg-transparent border-gray-700 text-white hover:bg-gray-800"
                             >
                               Cancel
                             </Button>
@@ -330,7 +330,7 @@ export default function ClientProjectContracts() {
                   )}
 
                   {contract.status === "signed" && contract.signedBy === user?.id && (
-                    <Badge className="bg-green-500 text-white font-mono">
+                    <Badge className="bg-green-500 text-white">
                       <CheckCircle className="w-4 h-4 mr-2" />
                       Signed by You
                     </Badge>

@@ -40,7 +40,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-500" />
               </div>
-              <CardTitle className="text-white font-mono">Something went wrong</CardTitle>
+              <CardTitle className="text-white">Something went wrong</CardTitle>
               <CardDescription className="text-gray-400">
                 An unexpected error occurred. Please try refreshing the page or go back to the home page.
               </CardDescription>
@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               <div className="flex space-x-3">
                 <Button 
                   onClick={() => window.location.reload()}
-                  className="flex-1 bg-white text-black hover:bg-gray-200 font-mono"
+                  className="flex-1 bg-white text-black hover:bg-gray-200"
                 >
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Refresh Page
@@ -57,7 +57,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 <Button 
                   onClick={() => window.location.href = "/"}
                   variant="outline"
-                  className="flex-1 border-gray-600 text-white hover:bg-gray-800 font-mono"
+                  className="flex-1 border-gray-600 text-white hover:bg-gray-800"
                 >
                   <Home className="w-4 h-4 mr-2" />
                   Go Home
@@ -65,7 +65,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               </div>
               {process.env.NODE_ENV === "development" && this.state.error && (
                 <details className="mt-4">
-                  <summary className="text-gray-400 font-mono text-sm cursor-pointer">
+                  <summary className="text-gray-400 text-sm cursor-pointer">
                     Error Details (Development)
                   </summary>
                   <pre className="mt-2 text-xs text-red-400 bg-black p-2 rounded overflow-auto">
@@ -89,11 +89,11 @@ export function ErrorFallback({ error, resetError }: { error: Error; resetError:
       <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
         <AlertTriangle className="w-8 h-8 text-red-500" />
       </div>
-      <h3 className="text-lg font-mono font-bold text-white mb-2">Error Loading Content</h3>
-      <p className="text-gray-400 font-mono text-sm mb-4">
+      <h3 className="text-lg font-bold text-white mb-2">Error Loading Content</h3>
+      <p className="text-gray-400 text-sm mb-4">
         Something went wrong while loading this section.
       </p>
-      <Button onClick={resetError} size="sm" className="bg-white text-black hover:bg-gray-200 font-mono">
+      <Button onClick={resetError} size="sm" className="bg-white text-black hover:bg-gray-200">
         <RefreshCw className="w-4 h-4 mr-2" />
         Try Again
       </Button>

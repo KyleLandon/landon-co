@@ -19,7 +19,7 @@ export default function ProjectUpdates() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading updates...</div>
+          <div className="text-white/60">Loading updates...</div>
         </div>
       </ProjectLayout>
     );
@@ -34,11 +34,11 @@ export default function ProjectUpdates() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Updates</h1>
-            <p className="text-gray-400 font-mono mt-2">Track development progress and milestones</p>
+            <h1 className="text-3xl font-bold text-white">Project Updates</h1>
+            <p className="text-white/60 mt-2">Track development progress and milestones</p>
           </div>
           <div className="flex items-center space-x-4">
-            <Badge variant="secondary" className="bg-gray-800 text-gray-300 font-mono">
+            <Badge variant="secondary" className="bg-gray-800 text-gray-300">
               {completedUpdates.length}/{updates?.length || 0} Completed
             </Badge>
           </div>
@@ -51,8 +51,8 @@ export default function ProjectUpdates() {
               <div className="flex items-center">
                 <CheckCircle className="w-8 h-8 text-green-400 mr-3" />
                 <div>
-                  <p className="text-2xl font-bold text-white font-mono">{completedUpdates.length}</p>
-                  <p className="text-gray-400 font-mono text-sm">Completed</p>
+                  <p className="text-2xl font-bold text-white">{completedUpdates.length}</p>
+                  <p className="text-white/60 text-sm">Completed</p>
                 </div>
               </div>
             </CardContent>
@@ -63,8 +63,8 @@ export default function ProjectUpdates() {
               <div className="flex items-center">
                 <Clock className="w-8 h-8 text-yellow-400 mr-3" />
                 <div>
-                  <p className="text-2xl font-bold text-white font-mono">{pendingUpdates.length}</p>
-                  <p className="text-gray-400 font-mono text-sm">In Progress</p>
+                  <p className="text-2xl font-bold text-white">{pendingUpdates.length}</p>
+                  <p className="text-white/60 text-sm">In Progress</p>
                 </div>
               </div>
             </CardContent>
@@ -75,8 +75,8 @@ export default function ProjectUpdates() {
               <div className="flex items-center">
                 <FileText className="w-8 h-8 text-blue-400 mr-3" />
                 <div>
-                  <p className="text-2xl font-bold text-white font-mono">{updates?.length || 0}</p>
-                  <p className="text-gray-400 font-mono text-sm">Total Updates</p>
+                  <p className="text-2xl font-bold text-white">{updates?.length || 0}</p>
+                  <p className="text-white/60 text-sm">Total Updates</p>
                 </div>
               </div>
             </CardContent>
@@ -87,11 +87,11 @@ export default function ProjectUpdates() {
         {pendingUpdates.length > 0 && (
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-white font-mono flex items-center">
+              <CardTitle className="text-white flex items-center">
                 <Clock className="w-5 h-5 mr-2 text-yellow-400" />
                 In Progress
               </CardTitle>
-              <CardDescription className="text-gray-400 font-mono">
+              <CardDescription className="text-white/60">
                 Updates currently being worked on
               </CardDescription>
             </CardHeader>
@@ -101,15 +101,15 @@ export default function ProjectUpdates() {
                   <div key={update.id} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="text-white font-mono font-semibold mb-2">{update.title}</h3>
+                        <h3 className="text-white font-semibold mb-2">{update.title}</h3>
                         {update.description && (
-                          <p className="text-gray-400 font-mono text-sm mb-3">{update.description}</p>
+                          <p className="text-white/60 text-sm mb-3">{update.description}</p>
                         )}
                         <div className="flex items-center space-x-4">
-                          <Badge variant="secondary" className="bg-yellow-900 text-yellow-300 font-mono">
+                          <Badge variant="secondary" className="bg-yellow-900 text-yellow-300">
                             In Progress
                           </Badge>
-                          <span className="text-gray-500 font-mono text-xs">
+                          <span className="text-white/50 text-xs">
                             Created {update.createdAt ? new Date(update.createdAt).toLocaleDateString() : 'Unknown'}
                           </span>
                         </div>
@@ -127,11 +127,11 @@ export default function ProjectUpdates() {
         {completedUpdates.length > 0 && (
           <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle className="text-white font-mono flex items-center">
+              <CardTitle className="text-white flex items-center">
                 <CheckCircle className="w-5 h-5 mr-2 text-green-400" />
                 Completed
               </CardTitle>
-              <CardDescription className="text-gray-400 font-mono">
+              <CardDescription className="text-white/60">
                 Finished milestones and deliverables
               </CardDescription>
             </CardHeader>
@@ -141,15 +141,15 @@ export default function ProjectUpdates() {
                   <div key={update.id} className="p-4 bg-gray-800 rounded-lg border border-gray-700">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h3 className="text-white font-mono font-semibold mb-2">{update.title}</h3>
+                        <h3 className="text-white font-semibold mb-2">{update.title}</h3>
                         {update.description && (
-                          <p className="text-gray-400 font-mono text-sm mb-3">{update.description}</p>
+                          <p className="text-white/60 text-sm mb-3">{update.description}</p>
                         )}
                         <div className="flex items-center space-x-4">
-                          <Badge variant="secondary" className="bg-green-900 text-green-300 font-mono">
+                          <Badge variant="secondary" className="bg-green-900 text-green-300">
                             Completed
                           </Badge>
-                          <span className="text-gray-500 font-mono text-xs">
+                          <span className="text-white/50 text-xs">
                             Completed {update.createdAt ? new Date(update.createdAt).toLocaleDateString() : 'Unknown'}
                           </span>
                         </div>
@@ -168,11 +168,11 @@ export default function ProjectUpdates() {
           <Card className="bg-gray-900 border-gray-800">
             <CardContent className="p-12 text-center">
               <FileText className="w-12 h-12 text-gray-600 mx-auto mb-4" />
-              <h3 className="text-white font-mono font-semibold mb-2">No Updates Yet</h3>
-              <p className="text-gray-400 font-mono mb-6">
+              <h3 className="text-white font-semibold mb-2">No Updates Yet</h3>
+              <p className="text-white/60 mb-6">
                 Project updates will appear here as development progresses
               </p>
-              <p className="text-gray-500 font-mono text-sm">
+              <p className="text-white/50 text-sm">
                 Updates are managed by the Landon & Co. team and will be posted regularly
               </p>
             </CardContent>

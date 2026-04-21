@@ -193,7 +193,7 @@ export default function ProjectDetail() {
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-white font-mono">Loading project details...</p>
+          <p className="text-white">Loading project details...</p>
         </div>
       </div>
     );
@@ -203,8 +203,8 @@ export default function ProjectDetail() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-mono text-white mb-4">Project Not Found</h1>
-          <Button onClick={() => window.history.back()} className="bg-white text-black font-mono">
+          <h1 className="text-2xl text-white mb-4">Project Not Found</h1>
+          <Button onClick={() => window.history.back()} className="bg-white text-black">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Go Back
           </Button>
@@ -249,7 +249,7 @@ export default function ProjectDetail() {
             <Button 
               onClick={() => window.history.back()}
               variant="ghost" 
-              className="text-white hover:bg-gray-800 font-mono mb-4"
+              className="text-white hover:bg-gray-800 mb-4"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Dashboard
@@ -259,12 +259,12 @@ export default function ProjectDetail() {
               // Edit Mode
               <div className="space-y-6 bg-gray-900 border border-gray-700 rounded-lg p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-2xl font-mono font-bold text-white">Edit Project</h2>
+                  <h2 className="text-2xl font-bold text-white">Edit Project</h2>
                   <div className="flex gap-2">
                     <Button 
                       onClick={handleSaveEdit}
                       disabled={updateProjectMutation.isPending}
-                      className="bg-green-600 text-white hover:bg-green-700 font-mono"
+                      className="bg-green-600 text-white hover:bg-green-700"
                     >
                       <Save className="w-4 h-4 mr-2" />
                       {updateProjectMutation.isPending ? "Saving..." : "Save"}
@@ -272,7 +272,7 @@ export default function ProjectDetail() {
                     <Button 
                       onClick={handleCancelEdit}
                       variant="outline"
-                      className="bg-transparent border-white/20 text-white hover:bg-white/10 font-mono"
+                      className="bg-transparent border-white/20 text-white hover:bg-white/10"
                     >
                       <X className="w-4 h-4 mr-2" />
                       Cancel
@@ -282,21 +282,21 @@ export default function ProjectDetail() {
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">Project Title</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">Project Title</Label>
                     <Input
                       value={editForm.title}
                       onChange={(e) => setEditForm(prev => ({ ...prev, title: e.target.value }))}
-                      className="bg-black border-gray-600 text-white font-mono"
+                      className="bg-black border-gray-600 text-white"
                     />
                   </div>
                   
                   <div>
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">Status</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">Status</Label>
                     <Select 
                       value={editForm.status} 
                       onValueChange={(value) => setEditForm(prev => ({ ...prev, status: value }))}
                     >
-                      <SelectTrigger className="bg-black border-gray-600 text-white font-mono">
+                      <SelectTrigger className="bg-black border-gray-600 text-white">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="bg-black border-gray-600 text-white">
@@ -310,42 +310,42 @@ export default function ProjectDetail() {
                   </div>
                   
                   <div className="md:col-span-2">
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">Description</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">Description</Label>
                     <Textarea
                       value={editForm.description}
                       onChange={(e) => setEditForm(prev => ({ ...prev, description: e.target.value }))}
-                      className="bg-black border-gray-600 text-white font-mono min-h-[80px]"
+                      className="bg-black border-gray-600 text-white min-h-[80px]"
                     />
                   </div>
                   
                   <div>
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">Budget</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">Budget</Label>
                     <Input
                       type="number"
                       value={editForm.budget}
                       onChange={(e) => setEditForm(prev => ({ ...prev, budget: e.target.value }))}
-                      className="bg-black border-gray-600 text-white font-mono"
+                      className="bg-black border-gray-600 text-white"
                       placeholder="0.00"
                     />
                   </div>
                   
                   <div>
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">Start Date</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">Start Date</Label>
                     <Input
                       type="date"
                       value={editForm.startDate}
                       onChange={(e) => setEditForm(prev => ({ ...prev, startDate: e.target.value }))}
-                      className="bg-black border-gray-600 text-white font-mono"
+                      className="bg-black border-gray-600 text-white"
                     />
                   </div>
                   
                   <div>
-                    <Label className="text-sm font-mono text-gray-300 block mb-2">End Date</Label>
+                    <Label className="text-sm text-gray-300 block mb-2">End Date</Label>
                     <Input
                       type="date"
                       value={editForm.endDate}
                       onChange={(e) => setEditForm(prev => ({ ...prev, endDate: e.target.value }))}
-                      className="bg-black border-gray-600 text-white font-mono"
+                      className="bg-black border-gray-600 text-white"
                     />
                   </div>
                 </div>
@@ -354,21 +354,21 @@ export default function ProjectDetail() {
               // View Mode
               <div className="flex items-center justify-between">
                 <div>
-                  <h1 className="text-4xl font-mono font-bold mb-2">{project.title}</h1>
-                  <p className="text-gray-400 font-mono">{project.description}</p>
+                  <h1 className="text-4xl font-bold mb-2">{project.title}</h1>
+                  <p className="text-white/60">{project.description}</p>
                 </div>
                 <div className="flex items-center gap-3">
                   {user?.role === "admin" && (
                     <Button 
                       onClick={handleStartEdit}
                       variant="outline"
-                      className="bg-transparent border-blue-500 text-blue-400 hover:bg-blue-500/10 font-mono"
+                      className="bg-transparent border-blue-500 text-blue-400 hover:bg-blue-500/10"
                     >
                       <Edit className="w-4 h-4 mr-2" />
                       Edit Project
                     </Button>
                   )}
-                  <Badge className={`${getStatusColor(project.status)} text-white font-mono`}>
+                  <Badge className={`${getStatusColor(project.status)} text-white`}>
                     {getStatusText(project.status)}
                   </Badge>
                 </div>
@@ -385,16 +385,16 @@ export default function ProjectDetail() {
           >
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="font-mono text-white flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <Clock className="w-4 h-4 mr-2" />
                   Timeline
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm font-mono">
+                <div className="space-y-2 text-sm">
                   {project.startDate && (
                     <div>
-                      <span className="text-gray-400">Start:</span>{" "}
+                      <span className="text-white/60">Start:</span>{" "}
                       <span className="text-white">
                         {new Date(project.startDate).toLocaleDateString()}
                       </span>
@@ -402,7 +402,7 @@ export default function ProjectDetail() {
                   )}
                   {project.endDate && (
                     <div>
-                      <span className="text-gray-400">End:</span>{" "}
+                      <span className="text-white/60">End:</span>{" "}
                       <span className="text-white">
                         {new Date(project.endDate).toLocaleDateString()}
                       </span>
@@ -414,14 +414,14 @@ export default function ProjectDetail() {
 
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader>
-                <CardTitle className="font-mono text-white flex items-center">
+                <CardTitle className="text-white flex items-center">
                   <MessageCircle className="w-4 h-4 mr-2" />
                   Communication
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-sm font-mono">
-                  <div className="text-gray-400">Messages:</div>
+                <div className="text-sm">
+                  <div className="text-white/60">Messages:</div>
                   <div className="text-white text-lg">{messages.length}</div>
                 </div>
               </CardContent>
@@ -430,10 +430,10 @@ export default function ProjectDetail() {
             {project.budget && (
               <Card className="bg-gray-900 border-gray-800">
                 <CardHeader>
-                  <CardTitle className="font-mono text-white">Budget</CardTitle>
+                  <CardTitle className="text-white">Budget</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-green-400 font-mono text-lg">
+                  <div className="text-green-400 text-lg">
                     ${parseFloat(project.budget).toLocaleString()}
                   </div>
                 </CardContent>
@@ -451,30 +451,30 @@ export default function ProjectDetail() {
             >
               <Card className="bg-black border-white/20">
                 <CardHeader>
-                  <CardTitle className="font-mono text-white">Project Updates</CardTitle>
-                  <CardDescription className="text-gray-400">
+                  <CardTitle className="text-white">Project Updates</CardTitle>
+                  <CardDescription className="text-white/60">
                     Latest progress and milestones
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4 max-h-96 overflow-y-auto">
                     {updates.length === 0 ? (
-                      <p className="text-gray-400 font-mono text-center py-8">
+                      <p className="text-white/60 text-center py-8">
                         No updates yet
                       </p>
                     ) : (
                       updates.map((update: any) => (
                         <div key={update.id} className="border-l-4 border-blue-500 pl-4">
                           <div className="flex items-center justify-between mb-2">
-                            <h4 className="font-mono font-medium text-white">{update.title}</h4>
+                            <h4 className="font-medium text-white">{update.title}</h4>
                             {update.isCompleted && (
                               <CheckCircle2 className="w-4 h-4 text-green-500" />
                             )}
                           </div>
-                          <p className="text-gray-300 text-sm font-mono mb-2">
+                          <p className="text-gray-300 text-sm mb-2">
                             {update.description}
                           </p>
-                          <span className="text-xs text-gray-400 font-mono">
+                          <span className="text-xs text-white/60">
                             {new Date(update.createdAt).toLocaleDateString()}
                           </span>
                         </div>
@@ -493,8 +493,8 @@ export default function ProjectDetail() {
             >
               <Card className="bg-black border-white/20">
                 <CardHeader>
-                  <CardTitle className="font-mono text-white">Messages</CardTitle>
-                  <CardDescription className="text-gray-400">
+                  <CardTitle className="text-white">Messages</CardTitle>
+                  <CardDescription className="text-white/60">
                     Communication with the development team
                   </CardDescription>
                 </CardHeader>

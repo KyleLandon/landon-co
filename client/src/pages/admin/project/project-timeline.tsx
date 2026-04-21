@@ -165,7 +165,7 @@ export default function AdminProjectTimeline() {
     return (
       <AdminLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading timeline...</div>
+          <div className="text-white/60">Loading timeline...</div>
         </div>
       </AdminLayout>
     );
@@ -177,42 +177,42 @@ export default function AdminProjectTimeline() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white font-mono">Project Timeline</h1>
-            <p className="text-gray-400 font-mono mt-2">Manage project milestones and updates</p>
+            <h1 className="text-3xl font-bold text-white">Project Timeline</h1>
+            <p className="text-white/60 mt-2">Manage project milestones and updates</p>
           </div>
           <div className="flex items-center gap-4">
-            <Badge className={`${getStatusColor(project?.status)} text-white font-mono`}>
+            <Badge className={`${getStatusColor(project?.status)} text-white`}>
               {project?.status || "Unknown"}
             </Badge>
             <Dialog open={isAddingUpdate} onOpenChange={setIsAddingUpdate}>
               <DialogTrigger asChild>
-                <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white">
                   <Plus className="w-4 h-4 mr-2" />
                   Add Update
                 </Button>
               </DialogTrigger>
               <DialogContent className="bg-gray-900 border-gray-700">
                 <DialogHeader>
-                  <DialogTitle className="text-white font-mono">Add Project Update</DialogTitle>
+                  <DialogTitle className="text-white">Add Project Update</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="title" className="text-white font-mono">Title</Label>
+                    <Label htmlFor="title" className="text-white">Title</Label>
                     <Input
                       id="title"
                       value={newUpdate.title}
                       onChange={(e) => setNewUpdate({ ...newUpdate, title: e.target.value })}
-                      className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                      className="bg-gray-800 border-gray-700 text-white mt-1"
                       placeholder="Update title"
                     />
                   </div>
                   <div>
-                    <Label htmlFor="description" className="text-white font-mono">Description</Label>
+                    <Label htmlFor="description" className="text-white">Description</Label>
                     <Textarea
                       id="description"
                       value={newUpdate.description}
                       onChange={(e) => setNewUpdate({ ...newUpdate, description: e.target.value })}
-                      className="bg-gray-800 border-gray-700 text-white font-mono mt-1"
+                      className="bg-gray-800 border-gray-700 text-white mt-1"
                       placeholder="Update description"
                       rows={3}
                     />
@@ -225,20 +225,20 @@ export default function AdminProjectTimeline() {
                       onChange={(e) => setNewUpdate({ ...newUpdate, isCompleted: e.target.checked })}
                       className="rounded"
                     />
-                    <Label htmlFor="completed" className="text-white font-mono">Mark as completed</Label>
+                    <Label htmlFor="completed" className="text-white">Mark as completed</Label>
                   </div>
                   <div className="flex justify-end space-x-2">
                     <Button
                       onClick={() => setIsAddingUpdate(false)}
                       variant="outline"
-                      className="border-gray-600 text-gray-300 hover:bg-gray-800 font-mono"
+                      className="border-gray-600 text-gray-300 hover:bg-gray-800"
                     >
                       Cancel
                     </Button>
                     <Button
                       onClick={handleAddUpdate}
                       disabled={addUpdate.isPending}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-mono"
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
                     >
                       {addUpdate.isPending ? "Adding..." : "Add Update"}
                     </Button>
@@ -252,28 +252,28 @@ export default function AdminProjectTimeline() {
         {/* Project Summary */}
         <Card className="bg-gray-900 border-gray-700">
           <CardHeader>
-            <CardTitle className="text-white font-mono">{project?.title}</CardTitle>
-            <CardDescription className="text-gray-400 font-mono">
+            <CardTitle className="text-white">{project?.title}</CardTitle>
+            <CardDescription className="text-white/60">
               {project?.description || "No description provided"}
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <span className="text-gray-400 font-mono text-sm">Start Date:</span>
-                <p className="text-white font-mono">
+                <span className="text-white/60 text-sm">Start Date:</span>
+                <p className="text-white">
                   {project?.startDate ? new Date(project.startDate).toLocaleDateString() : "Not set"}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400 font-mono text-sm">End Date:</span>
-                <p className="text-white font-mono">
+                <span className="text-white/60 text-sm">End Date:</span>
+                <p className="text-white">
                   {project?.endDate ? new Date(project.endDate).toLocaleDateString() : "Not set"}
                 </p>
               </div>
               <div>
-                <span className="text-gray-400 font-mono text-sm">Budget:</span>
-                <p className="text-white font-mono">{project?.budget || "Not specified"}</p>
+                <span className="text-white/60 text-sm">Budget:</span>
+                <p className="text-white">{project?.budget || "Not specified"}</p>
               </div>
             </div>
           </CardContent>
@@ -282,11 +282,11 @@ export default function AdminProjectTimeline() {
         {/* Timeline */}
         <Card className="bg-gray-900 border-gray-700">
           <CardHeader>
-            <CardTitle className="text-white font-mono flex items-center">
+            <CardTitle className="text-white flex items-center">
               <Calendar className="w-5 h-5 mr-2" />
               Project Timeline
             </CardTitle>
-            <CardDescription className="text-gray-400 font-mono">
+            <CardDescription className="text-white/60">
               Milestones and updates chronologically ordered
             </CardDescription>
           </CardHeader>
@@ -319,19 +319,19 @@ export default function AdminProjectTimeline() {
                       <div className="flex-1 bg-gray-800 rounded-lg p-4">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center space-x-3">
-                            <h3 className="text-lg font-semibold text-white font-mono">{item.title}</h3>
-                            <Badge variant="outline" className="border-gray-600 text-gray-300 font-mono">
+                            <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                            <Badge variant="outline" className="border-gray-600 text-gray-300">
                               {item.type}
                             </Badge>
                             <Badge className={`${
                               item.status === "completed" ? "bg-green-600" :
                               item.status === "pending" ? "bg-yellow-600" : "bg-gray-600"
-                            } text-white font-mono`}>
+                            } text-white`}>
                               {item.status}
                             </Badge>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <span className="text-gray-400 font-mono text-sm">
+                            <span className="text-white/60 text-sm">
                               {item.date.toLocaleDateString()}
                             </span>
                             {item.type === "update" && typeof item.updateId === 'number' && (
@@ -347,7 +347,7 @@ export default function AdminProjectTimeline() {
                                       });
                                     }
                                   }}
-                                  className="border-gray-600 text-gray-300 hover:bg-gray-700 font-mono p-1"
+                                  className="border-gray-600 text-gray-300 hover:bg-gray-700 p-1"
                                 >
                                   {item.isCompleted ? <Clock className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />}
                                 </Button>
@@ -359,7 +359,7 @@ export default function AdminProjectTimeline() {
                                       deleteUpdate.mutate(item.updateId);
                                     }
                                   }}
-                                  className="border-red-600 text-red-400 hover:bg-red-900 font-mono p-1"
+                                  className="border-red-600 text-red-400 hover:bg-red-900 p-1"
                                 >
                                   <Trash2 className="w-3 h-3" />
                                 </Button>
@@ -367,7 +367,7 @@ export default function AdminProjectTimeline() {
                             )}
                           </div>
                         </div>
-                        <p className="text-gray-300 font-mono">{item.description}</p>
+                        <p className="text-gray-300">{item.description}</p>
                       </div>
                     </div>
                   </div>
@@ -375,8 +375,8 @@ export default function AdminProjectTimeline() {
               ) : (
                 <div className="text-center py-12">
                   <Calendar className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-gray-400 font-mono mb-2">No timeline items yet</h3>
-                  <p className="text-gray-500 font-mono">Add project updates to build the timeline</p>
+                  <h3 className="text-lg font-semibold text-white/60 mb-2">No timeline items yet</h3>
+                  <p className="text-white/50">Add project updates to build the timeline</p>
                 </div>
               )}
             </div>

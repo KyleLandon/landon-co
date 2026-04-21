@@ -165,8 +165,8 @@ export default function UnifiedAdminDashboard() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 font-mono text-sm">Total Projects</p>
-                  <p className="text-2xl font-mono font-bold text-white">{projectStats.total}</p>
+                  <p className="text-white/60 text-sm">Total Projects</p>
+                  <p className="text-2xl font-bold text-white">{projectStats.total}</p>
                 </div>
                 <FolderOpen className="w-6 h-6 text-blue-400" />
               </div>
@@ -177,8 +177,8 @@ export default function UnifiedAdminDashboard() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 font-mono text-sm">Active Projects</p>
-                  <p className="text-2xl font-mono font-bold text-white">{projectStats.active}</p>
+                  <p className="text-white/60 text-sm">Active Projects</p>
+                  <p className="text-2xl font-bold text-white">{projectStats.active}</p>
                 </div>
                 <CheckCircle className="w-6 h-6 text-green-400" />
               </div>
@@ -189,8 +189,8 @@ export default function UnifiedAdminDashboard() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 font-mono text-sm">Total Clients</p>
-                  <p className="text-2xl font-mono font-bold text-white">{clients.length}</p>
+                  <p className="text-white/60 text-sm">Total Clients</p>
+                  <p className="text-2xl font-bold text-white">{clients.length}</p>
                 </div>
                 <Users className="w-6 h-6 text-purple-400" />
               </div>
@@ -201,8 +201,8 @@ export default function UnifiedAdminDashboard() {
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-gray-400 font-mono text-sm">Revenue</p>
-                  <p className="text-2xl font-mono font-bold text-white">
+                  <p className="text-white/60 text-sm">Revenue</p>
+                  <p className="text-2xl font-bold text-white">
                     ${projectStats.revenue.toLocaleString()}
                   </p>
                 </div>
@@ -225,21 +225,21 @@ export default function UnifiedAdminDashboard() {
             {/* Search and Filter */}
             <Card className="bg-gray-900 border-gray-800">
               <CardHeader className="pb-3">
-                <CardTitle className="font-mono text-lg text-white">Projects</CardTitle>
+                <CardTitle className="text-lg text-white">Projects</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/60 w-4 h-4" />
                   <Input
                     placeholder="Search projects..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 bg-transparent border-gray-700 text-white font-mono"
+                    className="pl-10 bg-transparent border-gray-700 text-white"
                   />
                 </div>
                 
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="bg-transparent border-gray-700 text-white font-mono">
+                  <SelectTrigger className="bg-transparent border-gray-700 text-white">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-gray-900 border-gray-700 text-white">
@@ -268,7 +268,7 @@ export default function UnifiedAdminDashboard() {
                     }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <h4 className="font-mono font-bold text-white text-sm truncate">
+                      <h4 className="font-bold text-white text-sm truncate">
                         {project.title}
                       </h4>
                       <Badge 
@@ -282,11 +282,11 @@ export default function UnifiedAdminDashboard() {
                         {getStatusText(project.status)}
                       </Badge>
                     </div>
-                    <p className="text-gray-400 font-mono text-xs truncate">
+                    <p className="text-white/60 text-xs truncate">
                       {project.description}
                     </p>
                     {project.budget && (
-                      <p className="text-green-400 font-mono text-xs mt-1">
+                      <p className="text-green-400 text-xs mt-1">
                         ${parseFloat(project.budget).toLocaleString()}
                       </p>
                     )}
@@ -295,8 +295,8 @@ export default function UnifiedAdminDashboard() {
                 
                 {filteredProjects.length === 0 && (
                   <div className="text-center py-8">
-                    <FolderOpen className="w-12 h-12 text-gray-500 mx-auto mb-3" />
-                    <p className="text-gray-400 font-mono text-sm">No projects found</p>
+                    <FolderOpen className="w-12 h-12 text-white/50 mx-auto mb-3" />
+                    <p className="text-white/60 text-sm">No projects found</p>
                   </div>
                 )}
               </CardContent>
@@ -313,16 +313,16 @@ export default function UnifiedAdminDashboard() {
             {selectedProject ? (
               <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList className="bg-gray-900 border border-gray-800">
-                  <TabsTrigger value="overview" className="font-mono">Overview</TabsTrigger>
-                  <TabsTrigger value="messages" className="font-mono">Messages</TabsTrigger>
-                  <TabsTrigger value="edit" className="font-mono">Edit</TabsTrigger>
+                  <TabsTrigger value="overview">Overview</TabsTrigger>
+                  <TabsTrigger value="messages">Messages</TabsTrigger>
+                  <TabsTrigger value="edit">Edit</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="overview" className="space-y-4">
                   <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
                       <div className="flex items-center justify-between">
-                        <CardTitle className="font-mono text-lg text-white">
+                        <CardTitle className="text-lg text-white">
                           {selectedProject.title}
                         </CardTitle>
                         <div className="relative">
@@ -349,7 +349,7 @@ export default function UnifiedAdminDashboard() {
                                     });
                                     setStatusDropdownOpen(false);
                                   }}
-                                  className={`w-full text-left px-3 py-2 text-sm font-mono hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                                  className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-700 transition-colors first:rounded-t-lg last:rounded-b-lg ${
                                     selectedProject.status === status ? 'bg-gray-700 text-white' : 'text-gray-300'
                                   }`}
                                 >
@@ -362,26 +362,26 @@ export default function UnifiedAdminDashboard() {
                       </div>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <p className="text-gray-300 font-mono">{selectedProject.description}</p>
+                      <p className="text-gray-300">{selectedProject.description}</p>
                       
                       {selectedClient && (
                         <div className="bg-gray-800 p-4 rounded-lg">
-                          <h4 className="font-mono font-bold text-white mb-2 flex items-center">
+                          <h4 className="font-bold text-white mb-2 flex items-center">
                             <User className="w-4 h-4 mr-2" />
                             Client Information
                           </h4>
-                          <p className="text-gray-300 font-mono text-sm">
+                          <p className="text-gray-300 text-sm">
                             {selectedClient.firstName} {selectedClient.lastName}
                           </p>
-                          <p className="text-gray-400 font-mono text-sm">{selectedClient.email}</p>
+                          <p className="text-white/60 text-sm">{selectedClient.email}</p>
                         </div>
                       )}
                       
                       <div className="grid grid-cols-2 gap-4">
                         {selectedProject.budget && (
                           <div className="bg-gray-800 p-3 rounded-lg">
-                            <p className="text-gray-400 font-mono text-sm">Budget</p>
-                            <p className="text-green-400 font-mono font-bold">
+                            <p className="text-white/60 text-sm">Budget</p>
+                            <p className="text-green-400 font-bold">
                               ${parseFloat(selectedProject.budget).toLocaleString()}
                             </p>
                           </div>
@@ -389,8 +389,8 @@ export default function UnifiedAdminDashboard() {
                         
                         {selectedProject.startDate && (
                           <div className="bg-gray-800 p-3 rounded-lg">
-                            <p className="text-gray-400 font-mono text-sm">Start Date</p>
-                            <p className="text-white font-mono">
+                            <p className="text-white/60 text-sm">Start Date</p>
+                            <p className="text-white">
                               {new Date(selectedProject.startDate).toLocaleDateString()}
                             </p>
                           </div>
@@ -405,7 +405,7 @@ export default function UnifiedAdminDashboard() {
                 <TabsContent value="messages">
                   <Card className="bg-gray-900 border-gray-800 h-[600px] flex flex-col">
                     <CardHeader>
-                      <CardTitle className="font-mono text-lg text-white flex items-center">
+                      <CardTitle className="text-lg text-white flex items-center">
                         <MessageSquare className="w-5 h-5 mr-2" />
                         Project Communication
                       </CardTitle>
@@ -432,14 +432,14 @@ export default function UnifiedAdminDashboard() {
                 <TabsContent value="edit">
                   <Card className="bg-gray-900 border-gray-800">
                     <CardHeader>
-                      <CardTitle className="font-mono text-lg text-white flex items-center">
+                      <CardTitle className="text-lg text-white flex items-center">
                         <Edit className="w-5 h-5 mr-2" />
                         Quick Edit Project
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
-                        <label className="text-gray-400 font-mono text-sm mb-2 block">Status</label>
+                        <label className="text-white/60 text-sm mb-2 block">Status</label>
                         <Select
                           value={selectedProject.status}
                           onValueChange={(status) => 
@@ -449,7 +449,7 @@ export default function UnifiedAdminDashboard() {
                             })
                           }
                         >
-                          <SelectTrigger className="bg-transparent border-gray-700 text-white font-mono">
+                          <SelectTrigger className="bg-transparent border-gray-700 text-white">
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="bg-gray-900 border-gray-700 text-white">
@@ -463,12 +463,12 @@ export default function UnifiedAdminDashboard() {
                       </div>
                       
                       <div>
-                        <label className="text-gray-400 font-mono text-sm mb-2 block">Budget</label>
+                        <label className="text-white/60 text-sm mb-2 block">Budget</label>
                         <Input
                           type="number"
                           defaultValue={selectedProject.budget || ""}
                           placeholder="Project budget"
-                          className="bg-transparent border-gray-700 text-white font-mono"
+                          className="bg-transparent border-gray-700 text-white"
                           onBlur={(e) => {
                             if (e.target.value !== selectedProject.budget) {
                               updateProjectMutation.mutate({
@@ -481,12 +481,12 @@ export default function UnifiedAdminDashboard() {
                       </div>
                       
                       <div>
-                        <label className="text-gray-400 font-mono text-sm mb-2 block">End Date</label>
+                        <label className="text-white/60 text-sm mb-2 block">End Date</label>
                         <Input
                           type="date"
                           defaultValue={selectedProject.endDate ? 
                             selectedProject.endDate.toString().split('T')[0] : ""}
-                          className="bg-transparent border-gray-700 text-white font-mono"
+                          className="bg-transparent border-gray-700 text-white"
                           onBlur={(e) => {
                             const currentValue = selectedProject.endDate ? 
                               selectedProject.endDate.toString().split('T')[0] : "";
@@ -506,9 +506,9 @@ export default function UnifiedAdminDashboard() {
             ) : (
               <Card className="bg-gray-900 border-gray-800 h-[600px] flex items-center justify-center">
                 <CardContent className="text-center">
-                  <FolderOpen className="w-16 h-16 text-gray-500 mx-auto mb-4" />
-                  <h3 className="text-xl font-mono font-bold text-white mb-2">Select a Project</h3>
-                  <p className="text-gray-400 font-mono">
+                  <FolderOpen className="w-16 h-16 text-white/50 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-white mb-2">Select a Project</h3>
+                  <p className="text-white/60">
                     Choose a project from the left to view details and manage communication
                   </p>
                 </CardContent>

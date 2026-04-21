@@ -21,7 +21,7 @@ export default function ProjectFiles() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Loading project...</div>
+          <div className="text-white/60">Loading project...</div>
         </div>
       </ProjectLayout>
     );
@@ -31,7 +31,7 @@ export default function ProjectFiles() {
     return (
       <ProjectLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="text-gray-400 font-mono">Project not found</div>
+          <div className="text-white/60">Project not found</div>
         </div>
       </ProjectLayout>
     );
@@ -43,18 +43,18 @@ export default function ProjectFiles() {
         {/* Project Header */}
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-white font-mono flex items-center">
+            <CardTitle className="text-white flex items-center">
               <FolderOpen className="w-6 h-6 mr-3" />
               Project Files
             </CardTitle>
             <div className="flex items-center space-x-4 mt-2">
               <Badge 
                 variant={project.status === 'active' ? 'default' : 'secondary'}
-                className="font-mono"
+               
               >
                 {project.status?.toUpperCase()}
               </Badge>
-              <div className="flex items-center text-gray-400 font-mono text-sm">
+              <div className="flex items-center text-white/60 text-sm">
                 <Clock className="w-4 h-4 mr-2" />
                 Created {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'Unknown'}
               </div>
@@ -71,7 +71,7 @@ export default function ProjectFiles() {
         {/* Info Box */}
         <Card className="bg-gray-900 border-gray-800">
           <CardContent className="p-4">
-            <div className="text-sm text-gray-400 font-mono space-y-2">
+            <div className="text-sm text-white/60 space-y-2">
               <p>• Upload project assets, references, and feedback files</p>
               <p>• Download deliverables and project resources</p>
               <p>• Some files may be private and only visible to the admin</p>
