@@ -76,6 +76,8 @@ export function SupportWidget() {
 
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={isOpen ? "Close support menu" : "Open support menu"}
+        aria-expanded={isOpen}
         className="w-14 h-14 bg-white text-black rounded-full shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
