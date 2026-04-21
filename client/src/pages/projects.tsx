@@ -5,6 +5,8 @@ import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
+import theRaidImage from "@/assets/theraid-project.png";
+import keyplusImage from "@/assets/keyplus-project.png";
 
 const projects = [
   {
@@ -25,6 +27,26 @@ const projects = [
     image: comicMysteryImage,
     tags: ["React", "E-commerce", "Storefront", "DTC"],
     demoUrl: "https://comic-mysteries.com",
+    category: "Web Development",
+  },
+  {
+    id: 3,
+    title: "The Raid",
+    description:
+      "Team site for a competitive gaming community with a bold visual identity.",
+    image: theRaidImage,
+    tags: ["React", "Branding", "Community"],
+    demoUrl: "https://theraid.team",
+    category: "Web Development",
+  },
+  {
+    id: 4,
+    title: "Key Plus",
+    description:
+      "Web app with Discord-gated authentication, transparent pricing, and a public leaderboard.",
+    image: keyplusImage,
+    tags: ["Web App", "Auth", "Dashboard"],
+    demoUrl: "https://keyplus.io",
     category: "Web Development",
   },
 ];

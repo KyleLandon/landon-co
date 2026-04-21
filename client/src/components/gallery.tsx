@@ -12,6 +12,8 @@ import {
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
+import theRaidImage from "@/assets/theraid-project.png";
+import keyplusImage from "@/assets/keyplus-project.png";
 
 const projects = [
   {
@@ -27,6 +29,20 @@ const projects = [
     title: "Comic Mystery Boxes",
     category: "E-commerce · Subscription",
     url: "https://comic-mysteries.com",
+  },
+  {
+    src: theRaidImage,
+    alt: "The Raid team website",
+    title: "The Raid",
+    category: "Gaming · Team site",
+    url: "https://theraid.team",
+  },
+  {
+    src: keyplusImage,
+    alt: "Key Plus web app",
+    title: "Key Plus",
+    category: "Web app · Booking platform",
+    url: "https://keyplus.io",
   },
 ];
 
