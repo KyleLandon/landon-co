@@ -35,7 +35,7 @@ const projects = [
     alt: "The Raid team website",
     title: "The Raid",
     category: "Gaming · Team site",
-    url: "https://theraid.team",
+    url: "https://dollydumpster.com",
   },
   {
     src: keyplusImage,

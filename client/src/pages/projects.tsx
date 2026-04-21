@@ -36,7 +36,7 @@ const projects = [
       "Team site for a competitive gaming community with a bold visual identity.",
     image: theRaidImage,
     tags: ["React", "Branding", "Community"],
-    demoUrl: "https://theraid.team",
+    demoUrl: "https://dollydumpster.com",
     category: "Web Development",
   },
   {
