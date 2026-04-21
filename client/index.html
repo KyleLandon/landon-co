@@ -5,34 +5,93 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000000" />
 
-    <title>Landon &amp; Co. — Web Design &amp; Development for Local Businesses</title>
+    <title>Web Design in San Antonio, Corpus Christi & Victoria, TX | Landon &amp; Co.</title>
     <meta
       name="description"
-      content="Landon & Co. builds modern, high-performing websites, brands, and digital experiences for local businesses. Web design, branding, e-commerce, and automation."
+      content="Landon &amp; Co. builds modern, high-performing websites, brands, and digital experiences for small businesses across the South Texas triangle — San Antonio, Corpus Christi, and Victoria. Web design, branding, e-commerce, and automation."
     />
+    <link rel="canonical" href="https://landonco.co/" />
 
+    <!-- Geo targeting -->
+    <meta name="geo.region" content="US-TX" />
+    <meta name="geo.placename" content="San Antonio, Corpus Christi, Victoria" />
+    <meta name="geo.position" content="28.4663;-97.5089" />
+    <meta name="ICBM" content="28.4663, -97.5089" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Landon & Co. — Web Design & Development" />
+    <meta property="og:url" content="https://landonco.co/" />
+    <meta property="og:title" content="Web Design in San Antonio, Corpus Christi & Victoria, TX | Landon & Co." />
     <meta
       property="og:description"
-      content="Modern websites, branding, and digital experiences built for local businesses."
+      content="Modern websites, branding, and automation built for small businesses across the South Texas triangle."
     />
+    <meta property="og:image" content="https://landonco.co/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Landon & Co." />
+    <meta property="og:locale" content="en_US" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Landon & Co. — Web Design & Development" />
+    <meta name="twitter:title" content="Web Design in San Antonio, Corpus Christi & Victoria, TX | Landon & Co." />
     <meta
       name="twitter:description"
-      content="Modern websites, branding, and digital experiences built for local businesses."
+      content="Modern websites, branding, and automation built for small businesses across the South Texas triangle."
     />
+    <meta name="twitter:image" content="https://landonco.co/og-image.jpg" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="dns-prefetch" href="//images.unsplash.com" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     />
+
+    <!-- LocalBusiness / ProfessionalService structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": ["LocalBusiness", "ProfessionalService"],
+      "@id": "https://landonco.co/#business",
+      "name": "Landon & Co.",
+      "alternateName": "Landon and Co.",
+      "url": "https://landonco.co/",
+      "logo": "https://landonco.co/og-image.jpg",
+      "image": "https://landonco.co/og-image.jpg",
+      "description": "Web design, branding, e-commerce, and automation for small businesses across the South Texas triangle — San Antonio, Corpus Christi, and Victoria, TX.",
+      "telephone": "+1-940-389-2685",
+      "email": "info@landonco.co",
+      "priceRange": "$$",
+      "founder": {
+        "@type": "Person",
+        "name": "Kyle Landon"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressRegion": "TX",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        { "@type": "City", "name": "San Antonio", "containedInPlace": { "@type": "State", "name": "Texas" } },
+        { "@type": "City", "name": "Corpus Christi", "containedInPlace": { "@type": "State", "name": "Texas" } },
+        { "@type": "City", "name": "Victoria", "containedInPlace": { "@type": "State", "name": "Texas" } },
+        { "@type": "AdministrativeArea", "name": "South Texas" }
+      ],
+      "serviceType": [
+        "Web Design",
+        "Web Development",
+        "Branding",
+        "E-commerce",
+        "Workflow Automation",
+        "IT Consulting"
+      ],
+      "sameAs": [
+        "https://instagram.com/landonandco",
+        "https://x.com/landonandco"
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>

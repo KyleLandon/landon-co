@@ -1,4 +1,5 @@
 import { Switch, Route } from "wouter";
+import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -8,31 +9,59 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { SupportWidget } from "@/components/support-widget";
 import { LoadingPage } from "@/components/ui/loading-spinner";
 import Home from "@/pages/home";
-import Projects from "@/pages/projects";
-import Dashboard from "@/pages/client/dashboard/dashboard";
-import UnifiedDashboard from "@/pages/client/unified-dashboard";
-import AdminDashboard from "@/pages/admin/dashboard/dashboard";
-import UnifiedAdminDashboard from "@/pages/admin/unified-dashboard";
-import AdminProjects from "@/pages/admin/projects";
-import AdminClients from "@/pages/admin/clients";
-import AdminMessages from "@/pages/admin/messages";
-import AdminSettings from "@/pages/admin/settings";
-import AdminProjectDetail from "@/pages/admin/project/project-detail";
-import AdminProjectMessages from "@/pages/admin/project/project-messages-apple";
-import AdminProjectTimeline from "@/pages/admin/project/project-timeline";
-import AdminProjectFiles from "@/pages/admin/project/project-files";
-import AdminProjectContracts from "@/pages/admin/project/project-contracts";
-import AdminProjectInvoices from "@/pages/admin/project/project-invoices";
-import ProjectDetail from "@/pages/client/project/project-detail";
-import ProjectOverviewSimple from "@/pages/client/project/project-overview-simple";
-import ProjectMessages from "@/pages/client/project/project-messages";
-import ProjectTimeline from "@/pages/client/project/project-timeline";
-import ProjectUpdates from "@/pages/client/project/project-updates";
-import ProjectInvoices from "@/pages/client/project/project-invoices";
-import ProjectFiles from "@/pages/client/project/project-files";
-import ProjectSettings from "@/pages/client/project/project-settings";
-import ProjectContracts from "@/pages/client/project/project-contracts";
 import NotFound from "@/pages/not-found";
+
+// Public marketing routes (lazy)
+const Projects = lazy(() => import("@/pages/projects"));
+const InsightsIndex = lazy(() =>
+  import("@/pages/insights").then((m) => ({ default: m.InsightsIndex })),
+);
+const InsightsPost = lazy(() =>
+  import("@/pages/insights").then((m) => ({ default: m.InsightsPost })),
+);
+const LocationPage = lazy(() =>
+  import("@/pages/location").then((m) => ({ default: m.LocationPage })),
+);
+const ServicePage = lazy(() =>
+  import("@/pages/service").then((m) => ({ default: m.ServicePage })),
+);
+
+// Authenticated routes (lazy)
+const Dashboard = lazy(() => import("@/pages/client/dashboard/dashboard"));
+const UnifiedDashboard = lazy(() => import("@/pages/client/unified-dashboard"));
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard/dashboard"));
+const UnifiedAdminDashboard = lazy(() => import("@/pages/admin/unified-dashboard"));
+const AdminProjects = lazy(() => import("@/pages/admin/projects"));
+const AdminClients = lazy(() => import("@/pages/admin/clients"));
+const AdminMessages = lazy(() => import("@/pages/admin/messages"));
+const AdminSettings = lazy(() => import("@/pages/admin/settings"));
+const AdminProjectDetail = lazy(() => import("@/pages/admin/project/project-detail"));
+const AdminProjectMessages = lazy(() => import("@/pages/admin/project/project-messages-apple"));
+const AdminProjectTimeline = lazy(() => import("@/pages/admin/project/project-timeline"));
+const AdminProjectFiles = lazy(() => import("@/pages/admin/project/project-files"));
+const AdminProjectContracts = lazy(() => import("@/pages/admin/project/project-contracts"));
+const AdminProjectInvoices = lazy(() => import("@/pages/admin/project/project-invoices"));
+const ProjectDetail = lazy(() => import("@/pages/client/project/project-detail"));
+const ProjectOverviewSimple = lazy(() => import("@/pages/client/project/project-overview-simple"));
+const ProjectMessages = lazy(() => import("@/pages/client/project/project-messages"));
+const ProjectTimeline = lazy(() => import("@/pages/client/project/project-timeline"));
+const ProjectUpdates = lazy(() => import("@/pages/client/project/project-updates"));
+const ProjectInvoices = lazy(() => import("@/pages/client/project/project-invoices"));
+const ProjectFiles = lazy(() => import("@/pages/client/project/project-files"));
+const ProjectSettings = lazy(() => import("@/pages/client/project/project-settings"));
+const ProjectContracts = lazy(() => import("@/pages/client/project/project-contracts"));
+
+import {
+  SAN_ANTONIO,
+  CORPUS_CHRISTI,
+  VICTORIA,
+} from "@/lib/location-configs";
+import {
+  WEB_DESIGN,
+  BRANDING,
+  ECOMMERCE,
+  AUTOMATION,
+} from "@/lib/service-configs";
 
 function Router() {
   const { isAuthenticated, isAdmin, isLoading } = useAuth();
@@ -45,6 +74,23 @@ function Router() {
     <Switch>
       <Route path="/" component={Home} />
       <Route path="/projects" component={Projects} />
+
+      {/* Service pages */}
+      <Route path="/services/web-design">{() => <ServicePage config={WEB_DESIGN} />}</Route>
+      <Route path="/services/branding">{() => <ServicePage config={BRANDING} />}</Route>
+      <Route path="/services/ecommerce">{() => <ServicePage config={ECOMMERCE} />}</Route>
+      <Route path="/services/automation">{() => <ServicePage config={AUTOMATION} />}</Route>
+
+      {/* Location pages */}
+      <Route path="/web-design-san-antonio">{() => <LocationPage config={SAN_ANTONIO} />}</Route>
+      <Route path="/web-design-corpus-christi">{() => <LocationPage config={CORPUS_CHRISTI} />}</Route>
+      <Route path="/web-design-victoria-tx">{() => <LocationPage config={VICTORIA} />}</Route>
+
+      {/* Insights */}
+      <Route path="/insights" component={InsightsIndex} />
+      <Route path="/insights/:slug">
+        {(params) => <InsightsPost slug={params.slug} />}
+      </Route>
       
       {/* Protected client routes */}
       {isAuthenticated && (
@@ -135,7 +181,9 @@ function App() {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Router />
+          <Suspense fallback={<LoadingPage message="Loading..." />}>
+            <Router />
+          </Suspense>
           <SupportWidget />
           <Toaster />
         </TooltipProvider>

@@ -2,7 +2,23 @@
 
 ## Overview
 
-This is a modern portfolio website for "Landon & Co." - a web design and development agency focused on local businesses. The application is built with a full-stack TypeScript architecture featuring a React frontend with shadcn/ui components and an Express.js backend with PostgreSQL database integration.
+This is a modern portfolio website for "Landon & Co." — a Texas-based web design, branding, and automation studio serving small businesses across the South Texas triangle (San Antonio, Corpus Christi, Victoria) and nationwide. The application is built with a full-stack TypeScript architecture featuring a React frontend with shadcn/ui components and an Express.js backend with PostgreSQL database integration.
+
+## SEO
+
+- `react-helmet-async` is wired up at the app root via `HelmetProvider` (`client/src/main.tsx`).
+- Reusable `<SEO>` component (`client/src/components/seo.tsx`) handles title, description, canonical, OG/Twitter, and JSON-LD per page.
+- Base meta + LocalBusiness/ProfessionalService JSON-LD live in `client/index.html`.
+- Static SEO assets in `client/public/`: `robots.txt`, `sitemap.xml`, `og-image.jpg` (1200x630).
+- Programmatic location pages: `/web-design-san-antonio`, `/web-design-corpus-christi`, `/web-design-victoria-tx` (driven by configs exported from `client/src/pages/location.tsx`).
+- Service pages: `/services/{web-design,branding,ecommerce,automation}` (configs exported from `client/src/pages/service.tsx`).
+- Insights blog: `/insights` index + `/insights/:slug` posts (data in `client/src/pages/insights.tsx`, with Article JSON-LD).
+- Home page renders an `<FAQ>` section with FAQPage JSON-LD.
+- Whenever you add a new public route, update `client/public/sitemap.xml`.
+
+## Code-splitting
+
+Every route below `/` is lazy-loaded in `client/src/App.tsx` and wrapped in `<Suspense>` with `LoadingPage` as the fallback. Marketing routes ship as their own chunks; admin/client dashboards are also split out so the marketing landing bundle stays small.
 
 ## System Architecture
 

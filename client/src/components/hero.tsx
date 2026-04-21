@@ -133,8 +133,9 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="body-lg max-w-xl text-balance mb-10"
         >
-          Web design, branding, and automation for small businesses that want
-          to look great and run smoother.
+          Web design, branding, and automation for small businesses across
+          the South Texas triangle &mdash; San Antonio, Corpus Christi, and
+          Victoria.
         </motion.p>
 
         <motion.div

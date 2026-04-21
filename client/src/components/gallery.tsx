@@ -12,8 +12,8 @@ import {
 import { ArrowUpRight, ExternalLink } from "lucide-react";
 import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
-import theRaidImage from "@/assets/theraid-project.png";
-import keyplusImage from "@/assets/keyplus-project.png";
+import theRaidImage from "@/assets/theraid-project.webp";
+import keyplusImage from "@/assets/keyplus-project.webp";
 
 const projects = [
   {

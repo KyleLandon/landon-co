@@ -39,47 +39,65 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Sitemap */}
-          <div className="md:col-span-3">
-            <p className="eyebrow mb-4">Sitemap</p>
+          {/* Services */}
+          <div className="md:col-span-2">
+            <p className="eyebrow mb-4">Services</p>
             <ul className="space-y-3 text-sm">
               <li>
-                <a
-                  href="/#services"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  Services
+                <a href="/services/web-design" className="text-white/70 hover:text-white transition-colors">
+                  Web Design
                 </a>
               </li>
               <li>
-                <a
-                  href="/#gallery"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  Work
+                <a href="/services/branding" className="text-white/70 hover:text-white transition-colors">
+                  Branding
                 </a>
               </li>
               <li>
-                <a
-                  href="/#about"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  About
+                <a href="/services/ecommerce" className="text-white/70 hover:text-white transition-colors">
+                  E-commerce
                 </a>
               </li>
               <li>
-                <a
-                  href="/#contact"
-                  className="text-white/70 hover:text-white transition-colors"
-                >
-                  Contact
+                <a href="/services/automation" className="text-white/70 hover:text-white transition-colors">
+                  Automation
+                </a>
+              </li>
+              <li>
+                <a href="/insights" className="text-white/70 hover:text-white transition-colors">
+                  Insights
                 </a>
               </li>
             </ul>
           </div>
 
+          {/* Service area */}
+          <div className="md:col-span-2">
+            <p className="eyebrow mb-4">Service area</p>
+            <ul className="space-y-3 text-sm">
+              <li>
+                <a href="/web-design-san-antonio" className="text-white/70 hover:text-white transition-colors">
+                  San Antonio, TX
+                </a>
+              </li>
+              <li>
+                <a href="/web-design-corpus-christi" className="text-white/70 hover:text-white transition-colors">
+                  Corpus Christi, TX
+                </a>
+              </li>
+              <li>
+                <a href="/web-design-victoria-tx" className="text-white/70 hover:text-white transition-colors">
+                  Victoria, TX
+                </a>
+              </li>
+              <li>
+                <span className="text-white/50">South Texas + remote</span>
+              </li>
+            </ul>
+          </div>
+
           {/* Contact */}
-          <div className="md:col-span-4">
+          <div className="md:col-span-3">
             <p className="eyebrow mb-4">Get in touch</p>
             <ul className="space-y-3 text-sm">
               <li>

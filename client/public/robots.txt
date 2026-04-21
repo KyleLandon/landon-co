@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /dashboard
+Disallow: /project/
+Disallow: /projects/
+Disallow: /api/
+
+Sitemap: https://landonco.co/sitemap.xml

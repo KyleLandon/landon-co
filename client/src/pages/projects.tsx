@@ -3,10 +3,11 @@ import { motion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
+import SEO from "@/components/seo";
 import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
-import theRaidImage from "@/assets/theraid-project.png";
-import keyplusImage from "@/assets/keyplus-project.png";
+import theRaidImage from "@/assets/theraid-project.webp";
+import keyplusImage from "@/assets/keyplus-project.webp";
 
 const projects = [
   {
@@ -68,8 +69,23 @@ export default function Projects() {
       ? projects
       : projects.filter((p) => p.category === activeCategory);
 
+  const collectionJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Featured Work — Landon & Co.",
+    description:
+      "A selection of recent work from Landon & Co. — websites, brands, and digital experiences for small businesses across San Antonio, Corpus Christi, and Victoria, TX.",
+    url: "https://landonco.co/projects",
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
+      <SEO
+        title="Featured Work — Web Design & Branding for South Texas Businesses"
+        description="A selection of recent websites, brands, and digital products from Landon & Co. for small businesses across San Antonio, Corpus Christi, and Victoria, TX."
+        path="/projects"
+        jsonLd={collectionJsonLd}
+      />
       {/* Header */}
       <header className="border-b border-white/10">
         <div className="container-wide py-6 flex items-center justify-between">

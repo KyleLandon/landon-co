@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import aboutImage from "@/assets/kyle-landon.png";
+import aboutImage from "@/assets/kyle-landon.webp";
 
 const skills = [
   "Web Development",
@@ -59,11 +59,13 @@ const About = () => {
 
             <div className="space-y-5 body-md">
               <p>
-                Landon &amp; Co. was founded to help entrepreneurs overcome the
-                hurdle of building a digital presence — without breaking the
-                bank. Our mission is simple: provide affordable, high-quality
-                services that empower hardworking business owners and give
-                them a real head start online.
+                Landon &amp; Co. is a Texas-based studio serving small
+                businesses across the South Texas triangle &mdash; San
+                Antonio, Corpus Christi, and Victoria &mdash; as well as
+                clients nationwide. We were founded to help entrepreneurs
+                overcome the hurdle of building a digital presence without
+                breaking the bank, with affordable, high-quality work that
+                gives hardworking business owners a real head start online.
               </p>
               <p>
                 We specialize in web development, branding, automation, and
