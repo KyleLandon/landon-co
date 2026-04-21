@@ -1,4 +1,4 @@
-import { Mail, Phone, Instagram, Twitter, ArrowUpRight } from "lucide-react";
+import { Mail, Phone, Instagram, ArrowUpRight } from "lucide-react";
 import whiteLogo from "@/assets/logo-white.webp";
 
 const Footer = () => {
