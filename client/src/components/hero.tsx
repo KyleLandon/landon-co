@@ -113,6 +113,10 @@ const Hero = () => {
           <img
             src={whiteLogo}
             alt="Landon & Co."
+            width={640}
+            height={640}
+            decoding="async"
+            {...({ fetchpriority: "high" } as any)}
             className="w-64 h-auto sm:w-80 lg:w-[420px] mx-auto"
           />
         </motion.div>

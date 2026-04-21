@@ -11,6 +11,10 @@ const Footer = () => {
             <img
               src={whiteLogo}
               alt="Landon & Co."
+              width={640}
+              height={640}
+              loading="lazy"
+              decoding="async"
               className="h-9 w-auto mb-5 opacity-90"
             />
             <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-6 max-w-sm">

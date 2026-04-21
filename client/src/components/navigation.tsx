@@ -69,6 +69,9 @@ const Navigation = () => {
             <img
               src={whiteLogo}
               alt="Landon & Co."
+              width={640}
+              height={640}
+              decoding="async"
               className="h-8 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
             />
           </button>
