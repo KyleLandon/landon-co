@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/useAuth";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { SupportWidget } from "@/components/support-widget";
+import Analytics from "@/components/analytics";
 import { LoadingPage } from "@/components/ui/loading-spinner";
 import Home from "@/pages/home";
 import NotFound from "@/pages/not-found";
@@ -184,6 +185,7 @@ function App() {
           <Suspense fallback={<LoadingPage message="Loading..." />}>
             <Router />
           </Suspense>
+          <Analytics />
           <SupportWidget />
           <Toaster />
         </TooltipProvider>
