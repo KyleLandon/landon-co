@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import aboutImage from "@/assets/about-image.svg";
+import aboutImage from "@/assets/kyle-landon.png";
 
 const skills = [
   "Web Development",
