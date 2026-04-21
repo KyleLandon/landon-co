@@ -154,37 +154,41 @@ const Contact = () => {
             <div className="space-y-3">
               <a
                 href="mailto:info@landonco.co"
-                className="flex items-center justify-between gap-4 p-4 surface-card hover-lift group"
+                className="flex items-center justify-between gap-4 p-4 surface-card hover-lift group transition-colors hover:bg-white hover:border-white"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Mail className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-colors group-hover:bg-black/5 group-hover:border-black/20">
+                    <Mail className="w-4 h-4 text-white transition-colors group-hover:text-black" />
                   </div>
                   <div>
-                    <p className="eyebrow mb-1">Email</p>
-                    <p className="text-white text-sm font-medium">
+                    <p className="eyebrow mb-1 !text-white transition-colors group-hover:!text-black/60">
+                      Email
+                    </p>
+                    <p className="text-white text-sm font-medium transition-colors group-hover:text-black">
                       info@landonco.co
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-black group-hover:translate-x-0.5 transition-all" />
               </a>
               <a
                 href="tel:+19403892685"
-                className="flex items-center justify-between gap-4 p-4 surface-card hover-lift group"
+                className="flex items-center justify-between gap-4 p-4 surface-card hover-lift group transition-colors hover:bg-white hover:border-white"
               >
                 <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                    <Phone className="w-4 h-4 text-white" />
+                  <div className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center transition-colors group-hover:bg-black/5 group-hover:border-black/20">
+                    <Phone className="w-4 h-4 text-white transition-colors group-hover:text-black" />
                   </div>
                   <div>
-                    <p className="eyebrow mb-1">Phone</p>
-                    <p className="text-white text-sm font-medium">
+                    <p className="eyebrow mb-1 !text-white transition-colors group-hover:!text-black/60">
+                      Phone
+                    </p>
+                    <p className="text-white text-sm font-medium transition-colors group-hover:text-black">
                       (940) 389-2685
                     </p>
                   </div>
                 </div>
-                <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                <ArrowRight className="w-4 h-4 text-white/40 group-hover:text-black group-hover:translate-x-0.5 transition-all" />
               </a>
             </div>
           </motion.div>
