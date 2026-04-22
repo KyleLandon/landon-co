@@ -13,6 +13,16 @@ import panjosImage from "@/assets/panjos-project.webp";
 const projects = [
   {
     id: 1,
+    title: "Panjo's Pizza",
+    description:
+      "Family-owned Rockport pizzeria site with menu, gallery, click-to-call, and a roadmap to online ordering.",
+    image: panjosImage,
+    tags: ["Restaurant", "Local Business", "Responsive"],
+    demoUrl: "https://panjospizza.replit.app",
+    category: "Web Development",
+  },
+  {
+    id: 2,
     title: "Will Work Construction",
     description:
       "Professional construction company website with modern design and clear service showcases.",
@@ -22,7 +32,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 2,
+    id: 3,
     title: "Comic Mystery Boxes",
     description:
       "E-commerce platform for curated comic book mystery boxes with a seamless shopping experience.",
@@ -32,7 +42,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 3,
+    id: 4,
     title: "The Raid",
     description:
       "Team site for a competitive gaming community with a bold visual identity.",
@@ -42,23 +52,13 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 4,
+    id: 5,
     title: "Key Plus",
     description:
       "Web app with Discord-gated authentication, transparent pricing, and a public leaderboard.",
     image: keyplusImage,
     tags: ["Web App", "Auth", "Dashboard"],
     demoUrl: "https://keyplus.io",
-    category: "Web Development",
-  },
-  {
-    id: 5,
-    title: "Panjo's Pizza",
-    description:
-      "Family-owned Rockport pizzeria site with menu, gallery, click-to-call, and a roadmap to online ordering.",
-    image: panjosImage,
-    tags: ["Restaurant", "Local Business", "Responsive"],
-    demoUrl: "https://panjospizza.replit.app",
     category: "Web Development",
   },
 ];
