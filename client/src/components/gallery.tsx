@@ -14,21 +14,23 @@ import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
 import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
+import panjosImage from "@/assets/panjos-project.webp";
+import landonsCleaningImage from "@/assets/landons-cleaning-project.webp";
 
 const projects = [
+  {
+    src: landonsCleaningImage,
+    alt: "Landon's Cleaning Co. website",
+    title: "Landon's Cleaning Co.",
+    category: "Service business · Lead gen",
+    url: "https://landons-cleaning-manager.replit.app",
+  },
   {
     src: willWorkImage,
     alt: "Will Work Construction website",
     title: "Will Work Construction",
     category: "Construction · Marketing site",
     url: "https://willworkconstruction.com/home",
-  },
-  {
-    src: comicMysteryImage,
-    alt: "Comic Mystery Boxes e-commerce store",
-    title: "Comic Mystery Boxes",
-    category: "E-commerce · Subscription",
-    url: "https://comic-mysteries.com",
   },
   {
     src: theRaidImage,
@@ -38,11 +40,25 @@ const projects = [
     url: "https://dollydumpster.com",
   },
   {
+    src: panjosImage,
+    alt: "Panjo's Pizza restaurant website",
+    title: "Panjo's Pizza",
+    category: "Restaurant · Local business",
+    url: "https://panjospizza.replit.app",
+  },
+  {
     src: keyplusImage,
     alt: "Key Plus web app",
     title: "Key Plus",
     category: "Web app · Booking platform",
     url: "https://keyplus.io",
+  },
+  {
+    src: comicMysteryImage,
+    alt: "Comic Mystery Boxes e-commerce store",
+    title: "Comic Mystery Boxes",
+    category: "E-commerce · Subscription",
+    url: "https://comic-mysteries.com",
   },
 ];
 
