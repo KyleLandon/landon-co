@@ -8,6 +8,7 @@ import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
 import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
+import panjosImage from "@/assets/panjos-project.webp";
 
 const projects = [
   {
@@ -48,6 +49,16 @@ const projects = [
     image: keyplusImage,
     tags: ["Web App", "Auth", "Dashboard"],
     demoUrl: "https://keyplus.io",
+    category: "Web Development",
+  },
+  {
+    id: 5,
+    title: "Panjo's Pizza",
+    description:
+      "Family-owned Rockport pizzeria site with menu, gallery, click-to-call, and a roadmap to online ordering.",
+    image: panjosImage,
+    tags: ["Restaurant", "Local Business", "Responsive"],
+    demoUrl: "https://panjospizza.replit.app",
     category: "Web Development",
   },
 ];
