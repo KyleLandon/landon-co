@@ -9,10 +9,21 @@ import comicMysteryImage from "@/assets/comic-project.webp";
 import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
 import panjosImage from "@/assets/panjos-project.webp";
+import landonsCleaningImage from "@/assets/landons-cleaning-project.webp";
 
 const projects = [
   {
     id: 1,
+    title: "Landon's Cleaning Co.",
+    description:
+      "Marketing site for a Beeville, TX cleaning company — gallery, testimonials, instant quote requests, and click-to-book.",
+    image: landonsCleaningImage,
+    tags: ["Service Business", "Lead Gen", "Local SEO"],
+    demoUrl: "https://landons-cleaning-manager.replit.app",
+    category: "Web Development",
+  },
+  {
+    id: 2,
     title: "Panjo's Pizza",
     description:
       "Family-owned Rockport pizzeria site with menu, gallery, click-to-call, and a roadmap to online ordering.",
@@ -22,7 +33,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 2,
+    id: 3,
     title: "Will Work Construction",
     description:
       "Professional construction company website with modern design and clear service showcases.",
@@ -32,7 +43,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 3,
+    id: 4,
     title: "Comic Mystery Boxes",
     description:
       "E-commerce platform for curated comic book mystery boxes with a seamless shopping experience.",
@@ -42,7 +53,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 4,
+    id: 5,
     title: "The Raid",
     description:
       "Team site for a competitive gaming community with a bold visual identity.",
@@ -52,7 +63,7 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 5,
+    id: 6,
     title: "Key Plus",
     description:
       "Web app with Discord-gated authentication, transparent pricing, and a public leaderboard.",
