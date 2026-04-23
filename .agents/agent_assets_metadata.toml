@@ -1,0 +1,26 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "zv2v1Pv208sUuWTkO3Y8S"
+uri = "file://exports/email-signature/landon-co-logo-black-120.png"
+type = "image"
+title = "Black logo — 120px display (240px @ 2x)"
+
+[[outputs]]
+id = "8usPfM42BCB6RHcPfWKRH"
+uri = "file://exports/email-signature/landon-co-logo-black-200.png"
+type = "image"
+title = "Black logo — 200px display (400px @ 2x)"
+
+[[outputs]]
+id = "d53_iIwLFsjEosw66k3jm"
+uri = "file://exports/email-signature/landon-co-logo-white-120.png"
+type = "image"
+title = "White logo — 120px display (240px @ 2x)"
+
+[[outputs]]
+id = "cDvmjvKIYaEd1ISzqpNuy"
+uri = "file://exports/email-signature/landon-co-logo-white-200.png"
+type = "image"
+title = "White logo — 200px display (400px @ 2x)"
