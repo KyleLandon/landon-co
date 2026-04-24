@@ -32,6 +32,7 @@ const PrivacyPage = lazy(() =>
 const TermsPage = lazy(() =>
   import("@/pages/legal").then((m) => ({ default: m.TermsPage })),
 );
+const BrandPage = lazy(() => import("@/pages/brand"));
 
 // Authenticated routes (lazy)
 const Dashboard = lazy(() => import("@/pages/client/dashboard/dashboard"));
@@ -102,6 +103,9 @@ function Router() {
       {/* Legal */}
       <Route path="/privacy" component={PrivacyPage} />
       <Route path="/terms" component={TermsPage} />
+
+      {/* Brand kit (hidden, noindex) */}
+      <Route path="/brand" component={BrandPage} />
       
       {/* Protected client routes */}
       {isAuthenticated && (
