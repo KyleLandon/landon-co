@@ -466,9 +466,72 @@ export default function BrandPage() {
                 </div>
               </div>
 
+              <div className="surface-card p-8">
+                <p className="text-white text-sm font-medium mb-2">
+                  Fallback — Helvetica Neue / Arial
+                </p>
+                <p className="text-white/60 text-sm mb-5 leading-relaxed">
+                  When Inter isn't available (older devices, email clients,
+                  PDFs, signage software), use{" "}
+                  <span className="text-white">Helvetica Neue</span>,{" "}
+                  <span className="text-white">Helvetica</span>, or{" "}
+                  <span className="text-white">Arial</span>. They share Inter's
+                  geometric, neutral character and ship with virtually every
+                  operating system, so the brand reads consistently
+                  everywhere.
+                </p>
+                <div className="grid sm:grid-cols-3 gap-3 mb-6">
+                  {["Helvetica Neue", "Helvetica", "Arial"].map((f) => (
+                    <div
+                      key={f}
+                      className="rounded-lg border border-white/10 p-4"
+                    >
+                      <p className="text-white/40 text-[10px] font-mono uppercase tracking-widest mb-2">
+                        {f}
+                      </p>
+                      <p
+                        className="text-white text-3xl font-bold leading-none mb-1"
+                        style={{ fontFamily: `${f}, sans-serif` }}
+                      >
+                        Aa
+                      </p>
+                      <p
+                        className="text-white/70 text-sm"
+                        style={{ fontFamily: `${f}, sans-serif` }}
+                      >
+                        Landon &amp; Co.
+                      </p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-white/50 text-xs mb-2">
+                  Use case quick reference
+                </p>
+                <ul className="text-white/70 text-sm space-y-1.5 leading-relaxed">
+                  <li>
+                    <span className="text-white">Email signature ·</span>{" "}
+                    Helvetica Neue, Arial
+                  </li>
+                  <li>
+                    <span className="text-white">Microsoft Word / Docs ·</span>{" "}
+                    Arial
+                  </li>
+                  <li>
+                    <span className="text-white">Print / vehicle wrap ·</span>{" "}
+                    Helvetica Neue Bold
+                  </li>
+                  <li>
+                    <span className="text-white">Slide decks ·</span> Arial or
+                    Helvetica
+                  </li>
+                </ul>
+              </div>
+
               <div className="surface-card p-6">
-                <p className="text-white/50 text-xs mb-3">Web stack</p>
-                <CopyButton value="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" />
+                <p className="text-white/50 text-xs mb-3">
+                  Web stack (full fallback chain)
+                </p>
+                <CopyButton value="font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;" />
               </div>
             </div>
           </Section>
