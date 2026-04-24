@@ -1,5 +1,22 @@
 uploads = []
-generated = []
+
+[[generated]]
+id = "Qk3EHx01v56ZyNX-zTExQ"
+uri = "file://exports/truck-wrap/f250-side-profile.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "HH3lGzCWodeTOeJdZPAQ4"
+uri = "file://exports/truck-wrap/f250-three-quarter.png"
+type = "image"
+title = "generated_image"
+
+[[generated]]
+id = "gTzL6CzCMQNNKqRGMryfk"
+uri = "file://exports/truck-wrap/f250-rear-tailgate.png"
+type = "image"
+title = "generated_image"
 
 [[outputs]]
 id = "zv2v1Pv208sUuWTkO3Y8S"
@@ -24,3 +41,21 @@ id = "cDvmjvKIYaEd1ISzqpNuy"
 uri = "file://exports/email-signature/landon-co-logo-white-200.png"
 type = "image"
 title = "White logo — 200px display (400px @ 2x)"
+
+[[outputs]]
+id = "P5mJCBzZk3ldohSVmGt6U"
+uri = "file://exports/truck-wrap/f250-three-quarter.png"
+type = "image"
+title = "F-250 Wrap Mockup — 3/4 Front Angle"
+
+[[outputs]]
+id = "dxaPmVfE8q7uQTogGMuPs"
+uri = "file://exports/truck-wrap/f250-side-profile.png"
+type = "image"
+title = "F-250 Wrap Mockup — Side Profile"
+
+[[outputs]]
+id = "Xw_vu6CQUO4PV-7_ykVQs"
+uri = "file://exports/truck-wrap/f250-rear-tailgate.png"
+type = "image"
+title = "F-250 Wrap Mockup — Rear Tailgate"
