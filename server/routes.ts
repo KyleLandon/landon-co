@@ -5,6 +5,7 @@ import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail, sendSubmissionEmail } from "./email";
 import { sendDiscordSubmissionNotification } from "./discord";
+import { sendContactSms, sendSubmissionSms } from "./sms";
 import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema, insertProjectFileSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
@@ -83,6 +84,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!emailSent) {
         console.error('Failed to send email notification for contact:', contact.id);
       }
+
+      // Fire SMS notification (non-blocking)
+      sendContactSms({
+        name: validatedData.name,
+        email: validatedData.email,
+        phone: validatedData.phone || null,
+        project: validatedData.project || null,
+        budget: validatedData.budget || null,
+        message: validatedData.message,
+      }).catch((err) => console.error("SMS notification error:", err));
       
       res.json({ 
         success: true, 
@@ -156,6 +167,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         Promise.all([
           sendDiscordSubmissionNotification(projectSubmissionData),
           sendSubmissionEmail(projectSubmissionData),
+          sendSubmissionSms(projectSubmissionData),
         ]).catch((err) => console.error("Notification error:", err));
 
         res.json({
@@ -183,6 +195,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         Promise.all([
           sendDiscordSubmissionNotification(projectSubmissionData),
           sendSubmissionEmail(projectSubmissionData),
+          sendSubmissionSms(projectSubmissionData),
         ]).catch((err) => console.error("Notification error:", err));
 
         res.json({
