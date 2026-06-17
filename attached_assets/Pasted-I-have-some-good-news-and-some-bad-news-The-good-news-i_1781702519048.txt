@@ -1,0 +1,46 @@
+I have some good news and some bad news. The good news is that you probably don't have an issue with your products or a broken checkout page. The bad news? The "visitors" you are seeing in your dashboard are not actual customers—they are automated malicious web bots, and bots do not buy furniture.
+
+Looking closely at the Top Pages section at the bottom of image_544da6.png, the mystery of your zero conversions is solved right there.
+
+The Breakdown of Your "Traffic"
+Your analytics tool is tracking total technical requests to your server and mistaking automated hacking scripts for genuine shoppers. Here is exactly what those bots are doing on your site:
+
+/wp-login.php (2,252 hits) & /wp-admin/index.php: These are standard WordPress admin access endpoints. Automated bots are relentlessly slamming these pages attempting to brute-force guess your username and password to take over your site backend.
+
+/.env (138 hits): This is a major red flag. A .env file is a configuration file where developers store sensitive environment data like database passwords, encryption keys, and payment gateway credentials. Bots crawl the web looking for poorly secured sites that leave this file publicly exposed.
+
+/ (1,596 hits): While this is your main homepage, a huge chunk of this traffic is just the same scripts hitting the front door before attempting to probe your login and configuration files.
+
+Notice also that your Top Referrers list only accounts for a tiny double-digit fraction of hits. Real humans arrive via search engines or social media links; malicious scripts hit your URLs directly without any referrer data.
+
+In short, your actual human traffic is likely very close to zero right now, which perfectly explains the lack of sales.
+
+Your Action Plan
+To turn things around, you need to pivot from viewing this as a marketing problem to addressing it as a security and data-filtering problem first.
+
+1. Lock Down Your Website Immediately
+Because bots are actively probing your sensitive backend files, securing your WordPress site is priority number one:
+
+Hide Your Login Page: Use a plugin like WPS Hide Login to change your login URL from /wp-login.php to something completely custom (e.g., /landon-team-portal). This instantly stops brute-force bots from finding it.
+
+Block Access to /.env: Ensure your server configuration completely blocks public web access to any files starting with a dot (.).
+
+Deploy a Firewall: Sign up for a free Cloudflare account and point your domain name through it. Cloudflare's Web Application Firewall (WAF) is incredibly efficient at blocking automated security scanners before they even touch your host server.
+
+Install a WordPress Security Plugin: Install a trusted tool like Wordfence or Sucuri to monitor file integrity and block malicious IP addresses.
+
+2. Clean Up Your Analytics Tracking
+Your current dashboard is creating a false impression by inflating your visitor counts with background noise.
+
+Implement a platform like Google Analytics 4 (GA4) or rely on Cloudflare's human-centric web analytics. These tools automatically filter out known bot signatures, giving you an accurate headcount of real human visitors.
+
+Note: Don't be discouraged when your traffic numbers plummet after doing this. Seeing 10 real human visitors is infinitely better than seeing 1,200 malicious bots.
+
+3. Drive Real Human Traffic to the Site
+Once you are tracking clean data, you can build a genuine e-commerce funnel:
+
+Visual Social Commerce: Furniture and home decor thrive on visual platforms. Focus your energy on driving organic or paid traffic from Pinterest and Instagram, where real buyers go for interior design inspiration.
+
+Targeted Organic Search (SEO): Optimize your product titles, descriptions, and metadata for specific buyer-intent keywords that human consumers search for.
+
+Are you currently running any active marketing campaigns (like Instagram ads or Google Search ads) to bring people to the site, or has your outreach up to this point been entirely organic?
