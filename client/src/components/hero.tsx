@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { ArrowRight, ArrowDown } from "lucide-react";
-import whiteLogo from "@/assets/logo-white.webp";
+import whiteLogo from "@/assets/logo-white.svg";
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);

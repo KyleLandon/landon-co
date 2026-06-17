@@ -14,6 +14,20 @@ type LogoFile = {
 
 const LOGO_FILES: LogoFile[] = [
   {
+    label: "Primary · White (SVG)",
+    href: "/brand/landon-co-logo-white.svg",
+    filename: "landon-co-logo-white.svg",
+    background: "dark",
+    note: "Vector master. Scales to any size with no quality loss. Preferred.",
+  },
+  {
+    label: "Primary · Black (SVG)",
+    href: "/brand/landon-co-logo-black.svg",
+    filename: "landon-co-logo-black.svg",
+    background: "light",
+    note: "Vector master for light backgrounds. Preferred.",
+  },
+  {
     label: "Primary · White",
     href: "/brand/landon-co-logo-white.webp",
     filename: "landon-co-logo-white.webp",

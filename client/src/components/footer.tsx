@@ -1,5 +1,5 @@
 import { Mail, Phone, Instagram, ArrowUpRight } from "lucide-react";
-import whiteLogo from "@/assets/logo-white.webp";
+import whiteLogo from "@/assets/logo-white.svg";
 
 const Footer = () => {
   return (
