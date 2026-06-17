@@ -16,8 +16,24 @@ import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
 import panjosImage from "@/assets/panjos-project.webp";
 import landonsCleaningImage from "@/assets/landons-cleaning-project.webp";
+import mooseBearImage from "@/assets/moose-bear-project.webp";
+import dltHomesImage from "@/assets/dlt-homes-project.webp";
 
 const projects = [
+  {
+    src: mooseBearImage,
+    alt: "Moose & the Bear restaurant website",
+    title: "Moose & the Bear",
+    category: "Restaurant · Fine dining",
+    url: "https://mooseandthebear.replit.app",
+  },
+  {
+    src: dltHomesImage,
+    alt: "DLT Custom Homes website",
+    title: "DLT Custom Homes",
+    category: "Custom home builder · Marketing site",
+    url: "https://dltcustomhomes.com",
+  },
   {
     src: landonsCleaningImage,
     alt: "Landon's Cleaning Co. website",

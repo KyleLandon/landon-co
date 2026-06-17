@@ -10,8 +10,30 @@ import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
 import panjosImage from "@/assets/panjos-project.webp";
 import landonsCleaningImage from "@/assets/landons-cleaning-project.webp";
+import mooseBearImage from "@/assets/moose-bear-project.webp";
+import dltHomesImage from "@/assets/dlt-homes-project.webp";
 
 const projects = [
+  {
+    id: 7,
+    title: "Moose & the Bear",
+    description:
+      "Fine-dining restaurant site with an immersive mountain-modern aesthetic, online reservations, menu showcase, and private events.",
+    image: mooseBearImage,
+    tags: ["Restaurant", "Fine Dining", "Reservations", "Responsive"],
+    demoUrl: "https://mooseandthebear.replit.app",
+    category: "Web Development",
+  },
+  {
+    id: 8,
+    title: "DLT Custom Homes",
+    description:
+      "Marketing site for a South Texas custom home builder serving Corpus Christi, San Antonio, and Victoria — services, service areas, and quote requests.",
+    image: dltHomesImage,
+    tags: ["Construction", "Custom Homes", "Lead Gen", "Local SEO"],
+    demoUrl: "https://dltcustomhomes.com",
+    category: "Web Development",
+  },
   {
     id: 1,
     title: "Landon's Cleaning Co.",
