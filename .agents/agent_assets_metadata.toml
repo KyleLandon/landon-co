@@ -95,3 +95,15 @@ id = "XryUXB7vaVIMhSWUzD8L9"
 uri = "file://exports/google-business/keyplus.jpg"
 type = "image"
 title = "Key Plus — website"
+
+[[outputs]]
+id = "1b2145_6dQQDlYDfQwjo3"
+uri = "file://exports/google-business/moose-and-the-bear.jpg"
+type = "image"
+title = "Moose & the Bear — website"
+
+[[outputs]]
+id = "TLFnBRaHOahL-4xRR6CBE"
+uri = "file://exports/google-business/dlt-custom-homes.jpg"
+type = "image"
+title = "DLT Custom Homes — website"
