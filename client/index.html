@@ -64,7 +64,13 @@
         window.dataLayer = window.dataLayer || [];
         window.gtag = function () { window.dataLayer.push(arguments); };
         window.gtag("js", new Date());
-        window.gtag("config", "G-TBXZCLRL5C", { anonymize_ip: true });
+        // send_page_view:false — the React <Analytics> component is the single
+        // source of truth for page_view events (initial load + SPA route changes),
+        // so gtag does not auto-send the initial pageview here.
+        window.gtag("config", "G-TBXZCLRL5C", {
+          anonymize_ip: true,
+          send_page_view: false,
+        });
       })();
     </script>
 
