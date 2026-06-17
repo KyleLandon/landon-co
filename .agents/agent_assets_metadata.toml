@@ -59,3 +59,39 @@ id = "Xw_vu6CQUO4PV-7_ykVQs"
 uri = "file://exports/truck-wrap/f250-rear-tailgate.png"
 type = "image"
 title = "F-250 Wrap Mockup — Rear Tailgate"
+
+[[outputs]]
+id = "uy-BwwWoWAWZNIrN_CDjO"
+uri = "file://exports/google-business/willwork.jpg"
+type = "image"
+title = "Will Work Construction — website"
+
+[[outputs]]
+id = "fOA66DI_xTJ5Dexs7epiP"
+uri = "file://exports/google-business/landons-cleaning.jpg"
+type = "image"
+title = "Landon's Cleaning Co. — website"
+
+[[outputs]]
+id = "FbEfxfQrnDq1tOMEc4eGY"
+uri = "file://exports/google-business/panjos.jpg"
+type = "image"
+title = "Panjo's Pizza — website"
+
+[[outputs]]
+id = "yIitbamU9Z-Y57xF-pQW1"
+uri = "file://exports/google-business/comic.jpg"
+type = "image"
+title = "Comic Mystery Boxes — website"
+
+[[outputs]]
+id = "BAY5VbV1YWb5wPTT4lZTv"
+uri = "file://exports/google-business/theraid.jpg"
+type = "image"
+title = "The Raid — website"
+
+[[outputs]]
+id = "XryUXB7vaVIMhSWUzD8L9"
+uri = "file://exports/google-business/keyplus.jpg"
+type = "image"
+title = "Key Plus — website"
