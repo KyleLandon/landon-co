@@ -10,8 +10,8 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ArrowUpRight, ExternalLink } from "lucide-react";
-import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
+import lonestarLawnsImage from "@/assets/lonestar-lawns-project.webp";
 import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
 import panjosImage from "@/assets/panjos-project.webp";
@@ -20,6 +20,13 @@ import mooseBearImage from "@/assets/moose-bear-project.webp";
 import dltHomesImage from "@/assets/dlt-homes-project.webp";
 
 const projects = [
+  {
+    src: lonestarLawnsImage,
+    alt: "Lone Star Lawns lawn care website",
+    title: "Lone Star Lawns",
+    category: "Lawn care · Service business",
+    url: "https://lonestarlawns.net",
+  },
   {
     src: mooseBearImage,
     alt: "Moose & the Bear restaurant website",
@@ -42,13 +49,6 @@ const projects = [
     url: "https://landons-cleaning-manager.replit.app",
   },
   {
-    src: willWorkImage,
-    alt: "Will Work Construction website",
-    title: "Will Work Construction",
-    category: "Construction · Marketing site",
-    url: "https://willworkconstruction.com/home",
-  },
-  {
     src: theRaidImage,
     alt: "The Raid team website",
     title: "The Raid",
@@ -60,7 +60,7 @@ const projects = [
     alt: "Panjo's Pizza restaurant website",
     title: "Panjo's Pizza",
     category: "Restaurant · Local business",
-    url: "https://panjospizza.replit.app",
+    url: "https://panjospizza.com",
   },
   {
     src: keyplusImage,

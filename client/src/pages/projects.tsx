@@ -4,8 +4,8 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Link } from "wouter";
 import { fadeInUp, staggerContainer } from "@/lib/animations";
 import SEO from "@/components/seo";
-import willWorkImage from "@/assets/willwork-project.webp";
 import comicMysteryImage from "@/assets/comic-project.webp";
+import lonestarLawnsImage from "@/assets/lonestar-lawns-project.webp";
 import theRaidImage from "@/assets/theraid-project.webp";
 import keyplusImage from "@/assets/keyplus-project.webp";
 import panjosImage from "@/assets/panjos-project.webp";
@@ -14,6 +14,16 @@ import mooseBearImage from "@/assets/moose-bear-project.webp";
 import dltHomesImage from "@/assets/dlt-homes-project.webp";
 
 const projects = [
+  {
+    id: 9,
+    title: "Lone Star Lawns",
+    description:
+      "Lawn care site for a family-owned Beeville, TX crew — services, pricing, service areas, and instant quote requests.",
+    image: lonestarLawnsImage,
+    tags: ["Lawn Care", "Service Business", "Lead Gen", "Local SEO"],
+    demoUrl: "https://lonestarlawns.net",
+    category: "Web Development",
+  },
   {
     id: 7,
     title: "Moose & the Bear",
@@ -45,16 +55,6 @@ const projects = [
     category: "Web Development",
   },
   {
-    id: 2,
-    title: "Will Work Construction",
-    description:
-      "Professional construction company website with modern design and clear service showcases.",
-    image: willWorkImage,
-    tags: ["React", "TypeScript", "Responsive", "Business"],
-    demoUrl: "https://willworkconstruction.com/home",
-    category: "Web Development",
-  },
-  {
     id: 3,
     title: "The Raid",
     description:
@@ -71,7 +71,7 @@ const projects = [
       "Family-owned Rockport pizzeria site with menu, gallery, click-to-call, and a roadmap to online ordering.",
     image: panjosImage,
     tags: ["Restaurant", "Local Business", "Responsive"],
-    demoUrl: "https://panjospizza.replit.app",
+    demoUrl: "https://panjospizza.com",
     category: "Web Development",
   },
   {
