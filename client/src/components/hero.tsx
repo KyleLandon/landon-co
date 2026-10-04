@@ -86,7 +86,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative h-screen w-full overflow-hidden bg-black"
+      className="relative h-screen md:h-auto md:min-h-screen w-full overflow-hidden bg-black"
     >
       <canvas
         ref={canvasRef}
@@ -104,7 +104,7 @@ const Hero = () => {
         }}
       />
 
-      <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center">
+      <div className="relative z-10 flex h-full md:h-auto md:min-h-screen flex-col items-center justify-center px-6 md:py-28 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
