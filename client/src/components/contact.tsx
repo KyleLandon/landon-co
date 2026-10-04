@@ -99,7 +99,7 @@ const Contact = () => {
             <div className="space-y-3">
               {[
                 { href: "mailto:info@landonco.co", label: "Email", text: "info@landonco.co", Icon: Mail },
-                { href: "tel:+19403892685", label: "Phone", text: "(940) 389-2685", Icon: Phone },
+                { href: "tel:+13616215151", label: "Phone", text: "361-621-5151", Icon: Phone },
               ].map(({ href, label, text, Icon }) => (
                 <a
                   key={href}

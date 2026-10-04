@@ -48,13 +48,13 @@ export function SupportWidget() {
                 </a>
                 
                 <a
-                  href="tel:+19403892685"
+                  href="tel:+13616215151"
                   className="flex items-center p-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors group"
                 >
                   <Phone className="w-5 h-5 text-green-400 mr-3" />
                   <div>
                     <p className="text-white text-sm group-hover:text-green-400">Call Direct</p>
-                    <p className="text-gray-400 text-xs">(940) 389-2685</p>
+                    <p className="text-gray-400 text-xs">361-621-5151</p>
                   </div>
                 </a>
                 

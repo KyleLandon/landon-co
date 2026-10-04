@@ -14,3 +14,9 @@ Discord notifications should be compact and show all submitted information and l
 **Why:** The user asked for a better presentation than “just a .txt,” then clarified that the messages were too long and they only need the information and links customers send.
 
 **How to apply:** Omit unanswered prompts and redundant headings, use short labels, and preserve the submitted details and usable links.
+
+The business contact number is a Google Voice number.
+
+**Why:** The user switched the site's business contact number to Google Voice.
+
+**How to apply:** Do not assume an AT&T email-to-SMS gateway can deliver to the business number. Keep call links separate from notification delivery configuration.

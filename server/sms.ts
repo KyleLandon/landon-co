@@ -5,9 +5,10 @@ import { ReplitConnectors } from "@replit/connectors-sdk";
 
 const connectors = new ReplitConnectors();
 
-// Override via env var if the carrier or destination ever changes.
+// Optional explicitly configured carrier gateway; do not assume the business
+// Google Voice number uses AT&T's email-to-SMS service.
 // Format: <10-digit-number>@<carrier-gateway>
-const SMS_TO = process.env.OWNER_SMS_GATEWAY || "9403892685@txt.att.net";
+const SMS_TO = process.env.OWNER_SMS_GATEWAY;
 
 interface ContactSmsData {
   name: string;
@@ -46,6 +47,10 @@ function clip(value: string, max: number): string {
 }
 
 async function sendSmsViaGmail(body: string): Promise<boolean> {
+  if (!SMS_TO) {
+    console.warn("SMS notification not sent: OWNER_SMS_GATEWAY is not configured.");
+    return false;
+  }
   try {
     // Plain-text RFC 2822. Carrier gateways strip subject lines into the
     // SMS body in some cases — keeping subject empty avoids prefixed noise.

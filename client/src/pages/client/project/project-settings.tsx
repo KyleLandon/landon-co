@@ -322,7 +322,7 @@ export default function ProjectSettings() {
                       </div>
                       <div className="flex items-center text-white/60 text-sm">
                         <Phone className="w-4 h-4 mr-2" />
-                        (940) 389-2685
+                        361-621-5151
                       </div>
                     </div>
                   </div>

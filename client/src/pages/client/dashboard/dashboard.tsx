@@ -500,7 +500,7 @@ export default function Dashboard() {
                       </p>
                       <p className="text-sm text-gray-300">
                         <Phone className="w-4 h-4 inline mr-2" />
-                        (940) 389-2685
+                        361-621-5151
                       </p>
                     </div>
                   </div>

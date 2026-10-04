@@ -14,7 +14,7 @@ export default function AdminSettings() {
   const [formData, setFormData] = useState({
     companyName: "Landon & Co.",
     companyEmail: "info@landonco.co",
-    companyPhone: "(940) 389-2685",
+    companyPhone: "361-621-5151",
     defaultProjectStatus: "inquiry",
     autoCreateProjects: true,
     emailNotifications: true,

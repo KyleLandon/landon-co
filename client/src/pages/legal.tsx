@@ -150,7 +150,7 @@ export function PrivacyPage() {
         >
           info@landonco.co
         </a>{" "}
-        or call (940) 389-2685.
+        or call 361-621-5151.
       </p>
     </LegalShell>
   );
