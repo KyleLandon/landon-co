@@ -1,9 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import compression from "compression";
+import cors from "cors";
+import { clerkMiddleware } from "@clerk/express";
+import { publishableKeyFromHost } from "@clerk/shared/keys";
+import { CLERK_PROXY_PATH, clerkProxyMiddleware, getClerkProxyHost } from "./middlewares/clerkProxyMiddleware";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 
 const app = express();
+app.set("trust proxy", 1);
+app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
+app.use(cors({ credentials: true, origin: true }));
 app.use(compression());
 
 // Security headers (production only — relaxed in dev so the Replit preview iframe still works)
@@ -27,6 +34,14 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(
+  clerkMiddleware((req) => ({
+    publishableKey: publishableKeyFromHost(
+      getClerkProxyHost(req) ?? "",
+      process.env.CLERK_PUBLISHABLE_KEY,
+    ),
+  })),
+);
 
 app.use((req, res, next) => {
   const start = Date.now();

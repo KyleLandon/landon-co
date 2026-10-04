@@ -1,10 +1,13 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Redirect, useLocation, Router as WouterRouter } from "wouter";
+import { ClerkProvider, SignIn, SignUp } from "@clerk/react";
+import { basePath, stripBase, clerkPubKey, clerkProxyUrl, clerkAppearance } from "@/lib/clerk";
+import { ClerkQueryClientCacheInvalidator } from "@/components/clerk-session";
 import { lazy, Suspense } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { ErrorBoundary } from "@/components/error-boundary";
 import { SupportWidget } from "@/components/support-widget";
 import Analytics from "@/components/analytics";
@@ -72,15 +75,31 @@ import {
 } from "@/lib/service-configs";
 
 function Router() {
-  const { isAuthenticated, isAdmin, isLoading } = useAuth();
+  const { isAuthenticated, isAdmin, isLoading, authError, logout } = useAuth();
+  const [path] = useLocation();
+  const protectedPath = /^\/(dashboard|admin|project)(\/|$)/.test(path) || /^\/projects\/[^/]+/.test(path);
 
   if (isLoading) {
     return <LoadingPage message="Loading..." />;
   }
+  if (protectedPath && !isAuthenticated) return <Redirect to="/sign-in" />;
+  if (protectedPath && (authError || (path.startsWith("/admin") && !isAdmin))) {
+    return <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center gap-4">
+      <h1>Access denied</h1>
+      <p>Your account could not access this page. Please contact support.</p>
+      <button onClick={() => void logout()}>Log out</button>
+    </div>;
+  }
 
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/">{isAuthenticated ? <Redirect to={isAdmin ? "/admin" : "/dashboard"} /> : <Home />}</Route>
+      <Route path="/sign-in/*?">{() => <div className="flex min-h-[100dvh] items-center justify-center bg-black px-4">
+        <SignIn routing="path" path={`${basePath}/sign-in`} signUpUrl={`${basePath}/sign-up`} forceRedirectUrl={`${basePath}/`} />
+      </div>}</Route>
+      <Route path="/sign-up/*?">{() => <div className="flex min-h-[100dvh] items-center justify-center bg-black px-4">
+        <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} forceRedirectUrl={`${basePath}/`} />
+      </div>}</Route>
       <Route path="/projects" component={Projects} />
 
       {/* Service pages */}
@@ -147,25 +166,25 @@ function Router() {
         <>
           <Route path="/dashboard">
             {() => {
-              window.location.href = "/api/login";
+              window.location.href = "/sign-in";
               return <LoadingPage message="Redirecting to login..." />;
             }}
           </Route>
           <Route path="/admin">
             {() => {
-              window.location.href = "/api/login";
+              window.location.href = "/sign-in";
               return <LoadingPage message="Redirecting to login..." />;
             }}
           </Route>
           <Route path="/projects/:id">
             {() => {
-              window.location.href = "/api/login";
+              window.location.href = "/sign-in";
               return <LoadingPage message="Redirecting to login..." />;
             }}
           </Route>
           <Route path="/project/:id">
             {() => {
-              window.location.href = "/api/login";
+              window.location.href = "/sign-in";
               return <LoadingPage message="Redirecting to login..." />;
             }}
           </Route>
@@ -175,7 +194,7 @@ function Router() {
               const path = window.location.pathname;
               // Check if this looks like a protected route
               if (path.includes('admin') || path.includes('dashboard') || path.includes('project')) {
-                window.location.href = "/api/login";
+                window.location.href = "/sign-in";
                 return <LoadingPage message="Redirecting to login..." />;
               }
               // Otherwise show 404
@@ -191,10 +210,25 @@ function Router() {
   );
 }
 
-function App() {
+function ClerkProviderWithRoutes() {
+  const [, setLocation] = useLocation();
   return (
     <ErrorBoundary>
+      <ClerkProvider
+        publishableKey={clerkPubKey}
+        proxyUrl={clerkProxyUrl}
+        appearance={clerkAppearance}
+        signInUrl={`${basePath}/sign-in`}
+        signUpUrl={`${basePath}/sign-up`}
+        localization={{
+          signIn: { start: { title: "Welcome back", subtitle: "Sign in to your Landon & Co. account" } },
+          signUp: { start: { title: "Create your account", subtitle: "Start your project with Landon & Co." } },
+        }}
+        routerPush={(to) => setLocation(stripBase(to))}
+        routerReplace={(to) => setLocation(stripBase(to), { replace: true })}
+      >
       <QueryClientProvider client={queryClient}>
+        <ClerkQueryClientCacheInvalidator />
         <TooltipProvider>
           <Suspense fallback={<LoadingPage message="Loading..." />}>
             <Router />
@@ -204,8 +238,13 @@ function App() {
           <Toaster />
         </TooltipProvider>
       </QueryClientProvider>
+      </ClerkProvider>
     </ErrorBoundary>
   );
+}
+
+function App() {
+  return <WouterRouter base={basePath}><ClerkProviderWithRoutes /></WouterRouter>;
 }
 
 export default App;

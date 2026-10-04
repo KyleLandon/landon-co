@@ -4,6 +4,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.cl-formFieldInput::placeholder {
+  color: #a3a3a3;
+  opacity: 1;
+}
+.cl-socialButtonsBlockButton:hover { background: #292929; }
+.cl-formButtonPrimary:hover { background: #d4d4d4; }
+
 :root {
   --background: hsl(0, 0%, 100%);
   --foreground: hsl(0, 0%, 3.9%);

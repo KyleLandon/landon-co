@@ -1,6 +1,6 @@
 import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import FileManager from "@/components/file-manager";
 import ProjectLayout from "./project-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

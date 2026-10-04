@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { motion } from "framer-motion";
 import { Clock, MessageCircle, CheckCircle, DollarSign, User, LogOut, AlertCircle, RefreshCw, Mail, Phone, Edit, HelpCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ import { apiRequest } from "@/lib/queryClient";
 import type { Project } from "@/types";
 
 export default function Dashboard() {
-  const { user, authError, refetchAuth } = useAuth();
+  const { user, authError, refetchAuth, logout, updateProfile } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -30,11 +30,10 @@ export default function Dashboard() {
   // Update profile mutation
   const updateProfileMutation = useMutation({
     mutationFn: async (updates: any) => {
-      const res = await apiRequest("PUT", `/api/users/profile`, updates);
-      return res.json();
+      return updateProfile(updates);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/auth/user"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/me"] });
       setProfileOpen(false);
       toast({
         title: "Success",
@@ -72,7 +71,7 @@ export default function Dashboard() {
     },
   });
   
-  const { data: projects = [], isLoading, error, refetch } = useQuery<Project[]>({
+  const { data: projects = [], isLoading, isSuccess: projectsLoaded, error, refetch } = useQuery<Project[]>({
     queryKey: ["/api/my-projects"],
     retry: (failureCount, error) => {
       if (error?.message?.includes("401") || error?.message?.includes("403")) {
@@ -131,7 +130,7 @@ export default function Dashboard() {
                 Retry
               </Button>
               <Button 
-                onClick={() => window.location.href = "/api/login"}
+                onClick={() => window.location.href = "/sign-in"}
                 variant="outline" 
                 className="flex-1 border-gray-600 text-white"
               >
@@ -188,7 +187,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white" data-testid={projectsLoaded ? "legacy-projects-loaded" : undefined}>
       <Navigation />
       
       <div className="pt-24 pb-16">
@@ -216,7 +215,7 @@ export default function Dashboard() {
                   <span className="text-sm">{user?.email}</span>
                 </div>
                 <Button
-                  onClick={() => window.location.href = "/api/logout"}
+                  onClick={() => void logout()}
                   variant="outline"
                   size="sm"
                   className="bg-transparent border-white/10 text-white hover:bg-white/5"

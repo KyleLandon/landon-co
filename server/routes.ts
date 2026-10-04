@@ -2,7 +2,6 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
-import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
 import { sendContactEmail, sendIntakeEmail } from "./email";
 import { sendIntakeDiscordNotification } from "./discord";
 import { createIntakeHandler } from "./intake";
@@ -13,6 +12,8 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import express from "express";
+import { requireAuth as isAuthenticated, isAdmin } from "./middlewares/requireAuth";
+import { getAuth } from "@clerk/express";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Store connected clients by project ID for WebSocket broadcasting
@@ -45,18 +46,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Auth middleware
-  await setupAuth(app);
-
   // Serve uploaded files
   app.use('/uploads', express.static('uploads'));
 
   // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+  app.get('/api/me', isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
+      res.json({ id: req.dbUser.id, role: req.dbUser.role });
     } catch (error) {
       console.error("Error fetching user:", error);
       res.status(500).json({ message: "Failed to fetch user" });
@@ -173,7 +169,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       if (!clientUser) {
         // Create a new user account for the client
-        clientUser = await storage.upsertUser({
+        clientUser = await storage.createUser({
           id: `temp_${Date.now()}`, // Temporary ID until they authenticate
           email: submission.email,
           firstName: submission.name?.split(' ')[0] || null,
@@ -212,7 +208,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Project request from authenticated client
   app.post("/api/project-request", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user?.claims?.sub;
+      const userId = req.dbUser!.id;
       if (!userId) {
         return res.status(401).json({ message: "User not authenticated" });
       }
@@ -238,10 +234,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Also create a contact entry for record keeping
       const contactData = {
-        name: req.user.claims.first_name && req.user.claims.last_name 
-          ? `${req.user.claims.first_name} ${req.user.claims.last_name}`
-          : req.user.claims.email?.split('@')[0] || 'User',
-        email: req.user.claims.email || '',
+        name: getAuth(req).sessionClaims?.firstName && getAuth(req).sessionClaims?.lastName
+          ? `${getAuth(req).sessionClaims?.firstName} ${getAuth(req).sessionClaims?.lastName}`
+          : getAuth(req).sessionClaims?.email?.split('@')[0] || 'User',
+        email: getAuth(req).sessionClaims?.email || '',
         phone: phoneNumber || '',
         preferredContact: 'email',
         project: projectType,
@@ -376,7 +372,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/admin/users/:id", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const userId = req.params.id;
-      const currentUserId = (req.user as any).claims.sub;
+      const currentUserId = req.dbUser!.id;
       
       // Prevent admin from deleting their own account
       if (userId === currentUserId) {
@@ -393,7 +389,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Client routes - My projects
   app.get("/api/my-projects", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       const projects = await storage.getProjectsByClient(userId);
       res.json(projects);
     } catch (error) {
@@ -405,7 +401,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/projects/:id", isAuthenticated, async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       
       const project = await storage.getProject(projectId);
       if (!project) {
@@ -426,7 +422,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch("/api/projects/:id", isAuthenticated, async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       
       const project = await storage.getProject(projectId);
       if (!project) {
@@ -450,7 +446,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/projects/:id/messages", isAuthenticated, async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       
       // Verify user has access to this project
       const project = await storage.getProject(projectId);
@@ -474,14 +470,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log("Message POST request received:", {
         projectId: req.params.id,
-        userId: req.user?.claims?.sub,
+        userId: req.dbUser!.id,
         body: req.body,
         userAgent: req.get('User-Agent'),
         headers: req.headers
       });
 
       const projectId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       const { message, replyTo } = req.body;
 
       if (!message || message.trim() === "") {
@@ -539,7 +535,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/projects/:id/updates", isAuthenticated, async (req: any, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       
       // Verify user has access to this project
       const project = await storage.getProject(projectId);
@@ -645,7 +641,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/projects/:id/contracts", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = (req.user as any).claims.sub;
+      const userId = req.dbUser!.id;
       const contractData = { ...req.body, projectId, createdBy: userId };
       
       const contract = await storage.createContract(contractData);
@@ -695,7 +691,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/contracts/:id/sign", isAuthenticated, async (req, res) => {
     try {
       const contractId = parseInt(req.params.id);
-      const userId = (req.user as any).claims.sub;
+      const userId = req.dbUser!.id;
       const { signature } = req.body;
       const clientIp = req.ip || req.connection.remoteAddress || 'unknown';
       
@@ -722,7 +718,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/projects/:id/invoices", isAuthenticated, isAdmin, async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = (req.user as any).claims.sub;
+      const userId = req.dbUser!.id;
       const invoiceNumber = storage.generateInvoiceNumber();
       const invoiceData = { 
         ...req.body, 
@@ -814,7 +810,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/projects/:id/files", isAuthenticated, upload.single('file'), async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = (req.user as any)?.claims?.sub;
+      const userId = req.dbUser!.id;
       
       if (!req.file) {
         return res.status(400).json({ message: "No file uploaded" });
@@ -851,8 +847,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/projects/:id/files", isAuthenticated, async (req, res) => {
     try {
       const projectId = parseInt(req.params.id);
-      const userId = (req.user as any)?.claims?.sub;
-      const userRole = (req.user as any)?.claims?.role;
+      const userId = req.dbUser!.id;
+      const userRole = req.dbUser!.role;
       
       let files = await storage.getProjectFiles(projectId);
       
@@ -872,8 +868,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/files/:id/download", isAuthenticated, async (req, res) => {
     try {
       const fileId = parseInt(req.params.id);
-      const userId = (req.user as any)?.claims?.sub;
-      const userRole = (req.user as any)?.claims?.role;
+      const userId = req.dbUser!.id;
+      const userRole = req.dbUser!.role;
       
       const file = await storage.getProjectFile(fileId);
       
@@ -897,8 +893,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/files/:id", isAuthenticated, async (req, res) => {
     try {
       const fileId = parseInt(req.params.id);
-      const userId = (req.user as any)?.claims?.sub;
-      const userRole = (req.user as any)?.claims?.role;
+      const userId = req.dbUser!.id;
+      const userRole = req.dbUser!.role;
       
       const file = await storage.getProjectFile(fileId);
       
@@ -961,26 +957,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // User profile update
-  app.put("/api/users/profile", isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const updates = req.body;
-      const user = await storage.updateUser(userId, updates);
-      res.json(user);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to update profile" });
-    }
-  });
-
   // Support request
   app.post("/api/support", isAuthenticated, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       const { subject, message, priority } = req.body;
       
       // Get user info for the support request
-      const user = await storage.getUser(userId);
+      const user = getAuth(req).sessionClaims;
       
       // Create a contact entry for the support request
       const supportData = {
@@ -1014,7 +998,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get unread message count for admin notifications
   app.get("/api/admin/unread-count", isAuthenticated, isAdmin, async (req: any, res) => {
     try {
-      const userId = req.user.claims.sub;
+      const userId = req.dbUser!.id;
       const unreadCount = await storage.getUnreadMessagesCount(userId);
       res.json(unreadCount);
     } catch (error) {
@@ -1061,7 +1045,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   
   // Setup WebSocket server for real-time messaging
-  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  // Handle only application upgrades; Vite must handle its own HMR socket.
+  const wss = new WebSocketServer({ noServer: true });
+  httpServer.on("upgrade", (req, socket, head) => {
+    if (new URL(req.url || "/", "http://localhost").pathname !== "/ws") return;
+    wss.handleUpgrade(req, socket, head, (ws) => {
+      wss.emit("connection", ws, req);
+    });
+  });
   
   wss.on('connection', (ws, req) => {
     console.log('WebSocket connection established');

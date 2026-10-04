@@ -77,15 +77,7 @@ export default function FileManager({ projectId, isAdmin }: FileManagerProps) {
   // Upload file mutation
   const uploadFile = useMutation({
     mutationFn: async (formData: FormData) => {
-      const response = await fetch(`/api/projects/${projectId}/files`, {
-        method: 'POST',
-        body: formData,
-      });
-      
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Upload failed');
-      }
+      const response = await apiRequest("POST", `/api/projects/${projectId}/files`, formData);
       
       return response.json();
     },

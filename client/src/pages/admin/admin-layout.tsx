@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { NotificationBell } from "@/components/notification-bell";
 import {
   Users,
@@ -41,6 +41,7 @@ function SidebarContent({
   isActive: (path: string) => boolean;
   onItemClick?: () => void;
 }) {
+  const { logout } = useAuth();
   return (
     <div className="flex flex-col h-full">
       <div className="px-6 py-7 border-b border-white/10">
@@ -77,7 +78,7 @@ function SidebarContent({
       <div className="p-3 border-t border-white/10">
         <button
           className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-white/60 hover:text-red-300 hover:bg-red-500/10 transition-colors"
-          onClick={() => (window.location.href = "/api/logout")}
+          onClick={() => void logout()}
         >
           <LogOut className="w-4 h-4" />
           Logout

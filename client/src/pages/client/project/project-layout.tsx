@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useParams, Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import {
   LayoutDashboard,
   MessageCircle,

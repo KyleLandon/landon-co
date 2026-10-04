@@ -2,7 +2,7 @@ import { useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { MessageCircle, User, Clock } from "lucide-react";
 import AdminLayout from "../admin-layout";
 import AppleMessaging from "@/components/apple-messaging";

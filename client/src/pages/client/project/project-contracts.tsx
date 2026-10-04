@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { useToast } from "@/hooks/use-toast";
 import { FileText, Calendar, DollarSign, CheckCircle, PenTool, Download } from "lucide-react";
 import { apiRequest } from "@/lib/queryClient";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import type { Project, Contract } from "@shared/schema";
 
 export default function ClientProjectContracts() {

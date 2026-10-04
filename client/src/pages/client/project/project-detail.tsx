@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { motion } from "framer-motion";
 import { ArrowLeft, MessageCircle, Clock, User, Send, CheckCircle2, Edit, Save, X } from "lucide-react";

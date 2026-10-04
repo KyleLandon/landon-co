@@ -14,7 +14,7 @@ import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 // Session storage table.
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// Preserved legacy session data. Do not drop this table during auth migrations.
 export const sessions = pgTable(
   "sessions",
   {
@@ -26,7 +26,7 @@ export const sessions = pgTable(
 );
 
 // User storage table with role-based access
-// (IMPORTANT) This table is mandatory for Replit Auth, don't drop it.
+// Local authorization and relationship data. Do not drop this table.
 export const users = pgTable("users", {
   id: varchar("id").primaryKey().notNull(),
   email: varchar("email").unique(),

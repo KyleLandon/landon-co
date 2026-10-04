@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -193,7 +193,7 @@ function InvoicesTab({ projectId }: { projectId: string }) {
 }
 
 export default function UnifiedDashboard() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
@@ -201,7 +201,7 @@ export default function UnifiedDashboard() {
   const [activeTab, setActiveTab] = useState<'communication' | 'files' | 'contracts' | 'invoices'>('communication');
 
   // Fetch user's projects
-  const { data: projects = [], isLoading: projectsLoading } = useQuery<Project[]>({
+  const { data: projects = [], isLoading: projectsLoading, isSuccess: projectsLoaded, error: projectsError } = useQuery<Project[]>({
     queryKey: ["/api/my-projects"],
     refetchInterval: 5000, // Auto-refresh every 5 seconds
   });
@@ -307,8 +307,16 @@ export default function UnifiedDashboard() {
     );
   }
 
+  if (projectsError) {
+    return <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center gap-4">
+      <h1>Unable to load your projects</h1>
+      <p>Please try again or contact support.</p>
+      <Button onClick={() => void logout()}>Log out</Button>
+    </div>;
+  }
+
   return (
-    <div className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black text-white" data-testid={projectsLoaded ? "client-projects-loaded" : undefined}>
       <Navigation />
       
       <div className="pt-20 pb-16">
@@ -339,7 +347,7 @@ export default function UnifiedDashboard() {
                 </ProjectRequestDialog>
                 
                 <Button
-                  onClick={() => window.location.href = "/api/logout"}
+                  onClick={() => void logout()}
                   variant="outline"
                   size="sm"
                   className="bg-transparent border-white/10 text-white hover:bg-white/5"

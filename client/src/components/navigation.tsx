@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User, LogOut, Settings } from "lucide-react";
 import { useScroll } from "@/hooks/use-scroll";
-import { useAuth } from "@/hooks/useAuth";
+import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import whiteLogo from "@/assets/logo-white.svg";
 
 const Navigation = () => {
@@ -10,7 +10,7 @@ const Navigation = () => {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, user, isAdmin } = useAuth();
+  const { isAuthenticated, user, isAdmin, logout } = useAuth();
   const navRef = useRef<HTMLElement>(null);
 
   const isDashboardPage =
@@ -158,7 +158,7 @@ const Navigation = () => {
 
                           <button
                             onClick={() => {
-                              window.location.href = "/api/logout";
+                              void logout();
                             }}
                             className="w-full px-4 py-2 text-left text-white/80 hover:text-white hover:bg-white/5 transition-colors text-sm flex items-center"
                           >
@@ -276,7 +276,7 @@ const Navigation = () => {
                         </button>
                       )}
                       <button
-                        onClick={() => (window.location.href = "/api/logout")}
+                        onClick={() => (void logout())}
                         className="w-full text-left text-white/80 hover:text-white text-sm flex items-center py-2"
                       >
                         <LogOut className="w-4 h-4 mr-3" />

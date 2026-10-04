@@ -36,7 +36,8 @@ Every route below `/` is lazy-loaded in `client/src/App.tsx` and wrapped in `<Su
 - **Framework**: Express.js with middleware for logging and error handling
 - **Database ORM**: Drizzle ORM with PostgreSQL (via Neon Database)
 - **API Design**: RESTful endpoints with JSON responses
-- **Session Management**: Express sessions with PostgreSQL store
+- **Authentication**: Replit-managed Clerk with browser session cookies, embedded branded sign-in/sign-up, and production Frontend API proxy
+- **Authorization**: Local users table retains roles and project relationships; first authenticated request resolves or provisions the local user by Clerk's `sessionClaims.userId` (legacy ID for migrated users). Existing users and sessions tables and all foreign keys are preserved.
 - **Validation**: Zod schemas for data validation
 
 ### Build System
@@ -48,7 +49,7 @@ Every route below `/` is lazy-loaded in `client/src/App.tsx` and wrapped in `<Su
 ## Key Components
 
 ### Database Schema
-- **Users Table**: Authentication system (id, username, password)
+- **Users Table**: Application user IDs, roles, and relationships; Clerk owns identity and login. Nullable legacy identity columns are retained without login-time synchronization.
 - **Contacts Table**: Contact form submissions (id, name, email, project, message, createdAt)
 - **Migrations**: Drizzle Kit for database schema management
 
@@ -100,7 +101,7 @@ Every route below `/` is lazy-loaded in `client/src/App.tsx` and wrapped in `<Su
 - **Styling**: Tailwind CSS, class-variance-authority, clsx
 
 ### Backend Dependencies
-- **Server**: Express.js with session management
+- **Server**: Express.js with Clerk middleware and local authorization
 - **Database**: Drizzle ORM, Neon Database serverless driver
 - **Development**: tsx for TypeScript execution
 
@@ -141,8 +142,9 @@ Changelog (condensed — older granular entries trimmed June 17, 2026):
   with category filtering. Real project screenshots (WillWork Construction, Comic Mystery Boxes).
 - Contact form: name, email, phone, preferred contact method, budget, message. Click-to-call.
   Email delivery of submissions; budget tiers simplified.
-- Auth: "Submit Project & Create Account" flow via Google/Replit OAuth; project auto-created and
-  linked to the new account, then redirect to dashboard. Auto-login redirects on expired sessions.
+- Authentication now uses Clerk for protected application pages. Public customer intake
+  requires no account or login, never creates accounts or projects automatically, and
+  notifies the owner through the existing email and Discord setup.
 - Admin dashboard: sidebar nav plus a unified single-page dashboard (/admin) with inline project
   editing, clickable status badges, clients/messages/settings. Legacy pages at /admin/legacy.
 - Client dashboard: unified single-page view (/dashboard) with auto-selection of newest project
