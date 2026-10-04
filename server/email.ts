@@ -1,10 +1,25 @@
 // Sends transactional emails via the Gmail integration (proxied through Replit Connectors).
 // No API keys required — auth is handled by the connector.
 import { ReplitConnectors } from "@replit/connectors-sdk";
+import { formatIntake, type IntakeData } from "../shared/intake";
 
 const connectors = new ReplitConnectors();
 
 const ADMIN_EMAIL = "kyle@landonco.co";
+
+export async function sendIntakeEmail(data: IntakeData): Promise<boolean> {
+  const text = formatIntake(data);
+  return sendViaGmail({
+    to: ADMIN_EMAIL,
+    subject: `New Client Intake: ${data.businessName || data.name}`,
+    text,
+    html: `<div style="font-family:Arial,sans-serif;max-width:720px;margin:auto;padding:24px">
+      <h1 style="font-size:24px">New client intake</h1>
+      <pre style="font-family:Arial,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6">${escapeHtml(text)}</pre>
+      </div>`,
+    replyTo: data.email,
+  });
+}
 
 interface ContactFormData {
   name: string;

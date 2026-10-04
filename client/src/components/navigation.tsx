@@ -78,7 +78,7 @@ const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-10">
-            {(!isDashboardPage || !isAuthenticated) &&
+            {(!isDashboardPage || !isAuthenticated || !isAdmin) &&
               navItems.map((item) => (
                 <button
                   key={item.id}
@@ -89,7 +89,7 @@ const Navigation = () => {
                 </button>
               ))}
 
-            {(!isDashboardPage || !isAuthenticated) && (
+            {(!isDashboardPage || !isAuthenticated || !isAdmin) && (
               <button
                 onClick={() => scrollToSection("contact")}
                 className="btn-primary magnetic-button text-sm"
@@ -100,12 +100,13 @@ const Navigation = () => {
 
             {/* Account */}
             <div className="relative">
-              {isAuthenticated ? (
+              {isAuthenticated && isAdmin ? (
                 <div className="relative">
                   <button
                     onClick={() => setAccountMenuOpen(!accountMenuOpen)}
                     className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center hover:bg-white/20 transition-all duration-200"
-                    aria-label="Account menu"
+                    aria-label="Admin menu"
+                    aria-expanded={accountMenuOpen}
                   >
                     {user?.profileImageUrl ? (
                       <img
@@ -142,17 +143,6 @@ const Navigation = () => {
                         </div>
 
                         <div className="py-1">
-                          <button
-                            onClick={() => {
-                              window.location.href = "/dashboard";
-                              setAccountMenuOpen(false);
-                            }}
-                            className="w-full px-4 py-2 text-left text-white/80 hover:text-white hover:bg-white/5 transition-colors text-sm flex items-center"
-                          >
-                            <User className="w-4 h-4 mr-3" />
-                            Dashboard
-                          </button>
-
                           {isAdmin && (
                             <button
                               onClick={() => {
@@ -180,15 +170,7 @@ const Navigation = () => {
                     )}
                   </AnimatePresence>
                 </div>
-              ) : (
-                <button
-                  onClick={() => (window.location.href = "/api/login")}
-                  className="w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center hover:bg-white/20 transition-all duration-200"
-                  aria-label="Sign in"
-                >
-                  <User className="w-4 h-4 text-white" />
-                </button>
-              )}
+              ) : null}
             </div>
           </div>
 
@@ -197,6 +179,7 @@ const Navigation = () => {
             className="md:hidden w-9 h-9 rounded-full bg-white/10 border border-white/15 flex items-center justify-center hover:bg-white/20 transition-all duration-200"
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
@@ -237,7 +220,7 @@ const Navigation = () => {
               className="md:hidden overflow-hidden mt-4 border-t border-[var(--border-color)] pt-4"
             >
               <div className="flex flex-col gap-1">
-                {(!isDashboardPage || !isAuthenticated) &&
+                {(!isDashboardPage || !isAuthenticated || !isAdmin) &&
                   navItems.map((item) => (
                     <button
                       key={item.id}
@@ -247,7 +230,7 @@ const Navigation = () => {
                       {item.label}
                     </button>
                   ))}
-                {(!isDashboardPage || !isAuthenticated) && (
+                {(!isDashboardPage || !isAuthenticated || !isAdmin) && (
                   <button
                     onClick={() => scrollToSection("contact")}
                     className="btn-primary w-full justify-center mt-3"
@@ -256,8 +239,8 @@ const Navigation = () => {
                   </button>
                 )}
 
+                {isAuthenticated && isAdmin && (
                 <div className="border-t border-[var(--border-color)] mt-4 pt-4">
-                  {isAuthenticated ? (
                     <div className="space-y-2">
                       <div className="flex items-center gap-3 pb-2">
                         {user?.profileImageUrl ? (
@@ -280,16 +263,6 @@ const Navigation = () => {
                           </p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => {
-                          window.location.href = "/dashboard";
-                          setIsOpen(false);
-                        }}
-                        className="w-full text-left text-white/80 hover:text-white text-sm flex items-center py-2"
-                      >
-                        <User className="w-4 h-4 mr-3" />
-                        Dashboard
-                      </button>
                       {isAdmin && (
                         <button
                           onClick={() => {
@@ -310,19 +283,8 @@ const Navigation = () => {
                         Sign Out
                       </button>
                     </div>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        window.location.href = "/api/login";
-                        setIsOpen(false);
-                      }}
-                      className="w-full text-left text-white/80 hover:text-white text-sm flex items-center py-2"
-                    >
-                      <User className="w-4 h-4 mr-3" />
-                      Sign In
-                    </button>
-                  )}
                 </div>
+                )}
               </div>
             </motion.div>
           )}

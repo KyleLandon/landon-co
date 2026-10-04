@@ -331,9 +331,16 @@ export default function AdminMessages() {
                 </div>
               </div>
 
+              {selectedMessage.type === 'submission' && selectedMessage.additionalNotes && (
+                <div>
+                  <h3 className="font-bold text-white mb-3">Full intake / additional notes</h3>
+                  <p className="text-white/80 whitespace-pre-wrap break-words text-sm">{selectedMessage.additionalNotes}</p>
+                </div>
+              )}
+
               {/* Actions */}
-              <div className="flex gap-3 pt-4">
-                {selectedMessage.type === 'submission' && selectedMessage.status !== 'converted' && (
+              <div className="flex flex-wrap gap-3 pt-4">
+                {selectedMessage.type === 'submission' && selectedMessage.projectType !== 'Website intake' && selectedMessage.status !== 'converted' && (
                   <Button
                     onClick={() => createProjectMutation.mutate(selectedMessage.id)}
                     disabled={createProjectMutation.isPending}

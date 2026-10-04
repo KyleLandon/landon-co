@@ -3,10 +3,11 @@ import { createServer, type Server } from "http";
 import { WebSocketServer, WebSocket } from "ws";
 import { storage } from "./storage";
 import { setupAuth, isAuthenticated, isAdmin } from "./replitAuth";
-import { sendContactEmail, sendSubmissionEmail } from "./email";
-import { sendDiscordSubmissionNotification } from "./discord";
-import { sendContactSms, sendSubmissionSms } from "./sms";
-import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectSubmissionSchema, insertProjectFileSchema } from "@shared/schema";
+import { sendContactEmail, sendIntakeEmail } from "./email";
+import { sendIntakeDiscordNotification } from "./discord";
+import { createIntakeHandler } from "./intake";
+import { sendContactSms } from "./sms";
+import { insertContactSchema, insertProjectSchema, insertMessageSchema, insertProjectUpdateSchema, insertProjectFileSchema } from "@shared/schema";
 import { z } from "zod";
 import multer from "multer";
 import path from "path";
@@ -123,108 +124,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Project submission from "Let's Work" form
-  app.post("/api/project-submissions", async (req, res) => {
-    try {
-      console.log("Project submission received:", req.body);
-      
-      // Handle incoming data with defaults for optional fields
-      const projectSubmissionData = {
-        name: req.body.name || "",
-        email: req.body.email || "",
-        phone: req.body.phone || null,
-        companyName: req.body.companyName || null,
-        projectTitle: req.body.projectTitle || "",
-        projectType: req.body.projectType || "",
-        description: req.body.description || "",
-        budget: req.body.budget || "",
-        timeline: req.body.timeline || "",
-        website: req.body.website || null,
-        additionalNotes: req.body.additionalNotes || null,
-      };
-      
-      console.log("Processed submission data:", projectSubmissionData);
-      
-      // Check if user is authenticated
-      if (req.isAuthenticated && req.isAuthenticated() && req.user) {
-        // User is authenticated - create a proper project
-        const userId = (req.user as any).claims.sub;
-        
-        const projectData = {
-          clientId: userId,
-          title: projectSubmissionData.projectTitle,
-          description: projectSubmissionData.description,
-          status: "pending",
-          budget: projectSubmissionData.budget,
-          timeline: projectSubmissionData.timeline,
-          projectType: projectSubmissionData.projectType,
-          websiteUrl: projectSubmissionData.website || null,
-        };
-        
-        const project = await storage.createProject(projectData);
-
-        // Fire notifications (non-blocking)
-        Promise.all([
-          sendDiscordSubmissionNotification(projectSubmissionData),
-          sendSubmissionEmail(projectSubmissionData),
-          sendSubmissionSms(projectSubmissionData),
-        ]).catch((err) => console.error("Notification error:", err));
-
-        res.json({
-          success: true,
-          message: "Project created successfully! You can now track its progress in your dashboard.",
-          project: {
-            id: project.id,
-            title: project.title,
-            status: project.status,
-            createdAt: project.createdAt
-          }
-        });
-      } else {
-        // User not authenticated - store as submission for review
-        console.log("Creating project submission for unauthenticated user");
-        
-        // Validate the submission data
-        const validatedSubmissionData = insertProjectSubmissionSchema.parse(projectSubmissionData);
-        console.log("Validated submission data:", validatedSubmissionData);
-        
-        const submission = await storage.createProjectSubmission(validatedSubmissionData);
-        console.log("Project submission created successfully:", submission.id);
-
-        // Fire notifications (non-blocking)
-        Promise.all([
-          sendDiscordSubmissionNotification(projectSubmissionData),
-          sendSubmissionEmail(projectSubmissionData),
-          sendSubmissionSms(projectSubmissionData),
-        ]).catch((err) => console.error("Notification error:", err));
-
-        res.json({
-          success: true,
-          message: "Project submitted successfully! We'll review your submission and get back to you within 24 hours.",
-          submission: {
-            id: submission.id,
-            projectTitle: submission.projectTitle,
-            createdAt: submission.createdAt
-          }
-        });
-      }
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.error('Project submission validation error:', error.errors);
-        res.status(400).json({ 
-          success: false, 
-          message: "Invalid form data", 
-          errors: error.errors 
-        });
-      } else {
-        console.error('Project submission error:', error);
-        res.status(500).json({ 
-          success: false, 
-          message: "Failed to submit project. Please try again." 
-        });
-      }
-    }
-  });
+  // Public questionnaire: no account, login, or automatic project creation.
+  app.post("/api/project-submissions", createIntakeHandler({
+    save: (data) => storage.createProjectSubmission(data),
+    email: sendIntakeEmail,
+    discord: sendIntakeDiscordNotification,
+  }));
 
   // Get all project submissions (admin only)
   app.get("/api/admin/project-submissions", isAuthenticated, isAdmin, async (req, res) => {
