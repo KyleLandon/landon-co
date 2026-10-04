@@ -25,12 +25,14 @@ const Contact = () => {
   const formStarted = useRef(false);
   const receiptRef = useRef<HTMLDivElement>(null);
   const [receipt, setReceipt] = useState<string | null>(null);
+  const [interactive, setInteractive] = useState(false);
   const form = useForm<IntakeData>({
     resolver: zodResolver(intakeSchema),
     defaultValues: emptyIntake,
   });
 
   useEffect(() => {
+    setInteractive(true);
     // Discard legacy account-gated drafts. Never submit them automatically.
     try { sessionStorage.removeItem("pendingProjectSubmission"); } catch {}
     // The form mounts after the initial HTML, so honor direct intake links here.
@@ -183,7 +185,10 @@ const Contact = () => {
                     {...form.register("faxNumber")}
                   />
                 </div>
-                <fieldset disabled={submission.isPending} className="space-y-10 min-w-0">
+                <noscript>
+                  <p>Please enable JavaScript to submit this form, or use the email or phone link to contact us.</p>
+                </noscript>
+                <fieldset disabled={!interactive || submission.isPending} className="space-y-10 min-w-0">
                   <legend className="sr-only">Tell us about your website</legend>
                   {intakeSections.map((section) => (
                     <section key={section.number} aria-labelledby={`intake-section-${section.number}`}>
@@ -293,7 +298,7 @@ const Contact = () => {
                   <Button
                     type="submit"
                     className="btn-primary w-full justify-center text-sm py-6 rounded-full"
-                    disabled={submission.isPending}
+                    disabled={!interactive || submission.isPending}
                   >
                     {submission.isPending ? "Sending your intake…" : submission.isError ? "Try sending again" : "Send your intake"}
                     {!submission.isPending && <ArrowRight className="w-4 h-4" />}

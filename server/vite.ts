@@ -26,8 +26,11 @@ export async function setupVite(app: Express, server: Server) {
     allowedHosts: true,
   };
 
+  const resolvedConfig = await (typeof viteConfig === "function"
+    ? viteConfig({ command: "serve", mode: "development", isSsrBuild: false })
+    : viteConfig);
   const vite = await createViteServer({
-    ...viteConfig,
+    ...resolvedConfig,
     configFile: false,
     customLogger: {
       ...viteLogger,
@@ -58,7 +61,18 @@ export async function setupVite(app: Express, server: Server) {
         `src="/src/main.tsx"`,
         `src="/src/main.tsx?v=${nanoid()}"`,
       );
-      const page = await vite.transformIndexHtml(url, template);
+      let page = await vite.transformIndexHtml(url, template);
+      const { render, publicPaths } = await vite.ssrLoadModule("/src/entry-server.tsx");
+      const pathname = new URL(url, "http://internal").pathname.replace(/\/$/, "") || "/";
+      if (publicPaths.includes(pathname)) {
+        const { body, head } = render(pathname);
+        page = page.replace(/<title>[\s\S]*?<\/title>/gi, "")
+          .replace(/<meta\b[^>]*(?:name="(?:description|twitter:[^"]+)"|property="og:[^"]+")[^>]*>/gi, "")
+          .replace(/<link\b[^>]*rel="canonical"[^>]*>/gi, "")
+          .replace("<html", '<html data-prerender-pending')
+          .replace("</head>", `${head}\n<style>html[data-prerender-pending] #root [style*="opacity:0"],html[data-prerender-pending] #root [style*="opacity: 0;"]{opacity:1!important;transform:none!important}</style></head>`)
+          .replace('<div id="root"></div>', `<div id="root">${body}</div>`);
+      }
       res.status(200).set({ "Content-Type": "text/html" }).end(page);
     } catch (e) {
       vite.ssrFixStacktrace(e as Error);
@@ -76,10 +90,20 @@ export function serveStatic(app: Express) {
     );
   }
 
+  app.use((req, res, next) => {
+    if (req.method !== "GET" && req.method !== "HEAD") return next();
+    const pathname = req.path.replace(/\/$/, "") || "/";
+    // Only serve files contained in the public output directory.
+    const file = path.resolve(distPath, `.${pathname}`, "index.html");
+    if (file.startsWith(`${distPath}/`) && fs.existsSync(file)) {
+      return res.sendFile(file);
+    }
+    next();
+  });
   app.use(express.static(distPath));
 
-  // fall through to index.html if the file doesn't exist
+  // Private routes use the original empty shell, not the pre-rendered homepage.
   app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+    res.sendFile(path.resolve(distPath, "app-shell.html"));
   });
 }

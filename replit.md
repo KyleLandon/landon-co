@@ -14,11 +14,13 @@ This is a modern portfolio website for "Landon & Co." — a Texas-based web desi
 - Service pages: `/services/{web-design,branding,ecommerce,automation}` (configs exported from `client/src/pages/service.tsx`).
 - Insights blog: `/insights` index + `/insights/:slug` posts (data in `client/src/pages/insights.tsx`, with Article JSON-LD).
 - Home page renders an `<FAQ>` section with FAQPage JSON-LD.
-- Whenever you add a new public route, update `client/public/sitemap.xml`.
+- Whenever you add an indexable public route, update `client/public/sitemap.xml`. Unlisted `/pricing` and `/brand` must remain excluded.
 
 ## Code-splitting
 
-Every route below `/` is lazy-loaded in `client/src/App.tsx` and wrapped in `<Suspense>` with `LoadingPage` as the fallback. Marketing routes ship as their own chunks; admin/client dashboards are also split out so the marketing landing bundle stays small.
+Public pages are pre-rendered at build time through `client/src/entry-server.tsx` and `scripts/prerender.mjs`, then hydrated by `client/src/public-app.tsx`. Register public routes in that file's routes and `publicPaths` list. Run `node --test scripts/prerender.test.mjs` after a build to check HTML, metadata, and asset references. Development renders the same components on the server through Vite.
+
+Private and sign-in routes load `client/src/App.tsx` separately and retain client-side rendering and Clerk authentication. Public pages do not mount Clerk or wait for authentication; the homepage stays public for signed-in visitors. Preserve the empty `app-shell.html` for private routes—never serve pre-rendered marketing content as a dashboard shell.
 
 ## System Architecture
 

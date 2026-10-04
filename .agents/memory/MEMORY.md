@@ -1,2 +1,3 @@
 - [Customer intake requirements](customer-intake.md) — customers submit the PDF-based intake without accounts; notify the owner by email and Discord.
 - [Unlisted pricing reference](pricing-reference.md) — owner uses /pricing as a quick reference during client calls, not a public sales page.
+- [Public rendering boundaries](public-rendering.md) — preserve pre-rendered marketing HTML without auth delays; keep private data out of build output.

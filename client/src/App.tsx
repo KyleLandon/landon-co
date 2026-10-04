@@ -80,7 +80,7 @@ function Router() {
   const [path] = useLocation();
   const protectedPath = /^\/(dashboard|admin|project)(\/|$)/.test(path) || /^\/projects\/[^/]+/.test(path);
 
-  if (isLoading) {
+  if (protectedPath && isLoading) {
     return <LoadingPage message="Loading..." />;
   }
   if (protectedPath && !isAuthenticated) return <Redirect to="/sign-in" />;

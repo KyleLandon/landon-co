@@ -1,24 +1,32 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
+import { useLocation } from "wouter";
+import { PublicPageContext } from "@/public-context";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, User, LogOut, Settings } from "lucide-react";
 import { useScroll } from "@/hooks/use-scroll";
 import { useAppUser as useAuth } from "@/hooks/use-app-user";
 import whiteLogo from "@/assets/logo-white.svg";
 
+const guestAuth = { isAuthenticated: false, user: null, isAdmin: false, logout: async () => {} };
+
+const AuthenticatedNavigation = () => <NavigationContent auth={useAuth()} />;
+
 const Navigation = () => {
+  const publicPage = useContext(PublicPageContext);
+  return publicPage ? <NavigationContent auth={guestAuth} /> : <AuthenticatedNavigation />;
+};
+
+const NavigationContent = ({ auth }: { auth: Pick<ReturnType<typeof useAuth>, "isAuthenticated" | "user" | "isAdmin" | "logout"> }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
-  const { isAuthenticated, user, isAdmin, logout } = useAuth();
+  const { isAuthenticated, user, isAdmin, logout } = auth;
+  const [path] = useLocation();
   const navRef = useRef<HTMLElement>(null);
 
-  const isDashboardPage =
-    typeof window !== "undefined" &&
-    (window.location.pathname.includes("/dashboard") ||
-      window.location.pathname.includes("/admin"));
-  const isHomePage =
-    typeof window !== "undefined" && window.location.pathname === "/";
+  const isDashboardPage = path.includes("/dashboard") || path.includes("/admin");
+  const isHomePage = path === "/";
 
   useEffect(() => {
     setIsScrolled(scrollY > 24);
