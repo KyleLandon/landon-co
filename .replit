@@ -42,3 +42,7 @@ outputType = "webview"
 [agent]
 integrations = ["google-mail:1.0.0"]
 expertMode = true
+
+[postMerge]
+path = "scripts/post-merge.sh"
+timeoutMs = 180000

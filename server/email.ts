@@ -6,11 +6,12 @@ import { formatIntake, type IntakeData } from "../shared/intake";
 const connectors = new ReplitConnectors();
 
 const ADMIN_EMAIL = "kyle@landonco.co";
+const INTAKE_RECIPIENTS = [ADMIN_EMAIL, "kylepotteiger@gmail.com"];
 
 export async function sendIntakeEmail(data: IntakeData): Promise<boolean> {
   const text = formatIntake(data);
   return sendViaGmail({
-    to: ADMIN_EMAIL,
+    to: INTAKE_RECIPIENTS.join(", "),
     subject: `New Client Intake: ${data.businessName || data.name}`,
     text,
     html: `<div style="font-family:Arial,sans-serif;max-width:720px;margin:auto;padding:24px">
