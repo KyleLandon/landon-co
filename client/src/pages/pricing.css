@@ -141,6 +141,21 @@
   border-top: 1px solid var(--border-color);
 }
 
+.pricing-reference .pricing-row-popular {
+  box-shadow: inset 3px 0 0 var(--text-primary);
+}
+
+.pricing-reference .pricing-popular {
+  display: inline-block;
+  padding: 3px 9px;
+  margin-bottom: 9px;
+  border-radius: 999px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
 .pricing-reference h3 {
   font-size: 16px;
   font-weight: 600;

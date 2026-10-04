@@ -18,6 +18,7 @@ const webPackages = [
   },
   {
     name: "The Lead Machine",
+    popular: true,
     kind: "Multi-Page",
     price: "$3,500 – $5,500",
     bestFor: "Established contractors, service companies, professional services.",
@@ -32,45 +33,59 @@ const webPackages = [
   {
     name: "The Professional",
     kind: "Commerce/Custom",
-    price: "$6,000+",
+    price: "$7,500+",
+    starting: true,
     bestFor: "Retail boutiques, large restaurants, complex booking needs.",
     features: [
       "E-commerce setup",
       "Third-party integrations (booking/inventory)",
-      "Full branding kit",
-      "Custom photography",
+      "Brand identity and custom photography available as separately scoped add-ons",
     ],
   },
 ];
 
-const monthlyPlans = [
+const carePlans = [
   {
-    name: "Standard Maintenance",
-    price: "$150 – $250",
+    name: "Website Care",
+    price: "$99",
     features: [
       "Secure hosting",
       "SSL certificate",
-      "1 hour of monthly edits",
-      "Security updates",
       "Daily backups",
+      "Security and technical updates",
+      "Uptime monitoring",
+      "Very minor edits only; larger changes quoted separately",
     ],
   },
   {
-    name: "Local Growth Plan",
-    price: "$500 – $900",
+    name: "Website Care Plus",
+    price: "$199",
     features: [
-      "Everything in Maintenance + Local SEO",
+      "Everything in Website Care",
+      "Up to 1 hour of edits per month",
+      "Priority support",
+    ],
+  },
+];
+
+const growthPlans = [
+  {
+    name: "Local Growth Plan",
+    price: "$699+",
+    features: [
+      "Website Care included",
+      "Local SEO",
       "Google Business Profile management",
       "1 monthly blog/project update",
     ],
   },
   {
-    name: "Dominator Plan",
+    name: "Market Leader",
     price: "$1,500+",
     features: [
       "Full digital marketing: Advanced SEO",
       "Monthly lead reporting",
-      "Google Ads management (spend extra)",
+      "Google Ads management — ad spend billed separately, not included in the monthly fee",
       "4 monthly content pieces",
     ],
   },
@@ -79,8 +94,9 @@ const monthlyPlans = [
 const services = [
   {
     name: "Logo & Branding Refresh",
-    price: "$800 – $1,500",
-    detail: "Typography, colors, vector logo versions",
+    price: "$1,500+",
+    starting: true,
+    detail: "Brand identity system: typography, colors, vector logo versions. Reference range: $1,500–$3,000+, depending on scope.",
   },
   {
     name: "Professional Copywriting",
@@ -99,13 +115,31 @@ const services = [
     price: "$150",
     detail: "Waived if project is signed",
   },
+  {
+    name: "Business Automation",
+    price: "$1,500+",
+    starting: true,
+    detail: "Custom-scoped workflow automation and integrations.",
+  },
+  {
+    name: "Custom Software / Client Portals",
+    price: "$5,000+",
+    starting: true,
+    detail: "Custom-scoped applications and client portals.",
+  },
+  {
+    name: "Custom Photography",
+    price: "Custom quote",
+    detail: "Separately scoped add-on; not automatically included in website packages.",
+  },
 ];
 
 const sections = [
   { id: "web-design", number: "01", label: "Web design" },
-  { id: "monthly-plans", number: "02", label: "Monthly plans" },
-  { id: "a-la-carte", number: "03", label: "A-la-carte" },
-  { id: "payment-terms", number: "04", label: "Payment terms" },
+  { id: "monthly-plans", number: "02", label: "Website care" },
+  { id: "growth-plans", number: "03", label: "Growth" },
+  { id: "a-la-carte", number: "04", label: "Additional services" },
+  { id: "payment-terms", number: "05", label: "Payment terms" },
 ];
 
 export default function Pricing() {
@@ -174,8 +208,9 @@ export default function Pricing() {
             </p>
             <div className="pricing-rows">
               {webPackages.map((pkg) => (
-                <article key={pkg.name} className="pricing-row">
+                <article key={pkg.name} className={`pricing-row${pkg.popular ? " pricing-row-popular" : ""}`}>
                   <div>
+                    {pkg.popular && <span className="pricing-popular">Most Popular</span>}
                     <h3>
                       {pkg.name}
                       <span className="pricing-kind">({pkg.kind})</span>
@@ -185,6 +220,7 @@ export default function Pricing() {
                     </p>
                   </div>
                   <p className="pricing-price">
+                    {pkg.starting && <span className="pricing-price-note">Starting at</span>}
                     {pkg.price}
                     <span className="pricing-price-note">One-time investment</span>
                   </p>
@@ -203,17 +239,42 @@ export default function Pricing() {
           >
             <div className="pricing-section-heading">
               <span className="pricing-label" aria-hidden="true">02</span>
-              <h2 id="monthly-plans-heading">Monthly Growth &amp; Maintenance Plans</h2>
+              <h2 id="monthly-plans-heading">Website Care</h2>
             </div>
             <p className="pricing-section-copy">
-              Recurring revenue is the backbone of the studio. These plans ensure
-              the client's site stays fast, secure, and visible.
+              Keep your website secure, current, and running reliably with ongoing technical care.
             </p>
             <div className="pricing-rows">
-              {monthlyPlans.map((plan) => (
+              {carePlans.map((plan) => (
                 <article key={plan.name} className="pricing-row">
                   <h3>{plan.name}</h3>
                   <p className="pricing-price">
+                    {plan.price}
+                    <span className="pricing-price-note">/mo</span>
+                  </p>
+                  <ul className="pricing-features" aria-label={`${plan.name} inclusions`}>
+                    {plan.features.map((feature) => <li key={feature}>{feature}</li>)}
+                  </ul>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section id="growth-plans" className="pricing-section" aria-labelledby="growth-plans-heading">
+            <div className="pricing-section-heading">
+              <span className="pricing-label" aria-hidden="true">03</span>
+              <h2 id="growth-plans-heading">Growth &amp; Marketing</h2>
+            </div>
+            <p className="pricing-section-copy">
+              Grow your visibility, keep your content current, and turn more visitors into leads.
+              Google Ads spend is separate from the monthly management fee.
+            </p>
+            <div className="pricing-rows">
+              {growthPlans.map((plan) => (
+                <article key={plan.name} className="pricing-row">
+                  <h3>{plan.name}</h3>
+                  <p className="pricing-price">
+                    <span className="pricing-price-note">Starting at</span>
                     {plan.price}
                     <span className="pricing-price-note">/mo</span>
                   </p>
@@ -231,14 +292,15 @@ export default function Pricing() {
             aria-labelledby="a-la-carte-heading"
           >
             <div className="pricing-section-heading">
-              <span className="pricing-label" aria-hidden="true">03</span>
-              <h2 id="a-la-carte-heading">A-la-Carte Services</h2>
+              <span className="pricing-label" aria-hidden="true">04</span>
+              <h2 id="a-la-carte-heading">Additional Services &amp; Add-ons</h2>
             </div>
             <div className="pricing-rows">
               {services.map((service) => (
                 <article key={service.name} className="pricing-row pricing-services-row">
                   <h3>{service.name}</h3>
                   <p className="pricing-price">
+                    {service.starting && <span className="pricing-price-note">Starting at</span>}
                     {service.price}
                     {service.unit && <span className="pricing-price-note">{service.unit}</span>}
                   </p>
@@ -254,7 +316,7 @@ export default function Pricing() {
             aria-labelledby="payment-terms-heading"
           >
             <div className="pricing-section-heading">
-              <span className="pricing-label" aria-hidden="true">04</span>
+              <span className="pricing-label" aria-hidden="true">05</span>
               <h2 id="payment-terms-heading">Standard Payment Terms</h2>
             </div>
             <dl className="pricing-terms">
@@ -267,8 +329,8 @@ export default function Pricing() {
                 <dd>Automatic recurring billing via Stripe on the 1st of every month.</dd>
               </div>
               <div className="pricing-term">
-                <dt>South Texas Discount</dt>
-                <dd>3% discount for payments made via Check, ACH, or Zelle.</dd>
+                <dt>Preferred Payment Discount</dt>
+                <dd>3% discount for payments made via ACH or check.</dd>
               </div>
             </dl>
           </section>
