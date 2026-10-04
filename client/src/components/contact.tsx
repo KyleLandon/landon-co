@@ -172,7 +172,7 @@ const Contact = () => {
                 <div className="border-b border-[var(--border-color)] pb-6">
                   <p className="eyebrow mb-3">Client intake</p>
                   <p className="text-white/70 text-sm leading-relaxed">
-                    Eight small sections, one good starting point. Fields marked
+                    Eight quick sections. Fill out what you know and skip what you don’t. Fields marked
                     <span className="text-white"> required </span>are the only ones you need to fill in.
                   </p>
                 </div>

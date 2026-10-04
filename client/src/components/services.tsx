@@ -4,27 +4,27 @@ import { Code2, Palette, ShoppingBag, Zap } from "lucide-react";
 const services = [
   {
     icon: Code2,
-    title: "Web Development",
+    title: "Web Design & Development",
     description:
-      "Fast, modern websites built with React and TypeScript. Responsive, accessible, and easy to update.",
+      "Fast, professional websites designed around your business and built to turn visitors into customers.",
   },
   {
     icon: Palette,
     title: "Branding & Design",
     description:
-      "Logos, color systems, and visual identity that make your business feel unmistakably yours.",
+      "Logos, visual identity, and brand systems that help your business look established, consistent, and unmistakably yours.",
   },
   {
     icon: ShoppingBag,
     title: "E-commerce",
     description:
-      "Online stores with seamless checkout, payment integration, and inventory tools that scale.",
+      "Online stores that make it easy for customers to browse, buy, and pay — with the tools you need to manage everything behind the scenes.",
   },
   {
     icon: Zap,
-    title: "Automation",
+    title: "Business Automation",
     description:
-      "Custom workflows that connect your tools and handle the busywork so you can focus on customers.",
+      "Connect your tools, streamline repetitive work, and automate everyday processes so you can spend more time running your business.",
   },
 ];
 
@@ -74,6 +74,26 @@ const Services = () => {
             );
           })}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="surface-card p-6 mt-4"
+        >
+          <h3 className="text-lg font-semibold text-white mb-2">
+            Website Care — $100/month
+          </h3>
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
+            Your website shouldn’t become another thing you have to manage.
+            Hosting, updates, backups, monitoring, and small content changes —
+            all handled by Landon &amp; Co.
+          </p>
+          <p className="text-sm text-[var(--text-secondary)] leading-relaxed mt-3">
+            Small content edits are included. Larger design and development
+            requests are quoted separately.
+          </p>
+        </motion.div>
       </div>
     </section>
   );

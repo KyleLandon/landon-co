@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import aboutImage from "@/assets/kyle-landon.webp";
 
 const skills = [
-  "Web Development",
+  "Web Design & Development",
   "Branding",
-  "Workflow Automation",
+  "Business Automation",
   "IT Consulting",
   "React",
   "TypeScript",
@@ -59,27 +59,27 @@ const About = () => {
 
             <div className="space-y-5 body-md">
               <p>
-                Landon &amp; Co. is a Texas-based studio serving small
-                businesses across the South Texas triangle &mdash; San
-                Antonio, Corpus Christi, and Victoria &mdash; as well as
-                clients nationwide. We were founded to help entrepreneurs
-                overcome the hurdle of building a digital presence without
-                breaking the bank, with affordable, high-quality work that
-                gives hardworking business owners a real head start online.
+                Landon &amp; Co. is a Texas-based web design and digital studio
+                helping small businesses build a stronger presence online and
+                operate more efficiently behind the scenes.
               </p>
               <p>
-                We specialize in web development, branding, automation, and
-                consulting. Whether you&rsquo;re launching your first site or
-                need a digital facelift, we&rsquo;re here to guide you. From
-                technical issues to business process inefficiencies, we offer
-                custom solutions that help your business run smarter.
+                We work with businesses across San Antonio, Corpus Christi,
+                Victoria, and throughout South Texas, as well as clients nationwide.
               </p>
               <p>
-                Kyle Landon, the founder, comes from a family of
-                entrepreneurs and small business owners and started working
-                in the family business at age 11. That experience shapes how
-                we work with every client we
-                take on.
+                Our work spans web design and development, branding, e-commerce,
+                automation, and digital strategy. Whether you're launching a
+                business, replacing an outdated website, or looking for smarter
+                ways to run everyday operations, we build practical solutions
+                around the way your business actually works.
+              </p>
+              <p>
+                Landon &amp; Co. was founded by Kyle Landon, who grew up around
+                entrepreneurs and small-business owners and started working in
+                his family's business at age 11. That experience still shapes
+                how we approach every project: understand the business first,
+                then build what actually helps it grow.
               </p>
             </div>
 

@@ -86,7 +86,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative h-screen md:h-auto md:min-h-screen w-full overflow-hidden bg-black"
+      className="relative min-h-screen w-full overflow-hidden bg-black"
     >
       <canvas
         ref={canvasRef}
@@ -104,7 +104,7 @@ const Hero = () => {
         }}
       />
 
-      <div className="relative z-10 flex h-full md:h-auto md:min-h-screen flex-col items-center justify-center px-6 md:py-28 text-center">
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 py-24 md:py-28 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -128,19 +128,27 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.25, ease: [0.23, 1, 0.32, 1] }}
           className="heading-display max-w-3xl text-balance text-white mb-6"
         >
-          Modern websites for businesses{" "}
-          <span className="text-gradient">ready to grow.</span>
+          Websites built to help your{" "}
+          <span className="text-gradient">business grow.</span>
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="body-lg max-w-xl text-balance mb-10"
+          className="body-lg max-w-xl text-balance mb-4"
         >
-          Web design, branding, and automation for small businesses across
-          the South Texas triangle &mdash; San Antonio, Corpus Christi, and
-          Victoria.
+          Web design, branding, and automation for small businesses that want to
+          look more professional, win more customers, and run more efficiently.
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.45 }}
+          className="text-sm text-[var(--text-secondary)] max-w-xl text-balance mb-10"
+        >
+          Serving San Antonio, Corpus Christi, Victoria, and businesses across South Texas.
         </motion.p>
 
         <motion.div
@@ -156,14 +164,14 @@ const Hero = () => {
             }}
             className="btn-primary magnetic-button"
           >
-            Start a project
+            Start a Project
             <ArrowRight className="h-4 w-4" />
           </button>
           <button onClick={() => {
             trackEvent("cta_clicked", { action: "view_work", location: "hero" });
             scrollTo("gallery");
           }} className="btn-secondary">
-            View work
+            View Our Work
           </button>
         </motion.div>
       </div>
