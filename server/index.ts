@@ -13,6 +13,15 @@ app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 app.use(cors({ credentials: true, origin: true }));
 app.use(compression());
 
+// Also protect discovery before JS renders the page's noindex metadata.
+// This is an unlisted reference, not an access-controlled resource.
+app.use((req, res, next) => {
+  if (/^\/pricing\/?$/i.test(req.path)) {
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive");
+  }
+  next();
+});
+
 // Security headers (production only — relaxed in dev so the Replit preview iframe still works)
 if (process.env.NODE_ENV === "production") {
   app.use((_req, res, next) => {

@@ -36,6 +36,7 @@ const TermsPage = lazy(() =>
   import("@/pages/legal").then((m) => ({ default: m.TermsPage })),
 );
 const BrandPage = lazy(() => import("@/pages/brand"));
+const PricingPage = lazy(() => import("@/pages/pricing"));
 
 // Authenticated routes (lazy)
 const Dashboard = lazy(() => import("@/pages/client/dashboard/dashboard"));
@@ -101,6 +102,8 @@ function Router() {
         <SignUp routing="path" path={`${basePath}/sign-up`} signInUrl={`${basePath}/sign-in`} forceRedirectUrl={`${basePath}/`} />
       </div>}</Route>
       <Route path="/projects" component={Projects} />
+      {/* Unlisted sales reference: intentionally absent from navigation/sitemap. */}
+      <Route path="/pricing" component={PricingPage} />
 
       {/* Service pages */}
       <Route path="/services/web-design">{() => <ServicePage config={WEB_DESIGN} />}</Route>
