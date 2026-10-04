@@ -1,52 +1,41 @@
-import { formatIntake, type IntakeData } from "../shared/intake";
+import { type IntakeData } from "../shared/intake";
+import { buildIntakeDiscordMessages } from "./discord-intake";
 
 const webhookUrl = process.env.LANDONCO_DISCORD_SUBMISSION_HOOK;
 
-/** Full answers travel as an attachment, avoiding Discord embed truncation. */
+/** Readable section cards, split across messages when Discord's limits require it. */
 export async function sendIntakeDiscordNotification(data: IntakeData): Promise<boolean> {
   if (!webhookUrl) {
     console.error("Intake Discord notification unavailable: webhook not configured.");
     return false;
   }
   try {
-    const response = await fetch(webhookUrl, {
-      method: "POST",
-      body: buildIntakeDiscordForm(data),
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!response.ok) {
-      console.error("Intake Discord notification failed:", response.status);
-      return false;
+    for (const payload of buildIntakeDiscordMessages(data)) {
+      const send = () => fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        signal: AbortSignal.timeout(15000),
+      });
+      let response = await send();
+      if (response.status === 429) {
+        const limit = await response.json();
+        const delay = Number(limit.retry_after);
+        if (Number.isFinite(delay) && delay >= 0 && delay <= 5) {
+          await new Promise(resolve => setTimeout(resolve, Math.ceil(delay * 1000) + 100));
+          response = await send();
+        }
+      }
+      if (!response.ok) {
+        console.error("Intake Discord notification failed:", response.status);
+        return false;
+      }
     }
     return true;
   } catch {
     console.error("Intake Discord notification could not be delivered.");
     return false;
   }
-}
-
-export function buildIntakeDiscordForm(data: IntakeData): FormData {
-  const payload = {
-    username: "Landon & Co.",
-    allowed_mentions: { parse: [] },
-    embeds: [{
-      title: "New client intake",
-      color: 0xffffff,
-      description: "Complete questionnaire attached as client-intake.txt.",
-      fields: [
-        { name: "Business", value: data.businessName || "Not provided", inline: true },
-        { name: "Name & role", value: data.name, inline: true },
-        { name: "Email", value: data.email, inline: true },
-        { name: "Phone", value: data.phone || "Not provided", inline: true },
-      ],
-      timestamp: new Date().toISOString(),
-    }],
-    attachments: [{ id: 0, filename: "client-intake.txt", description: "Complete client intake questionnaire" }],
-  };
-  const form = new FormData();
-  form.append("payload_json", JSON.stringify(payload));
-  form.append("files[0]", new Blob([formatIntake(data)], { type: "text/plain;charset=utf-8" }), "client-intake.txt");
-  return form;
 }
 
 if (!webhookUrl) {

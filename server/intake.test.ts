@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import express from "express";
 import { intakeSchema, intakeSections, formatIntake } from "../shared/intake";
 import { createIntakeHandler, toSubmission } from "./intake";
-import { buildIntakeDiscordForm } from "./discord";
+import { buildIntakeDiscordMessages, discordAnswerChunks, embedLength } from "./discord-intake";
 
 const minimal = { name: "Intake test", email: "intake-test@example.com" };
 
@@ -33,7 +33,7 @@ test("validation rejects missing identity, invalid email, oversized text, unknow
   ]) assert.equal(intakeSchema.safeParse(input).success, false);
 });
 
-test("long answers and Other selections survive storage and Discord attachment without truncation", async () => {
+test("long answers and Other selections survive storage and Discord cards without truncation", async () => {
   const data = intakeSchema.parse({
     ...minimal, businessName: "Test business", goals: ["Other", "Get more phone calls"],
     otherGoal: "Special goal", features: ["Other", "Contact form"], otherFeature: "Special feature",
@@ -43,13 +43,47 @@ test("long answers and Other selections survive storage and Discord attachment w
   assert.ok(text.includes("A".repeat(3000)));
   assert.ok(text.includes("Special feature"));
   assert.equal(toSubmission(data).additionalNotes, text);
-  const form = buildIntakeDiscordForm(data);
-  const payload = JSON.parse(String(form.get("payload_json")));
-  assert.deepEqual(payload.allowed_mentions, { parse: [] });
-  assert.ok(JSON.stringify(payload.embeds).length < 6000);
-  const attachment = form.get("files[0]") as File;
-  assert.equal(attachment.name, "client-intake.txt");
-  assert.equal(await attachment.text(), text);
+  const messages = buildIntakeDiscordMessages(data);
+  assert.ok(messages.length > 1);
+  const fields = messages.flatMap(message => message.embeds.flatMap(embed => embed.fields));
+  assert.equal(fields.filter(field => field.name.startsWith("Deadlines")).map(field => field.value).join(""), "A".repeat(3000));
+  assert.equal(fields.filter(field => field.name.startsWith("Websites or brands")).map(field => field.value).join(""), "B".repeat(3000));
+  assert.ok(fields.some(field => field.value === "Special feature"));
+  for (const message of messages) {
+    assert.deepEqual(message.allowed_mentions, { parse: [] });
+    assert.ok(message.embeds.length <= 10);
+    assert.ok(message.embeds.reduce((sum, embed) => sum + embedLength(embed), 0) <= 6000);
+    for (const embed of message.embeds) {
+      assert.ok(embed.title.length <= 256);
+      assert.ok(embed.fields.length <= 25);
+      assert.ok(embed.fields.every(field => field.value.length <= 1024 && field.name.length <= 256));
+    }
+  }
+});
+
+test("Discord escapes formatting and preserves Unicode across chunk boundaries", () => {
+  const raw = "**bold** @everyone " + "😀".repeat(2000);
+  const chunks = discordAnswerChunks(raw);
+  assert.equal(chunks.join(""), "\\*\\*bold\\*\\* @everyone " + "😀".repeat(2000));
+  assert.ok(chunks.every(chunk => chunk.length <= 1000 && !/[\uD800-\uDBFF]$/.test(chunk)));
+});
+
+test("maximum-length answers remain within every Discord message limit", () => {
+  const input: Record<string, unknown> = { ...minimal };
+  for (const section of intakeSections) {
+    for (const field of section.fields) {
+      if (field.kind === "textarea") input[field.name] = "*".repeat(3000);
+      else if (field.kind === "checkbox") input[field.name] = [...field.options!];
+      else if (field.kind === "radio") input[field.name] = field.options![0];
+      else if (!field.required) input[field.name] = "*".repeat(500);
+    }
+  }
+  const messages = buildIntakeDiscordMessages(intakeSchema.parse(input));
+  for (const message of messages) {
+    assert.ok(message.embeds.length <= 10);
+    assert.ok(message.embeds.reduce((sum, embed) => sum + embedLength(embed), 0) <= 6000);
+    assert.ok(message.embeds.every(embed => embed.fields.length <= 25 && embed.fields.every(field => field.value.length <= 1024)));
+  }
 });
 
 async function exercise(body: unknown, options: { authenticated?: boolean; failSave?: boolean; failEmail?: boolean; failDiscord?: boolean } = {}) {
