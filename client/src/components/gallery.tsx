@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import {
@@ -110,7 +111,10 @@ const Gallery = () => {
             <motion.button
               key={p.title}
               type="button"
-              onClick={() => setSelected({ title: p.title, url: p.url })}
+              onClick={() => {
+                trackEvent("project_preview_opened", { project: p.title, location: "home_gallery" });
+                setSelected({ title: p.title, url: p.url });
+              }}
               initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: i * 0.1 }}
@@ -147,7 +151,8 @@ const Gallery = () => {
           className="text-center mt-14"
         >
           <Link href="/projects">
-            <Button variant="outline" className="btn-secondary border-0 px-7">
+            <Button variant="outline" className="btn-secondary border-0 px-7"
+              onClick={() => trackEvent("cta_clicked", { action: "view_all_projects", location: "home_gallery" })}>
               View all projects
               <ArrowUpRight className="h-4 w-4 ml-1" />
             </Button>
@@ -171,9 +176,11 @@ const Gallery = () => {
                 variant="outline"
                 size="sm"
                 className="bg-transparent border-white/20 text-white hover:bg-white/10 mr-8"
-                onClick={() =>
-                  selected?.url && window.open(selected.url, "_blank")
-                }
+                onClick={() => {
+                  if (!selected) return;
+                  trackEvent("project_link_clicked", { project: selected.title, location: "home_gallery" });
+                  window.open(selected.url, "_blank");
+                }}
               >
                 <ExternalLink size={14} className="mr-2" />
                 Open in new tab

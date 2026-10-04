@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { ArrowRight, ArrowDown } from "lucide-react";
 import whiteLogo from "@/assets/logo-white.svg";
+import { trackEvent } from "@/lib/analytics";
 
 const Hero = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -149,13 +150,19 @@ const Hero = () => {
           className="flex flex-col sm:flex-row items-center gap-3"
         >
           <button
-            onClick={() => scrollTo("contact")}
+            onClick={() => {
+              trackEvent("cta_clicked", { action: "start_project", location: "hero" });
+              scrollTo("contact");
+            }}
             className="btn-primary magnetic-button"
           >
             Start a project
             <ArrowRight className="h-4 w-4" />
           </button>
-          <button onClick={() => scrollTo("gallery")} className="btn-secondary">
+          <button onClick={() => {
+            trackEvent("cta_clicked", { action: "view_work", location: "hero" });
+            scrollTo("gallery");
+          }} className="btn-secondary">
             View work
           </button>
         </motion.div>

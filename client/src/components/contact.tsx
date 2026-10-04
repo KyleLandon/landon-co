@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { trackEvent } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -32,6 +33,7 @@ const projectSubmissionFormSchema = insertProjectSubmissionSchema;
 type ProjectSubmissionForm = z.infer<typeof projectSubmissionFormSchema>;
 
 const Contact = () => {
+  const formStarted = useRef(false);
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { isAuthenticated, isLoading: authLoading } = useAuth();
@@ -58,6 +60,7 @@ const Contact = () => {
       return await apiRequest("POST", "/api/project-submissions", data);
     },
     onSuccess: (response: any) => {
+      trackEvent("project_submission_succeeded", { location: "contact_form" });
       if (isAuthenticated && response.project) {
         toast({
           title: "Project created",
@@ -80,6 +83,7 @@ const Contact = () => {
       }
     },
     onError: (error: Error) => {
+      trackEvent("project_submission_failed", { location: "contact_form" });
       toast({
         title: "Submission failed",
         description: error.message || "Please try again or email us directly.",
@@ -89,7 +93,9 @@ const Contact = () => {
   });
 
   const onProjectSubmit = (data: ProjectSubmissionForm) => {
+    trackEvent("project_submission_attempted", { location: "contact_form" });
     if (!isAuthenticated) {
+      trackEvent("project_submission_auth_required", { location: "contact_form" });
       sessionStorage.setItem(
         "pendingProjectSubmission",
         JSON.stringify(data)
@@ -205,6 +211,11 @@ const Contact = () => {
             <div className="surface-card p-6 md:p-8">
               <Form {...projectForm}>
                 <form
+                  onFocusCapture={() => {
+                    if (formStarted.current) return;
+                    formStarted.current = true;
+                    trackEvent("project_form_started", { location: "contact_form" });
+                  }}
                   onSubmit={projectForm.handleSubmit(onProjectSubmit)}
                   className="space-y-6"
                 >

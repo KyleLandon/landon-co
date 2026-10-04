@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "wouter";
+import { trackEvent as trackCustomEvent } from "@/lib/analytics";
 
 declare global {
   interface Window {
@@ -25,6 +26,25 @@ export function trackEvent(
 
 export default function Analytics() {
   const [location] = useLocation();
+
+  useEffect(() => {
+    const onContactClick = (event: MouseEvent) => {
+      if (!(event.target instanceof Element)) return;
+      const anchor = event.target.closest("a[href]");
+      const href = anchor?.getAttribute("href") ?? "";
+      const method = href.startsWith("mailto:")
+        ? "email"
+        : href.startsWith("tel:") ? "phone" : null;
+      if (method) {
+        trackCustomEvent("contact_link_clicked", {
+          method,
+          location: window.location.pathname,
+        });
+      }
+    };
+    document.addEventListener("click", onContactClick);
+    return () => document.removeEventListener("click", onContactClick);
+  }, []);
 
   useEffect(() => {
     // gtag.js is configured with send_page_view:false (see index.html), so this

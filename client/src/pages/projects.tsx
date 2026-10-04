@@ -1,3 +1,4 @@
+import { trackEvent } from "@/lib/analytics";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
@@ -185,7 +186,12 @@ export default function Projects() {
                 return (
                   <button
                     key={category}
-                    onClick={() => setActiveCategory(category)}
+                    onClick={() => {
+                      if (category !== activeCategory) {
+                        trackEvent("project_category_selected", { category, location: "projects_page" });
+                      }
+                      setActiveCategory(category);
+                    }}
                     className={`px-4 py-2 rounded-full text-sm transition-colors border ${
                       active
                         ? "bg-white text-black border-white"
@@ -206,6 +212,11 @@ export default function Projects() {
                 <motion.a
                   key={project.id}
                   href={project.demoUrl}
+                  onClick={() => trackEvent("project_link_clicked", {
+                    project: project.title,
+                    category: project.category,
+                    location: "projects_page",
+                  })}
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={fadeInUp}
