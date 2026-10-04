@@ -46,9 +46,9 @@ test("long answers and Other selections survive storage and Discord cards withou
   const messages = buildIntakeDiscordMessages(data);
   assert.ok(messages.length > 1);
   const fields = messages.flatMap(message => message.embeds.flatMap(embed => embed.fields));
-  assert.equal(fields.filter(field => field.name.startsWith("Deadlines")).map(field => field.value).join(""), "A".repeat(3000));
-  assert.equal(fields.filter(field => field.name.startsWith("Websites or brands")).map(field => field.value).join(""), "B".repeat(3000));
-  assert.ok(fields.some(field => field.value === "Special feature"));
+  assert.equal(fields.filter(field => field.name.startsWith("Notes")).map(field => field.value).join(""), "A".repeat(3000));
+  assert.equal(fields.filter(field => field.name.startsWith("Links & access")).map(field => field.value).join(""), "Inspiration: " + "B".repeat(3000));
+  assert.ok(fields.some(field => field.value.includes("Special feature")));
   for (const message of messages) {
     assert.deepEqual(message.allowed_mentions, { parse: [] });
     assert.ok(message.embeds.length <= 10);
@@ -66,6 +66,40 @@ test("Discord escapes formatting and preserves Unicode across chunk boundaries",
   const chunks = discordAnswerChunks(raw);
   assert.equal(chunks.join(""), "\\*\\*bold\\*\\* @everyone " + "😀".repeat(2000));
   assert.ok(chunks.every(chunk => chunk.length <= 1000 && !/[\uD800-\uDBFF]$/.test(chunk)));
+});
+
+test("minimal intake uses a single compact card without unanswered prompts", () => {
+  const messages = buildIntakeDiscordMessages(intakeSchema.parse(minimal));
+  assert.equal(messages.length, 1);
+  assert.equal(messages[0].embeds.length, 1);
+  assert.equal(messages[0].embeds[0].fields.length, 1);
+  assert.equal(messages[0].embeds[0].fields[0].name, "Contact");
+  assert.ok(!JSON.stringify(messages).includes("Not provided"));
+});
+
+test("all populated answers are retained with compact labels and intact links", () => {
+  const input: Record<string, unknown> = { ...minimal };
+  for (const section of intakeSections) {
+    for (const field of section.fields) {
+      if (field.kind === "checkbox") input[field.name] = [...field.options!];
+      else if (field.kind === "radio") input[field.name] = field.options![0];
+      else if (!field.required) input[field.name] = `answer-${field.name}`;
+    }
+  }
+  input.website = "https://example.com/my_site?ref=a_b&view=1";
+  input.socialLinks = "https://instagram.com/my_business";
+  const data = intakeSchema.parse(input);
+  const messages = buildIntakeDiscordMessages(data);
+  const text = messages.flatMap(m => m.embeds.flatMap(e => e.fields.map(f => f.value))).join("\n");
+  for (const [key, value] of Object.entries(data)) {
+    if (key === "faxNumber") continue;
+    for (const answer of Array.isArray(value) ? value : [value]) assert.ok(text.includes(answer), key);
+  }
+  assert.equal(messages.length, 1);
+  assert.equal(messages[0].embeds.length, 1);
+  const url = "https://example.com/my_site?a=b_c";
+  const chunks = discordAnswerChunks("x".repeat(990) + " " + url);
+  assert.ok(chunks.some(chunk => chunk.includes(`<${url}>`)));
 });
 
 test("maximum-length answers remain within every Discord message limit", () => {

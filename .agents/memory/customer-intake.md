@@ -9,8 +9,8 @@ Customers do not need to create accounts or log in. They should fill out the web
 
 **How to apply:** Do not reintroduce customer sign-in requirements, automatic client account creation, or dashboard redirects when changing the intake or authentication system. Administrative authentication is separate from customer intake.
 
-Discord notifications should present the answers readably in the message, rather than relying on a text-file attachment.
+Discord notifications should be compact and show all submitted information and links directly in the message, rather than relying on a text-file attachment.
 
-**Why:** The user asked for a better presentation than “just a .txt.”
+**Why:** The user asked for a better presentation than “just a .txt,” then clarified that the messages were too long and they only need the information and links customers send.
 
-**How to apply:** Keep complete answers readable in Discord when changing intake notifications.
+**How to apply:** Omit unanswered prompts and redundant headings, use short labels, and preserve the submitted details and usable links.
